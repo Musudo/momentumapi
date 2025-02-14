@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MomentumApplication {
+public class MomentumApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MomentumApplication.class, args);
+		SpringApplication.run(MomentumApiApplication.class, args);
 	}
 
 }

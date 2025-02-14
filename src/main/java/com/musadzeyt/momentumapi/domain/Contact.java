@@ -1,6 +1,7 @@
 package com.musadzeyt.momentumapi.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,9 @@ public class Contact {
     @NotNull
     private String lastName;
     @NotNull
+    @Email
     private String email1;
+    @Email
     private String email2;
     @NotNull
     private String phone1;

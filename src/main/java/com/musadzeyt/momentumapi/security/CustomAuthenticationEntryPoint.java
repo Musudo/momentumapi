@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.util.jwt;
+package com.musadzeyt.momentumapi.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
