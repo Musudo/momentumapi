@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/activities")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class ActivityController {
     private final ActivityService activityService;

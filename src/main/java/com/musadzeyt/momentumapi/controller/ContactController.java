@@ -1,5 +1,6 @@
 package com.musadzeyt.momentumapi.controller;
 
+import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.dto.ContactDto;
 import com.musadzeyt.momentumapi.service.ContactService;
 import com.musadzeyt.momentumapi.util.mapper.IContactMapper;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/contacts")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class ContactController {
     private final ContactService contactService;
@@ -31,7 +33,7 @@ public class ContactController {
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<ContactDto> createContact(@RequestBody ContactDto contactDto) {
-        var contact = contactService.create(contactDto);
+        Contact contact = contactService.create(contactDto);
         return new ResponseEntity<>(IContactMapper.INSTANCE.entityToDto(contact), HttpStatus.OK);
     }
 

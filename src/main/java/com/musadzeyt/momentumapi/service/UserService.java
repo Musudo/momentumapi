@@ -2,8 +2,8 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.User;
 import com.musadzeyt.momentumapi.dto.UserDto;
-import com.musadzeyt.momentumapi.dto.UserRegistrationRequestDto;
-import com.musadzeyt.momentumapi.exception.GeneralException;
+import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
+import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IUserRepository;
 import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
 import lombok.AllArgsConstructor;
@@ -28,30 +28,31 @@ public class UserService {
 
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(GeneralException::new);
+                .orElseThrow(EntityNotFoundException::new);
         return userMapper.entityToDto(user);
     }
 
     public UserDto findByEmail(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(GeneralException::new);
+                .orElseThrow(EntityNotFoundException::new);
         return userMapper.entityToDto(user);
     }
 
     @Transactional
-    public String registerUser(UserRegistrationRequestDto request) {
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+    public String registerUser(UserRegistrationRequestRecord request) {
+        if (userRepository.findByEmail(request.username()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
 
         User user = new User();
-        user.setFirstName(request.getEmail());
-        user.setLastName(request.getEmail());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); // Hash the password before saving it
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setEmail(request.username());
+        user.setPassword(passwordEncoder.encode(request.password())); // Hash the password before saving it
 
         userRepository.save(user);
-        return "User registered successfully";
+
+        return user.getEmail();
     }
 
     public User create(UserDto userDto) {
@@ -61,7 +62,7 @@ public class UserService {
 
     public User update(UUID id, UserDto userDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(GeneralException::new);
+                .orElseThrow(EntityNotFoundException::new);
         userMapper.update(userDto, user);
         return userRepository.save(user);
     }

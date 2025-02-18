@@ -5,9 +5,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,11 +21,13 @@ import java.util.UUID;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Contact {
     @Id
     @GeneratedValue
     @UuidGenerator
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
     private String firstName;
@@ -44,13 +49,8 @@ public class Contact {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(updatable = false)
     private User user;
-    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "contact_institutions",
-//            joinColumns = @JoinColumn(name = "contact_id"),
-//            inverseJoinColumns = @JoinColumn(name = "institution_id")
-//    )
-    private Set<Institution> institutions= new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Institution institution;
     @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
 //            name = "contact_activities",
