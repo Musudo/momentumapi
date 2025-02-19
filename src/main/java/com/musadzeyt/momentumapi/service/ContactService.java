@@ -2,11 +2,11 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
+import com.musadzeyt.momentumapi.domain.User;
 import com.musadzeyt.momentumapi.dto.ContactDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IContactRepository;
 import com.musadzeyt.momentumapi.util.mapper.IContactMapper;
-import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class ContactService {
     private final IContactRepository contactRepository;
     private final IContactMapper contactMapper;
     private final InstitutionService institutionService;
-    private final IInstitutionMapper institutionMapper;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public List<ContactDto> findAll() {
         List<Contact> contacts = contactRepository.findAll();
@@ -39,6 +39,8 @@ public class ContactService {
 
     public Contact create(ContactDto contactDto) {
         Contact contact = contactMapper.dtoToEntity(contactDto);
+        User user = customUserDetailsService.getCurrentUser();
+        contact.setUser(user);
         Institution institution = institutionService.findInstitutionById(contactDto.getInstitutionId());
         contact.setInstitution(institution);
         return contactRepository.save(contact);

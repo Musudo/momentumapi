@@ -14,6 +14,7 @@ public interface IContactMapper {
     IContactMapper INSTANCE = Mappers.getMapper(IContactMapper.class);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "institutionId", source = "institution.id")
     ContactDto entityToDto(Contact contact);
 
