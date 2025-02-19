@@ -42,37 +42,31 @@ public class Activity {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(updatable = false)
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(updatable = false)
     private Institution institution;
     @ManyToMany()
-//    @JoinTable(
-//            name = "activity_tags",
-//            joinColumns = @JoinColumn(name = "activity_id"),
-//            inverseJoinColumns = @JoinColumn(name = "tag_id")
-//    )
-    private Set<Tag> tags = new HashSet<>();
-    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "activity_contacts",
-//            joinColumns = @JoinColumn(name = "activity_id"),
-//            inverseJoinColumns = @JoinColumn(name = "contact_id")
-//    )
-    private Set<Contact> contacts = new HashSet<>();
+    @JoinTable(
+            name = "activity_tags",
+            joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
     @ManyToMany()
-//    @JoinTable(
-//            name = "activity_external_participants",
-//            joinColumns = @JoinColumn(name = "activity_id"),
-//            inverseJoinColumns = @JoinColumn(name = "external_participant_id")
-//    )
+    @JoinTable(
+            name = "activity_contacts",
+            joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    private Set<Contact> contacts;
+    @ManyToMany()
+    @JoinTable(
+            name = "activity_external_participants",
+            joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "external_participant_id")
+    )
     private Set<ExternalParticipant> externalParticipants = new HashSet<>();
-    @OneToMany()
-    @JoinColumn(updatable = false)
-    private Set<Task> tasks = new HashSet<>();
-    @OneToMany()
-    @JoinColumn(updatable = false)
-    private Set<Review> reviews = new HashSet<>();
 }

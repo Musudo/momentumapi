@@ -3,7 +3,6 @@ package com.musadzeyt.momentumapi.dto;
 import com.musadzeyt.momentumapi.domain.Institution;
 import lombok.Data;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,5 +18,4 @@ public class ContactDto {
     private UUID userId;
     private UUID institutionId;
     private Institution institution;
-    private List<UUID> activityIds;
 }

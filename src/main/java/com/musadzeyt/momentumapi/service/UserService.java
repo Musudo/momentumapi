@@ -2,8 +2,8 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.User;
 import com.musadzeyt.momentumapi.dto.UserDto;
-import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
+import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.repository.IUserRepository;
 import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
 import lombok.AllArgsConstructor;
@@ -26,10 +26,15 @@ public class UserService {
         return userMapper.entityListToDtoList(users);
     }
 
-    public UserDto findById(UUID id) {
+    public UserDto findUserDtoById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         return userMapper.entityToDto(user);
+    }
+
+    public User findUserById(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public UserDto findByEmail(String email) {

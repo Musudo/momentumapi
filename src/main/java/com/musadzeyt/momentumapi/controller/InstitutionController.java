@@ -26,8 +26,8 @@ public class InstitutionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InstitutionDto> findContact(@PathVariable UUID id) {
-        return new ResponseEntity<>(institutionService.findById(id), HttpStatus.OK);
+    public ResponseEntity<InstitutionDto> findInstitution(@PathVariable UUID id) {
+        return new ResponseEntity<>(institutionService.findInstitutionDtoById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

@@ -13,9 +13,6 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -46,16 +43,10 @@ public class Contact {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(updatable = false)
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(updatable = false)
     private Institution institution;
-    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "contact_activities",
-//            joinColumns = @JoinColumn(name = "contact_id"),
-//            inverseJoinColumns = @JoinColumn(name = "activity_id")
-//    )
-    private Set<Activity> activities= new HashSet<>();
 }

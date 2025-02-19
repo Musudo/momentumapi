@@ -5,7 +5,8 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class TagDto {
+public class EmailDto {
     private UUID id;
-    private String name;
+    private String email;
+    private UUID reviewId;
 }

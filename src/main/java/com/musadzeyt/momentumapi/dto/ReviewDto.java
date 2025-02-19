@@ -1,5 +1,7 @@
 package com.musadzeyt.momentumapi.dto;
 
+import com.musadzeyt.momentumapi.domain.Attachment;
+import com.musadzeyt.momentumapi.domain.Email;
 import lombok.Data;
 
 import java.util.List;
@@ -10,8 +12,9 @@ public class ReviewDto {
     private UUID id;
     private String title;
     private String content;
-    private UUID userId;
     private UUID activityId;
     private List<UUID> attachmentIds;
+    private List<Attachment> attachments;
     private List<UUID> emailIds;
+    private List<Email> emails;
 }

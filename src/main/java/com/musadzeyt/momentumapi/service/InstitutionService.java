@@ -3,7 +3,6 @@ package com.musadzeyt.momentumapi.service;
 import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.dto.InstitutionDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IContactRepository;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
 import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
 import lombok.AllArgsConstructor;
@@ -17,17 +16,21 @@ import java.util.UUID;
 public class InstitutionService {
     private final IInstitutionRepository institutionRepository;
     private final IInstitutionMapper institutionMapper;
-    private final IContactRepository contactRepository;
 
     public List<InstitutionDto> findAll() {
         List<Institution> institutions = institutionRepository.findAll();
         return institutionMapper.entityListToDtoList(institutions);
     }
 
-    public InstitutionDto findById(UUID id) {
+    public InstitutionDto findInstitutionDtoById(UUID id) {
         Institution institution = institutionRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         return institutionMapper.entityToDto(institution);
+    }
+
+    public Institution findInstitutionById(UUID id) {
+        return institutionRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public Institution create(InstitutionDto institutionDto) {

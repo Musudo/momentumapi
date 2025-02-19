@@ -14,6 +14,8 @@ public interface IActivityMapper {
     IActivityMapper INSTANCE = Mappers.getMapper(IActivityMapper.class);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "institutionId", source = "institution.id")
     ActivityDto entityToDto(Activity activity);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore

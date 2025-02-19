@@ -1,5 +1,6 @@
 package com.musadzeyt.momentumapi.dto;
 
+import com.musadzeyt.momentumapi.domain.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,8 +17,13 @@ public class ActivityDto {
     private String internalNote;
     private String externalNote;
     private LocalDateTime emailSentAt;
-    private List<UUID> externalParticipantIds;
-    private List<UUID> taskIds;
-    private List<UUID> reviewIds;
+    private UUID userId;
+    private UUID institutionId;
+    private Institution institution;
     private List<UUID> tagIds;
+    private List<Tag> tags;
+    private List<UUID> contactIds;
+    private List<Contact> contacts;
+    private List<UUID> externalParticipantIds;
+    private List<ExternalParticipant> externalParticipants;
 }

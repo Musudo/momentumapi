@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class TaskDto {
+public class VoiceMemoDto {
     private UUID id;
-    private String description;
+    private String path;
     private boolean completed;
-    private UUID activityId;
+    private UUID userId;
 }

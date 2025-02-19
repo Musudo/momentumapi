@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
-import com.musadzeyt.momentumapi.domain.Contact;
-import com.musadzeyt.momentumapi.dto.ContactDto;
+import com.musadzeyt.momentumapi.domain.Tag;
+import com.musadzeyt.momentumapi.dto.TagDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,24 +10,23 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface IContactMapper {
-    IContactMapper INSTANCE = Mappers.getMapper(IContactMapper.class);
+public interface ITagMapper {
+    ITagMapper INSTANCE = Mappers.getMapper(ITagMapper.class);
 
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "institutionId", source = "institution.id")
-    ContactDto entityToDto(Contact contact);
+    TagDto entityToDto(Tag tag);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
-    Contact dtoToEntity(ContactDto contactDto);
+    Tag dtoToEntity(TagDto tagDto);
 
-    List<ContactDto> entityListToDtoList(List<Contact> list);
+    List<TagDto> entityListToDtoList(List<Tag> list);
 
-    List<Contact> dtoListToEntityList(List<ContactDto> list);
+    List<Tag> dtoListToEntityList(List<TagDto> list);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Contact update(ContactDto contactDto, @MappingTarget Contact contact);
+    Tag update(TagDto tagDto, @MappingTarget Tag tag);
 }

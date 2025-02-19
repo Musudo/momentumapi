@@ -28,7 +28,7 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactDto> findContact(@PathVariable UUID id) {
-        return new ResponseEntity<>(contactService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(contactService.findContactDtoById(id), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

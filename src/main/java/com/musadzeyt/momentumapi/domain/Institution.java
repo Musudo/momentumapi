@@ -1,6 +1,9 @@
 package com.musadzeyt.momentumapi.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +15,6 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -45,23 +45,4 @@ public class Institution {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(updatable = false)
-//    private User user;
-//    @ManyToMany(mappedBy = "institutions", fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "institution_contacts",
-//            joinColumns = @JoinColumn(name = "institution_id"),
-//            inverseJoinColumns = @JoinColumn(name = "contact_id")
-//    )
-//    private Set<Contact> contacts = new HashSet<>();
-//    @OneToMany()
-//    @JoinColumn(updatable = false)
-//    private List<Activity> activities;
-
-    // Helper method to maintain both sides of the relationship
-//    public void addContact(Contact contact) {
-//        this.contacts.add(contact);
-//        contact.getInstitutions().add(this);
-//    }
 }
