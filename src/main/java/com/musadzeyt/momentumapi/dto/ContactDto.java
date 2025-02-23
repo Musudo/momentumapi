@@ -17,5 +17,6 @@ public class ContactDto {
     private String jobTitle;
     private UUID userId;
     private UUID institutionId;
-    private Institution institution;
+    private InstitutionDto institution;
+    private String institutionName;
 }

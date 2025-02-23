@@ -19,11 +19,11 @@ public class ActivityDto {
     private LocalDateTime emailSentAt;
     private UUID userId;
     private UUID institutionId;
-    private Institution institution;
+    private InstitutionDto institution;
     private List<UUID> tagIds;
-    private List<Tag> tags;
+    private List<TagDto> tags;
     private List<UUID> contactIds;
-    private List<Contact> contacts;
+    private List<ContactDto> contacts;
     private List<UUID> externalParticipantIds;
-    private List<ExternalParticipant> externalParticipants;
+    private List<ExternalParticipantDto> externalParticipants;
 }

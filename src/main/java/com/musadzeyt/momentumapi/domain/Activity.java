@@ -42,27 +42,27 @@ public class Activity {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(updatable = false)
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(updatable = false)
     private Institution institution;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "activity_tags",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "activity_contacts",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
     private Set<Contact> contacts;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "activity_external_participants",
             joinColumns = @JoinColumn(name = "activity_id"),

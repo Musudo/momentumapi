@@ -32,7 +32,7 @@ public class Email {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(updatable = false)
     private Review review;
 }

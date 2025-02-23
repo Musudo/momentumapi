@@ -33,6 +33,11 @@ public class InstitutionService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public Institution findByName(String name) {
+        return institutionRepository.findByName(name)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
     public Institution create(InstitutionDto institutionDto) {
         Institution institution = institutionMapper.dtoToEntity(institutionDto);
         return institutionRepository.save(institution);

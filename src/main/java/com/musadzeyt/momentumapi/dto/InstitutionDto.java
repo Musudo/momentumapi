@@ -15,5 +15,5 @@ public class InstitutionDto {
     private String city;
     private String postalCode;
     private String countryCode;
-    private User user;
+    private UserDto user;
 }
