@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -30,11 +31,11 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequestRecord request) {
-        log.info("TEST" + request);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
         String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(Map.of("token", token));
+        Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
+        return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString()));
     }
 
     @PostMapping("/register")

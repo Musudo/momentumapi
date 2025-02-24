@@ -18,5 +18,4 @@ public class ContactDto {
     private UUID userId;
     private UUID institutionId;
     private InstitutionDto institution;
-    private String institutionName;
 }

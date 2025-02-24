@@ -14,10 +14,10 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
-    // Token validity time (e.g., 10 hours)
-    public static final long JWT_TOKEN_VALIDITY = 10 * 60 * 60;
     @Value("${jwt.secret}")
     private String secret;
+    @Value("${jwt.expirationTime}")
+    private Long expirationTime;
 
     // Retrieve username from jwt token
     public String getUsernameFromToken(String token) {
@@ -62,7 +62,7 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
