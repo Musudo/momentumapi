@@ -29,6 +29,11 @@ public class ActivityService {
         return activityMapper.entityListToDtoList(activities);
     }
 
+    public List<ActivityDto> findAllForLast30Days() {
+        List<Activity> activities = activityRepository.findAllForLast30Days();
+        return activityMapper.entityListToDtoList(activities);
+    }
+
     public ActivityDto findActivityDtoById(UUID id) {
         Activity activity = activityRepository.findById(id)
                 .orElseThrow(ActivityNotFoundException::new);

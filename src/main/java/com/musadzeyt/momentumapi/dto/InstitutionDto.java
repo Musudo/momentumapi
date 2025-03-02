@@ -1,6 +1,5 @@
 package com.musadzeyt.momentumapi.dto;
 
-import com.musadzeyt.momentumapi.domain.User;
 import lombok.Data;
 
 import java.util.UUID;
@@ -16,4 +15,5 @@ public class InstitutionDto {
     private String postalCode;
     private String countryCode;
     private UserDto user;
+    private String createdAt;
 }

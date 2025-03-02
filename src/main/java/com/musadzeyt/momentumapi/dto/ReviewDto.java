@@ -1,7 +1,5 @@
 package com.musadzeyt.momentumapi.dto;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
-import com.musadzeyt.momentumapi.domain.Email;
 import lombok.Data;
 
 import java.util.List;

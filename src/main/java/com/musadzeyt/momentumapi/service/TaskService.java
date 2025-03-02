@@ -26,6 +26,11 @@ public class TaskService {
         return taskMapper.entityListToDtoList(tasks);
     }
 
+    public List<TaskDto> findAllForLast30Days() {
+        List<Task> tasks = taskRepository.findAllForLast30Days();
+        return taskMapper.entityListToDtoList(tasks);
+    }
+
     public TaskDto findById(UUID id) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

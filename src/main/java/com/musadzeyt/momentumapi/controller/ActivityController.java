@@ -25,6 +25,11 @@ public class ActivityController {
         return new ResponseEntity<>(activityService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/last30Days")
+    public ResponseEntity<List<ActivityDto>> findActivitiesForLast30Days() {
+        return new ResponseEntity<>(activityService.findAllForLast30Days(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> findActivity(@PathVariable UUID id) {
         return new ResponseEntity<>(activityService.findActivityDtoById(id), HttpStatus.OK);

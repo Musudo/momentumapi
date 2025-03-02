@@ -11,12 +11,12 @@ import java.util.UUID;
 public class ActivityDto {
     private UUID id;
     private String type;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String subject;
     private String internalNote;
     private String externalNote;
-    private LocalDateTime emailSentAt;
+    private String emailSentAt;
     private UUID userId;
     private UUID institutionId;
     private InstitutionDto institution;
@@ -26,4 +26,5 @@ public class ActivityDto {
     private List<ContactDto> contacts;
     private List<UUID> externalParticipantIds;
     private List<ExternalParticipantDto> externalParticipants;
+    private String createdAt;
 }

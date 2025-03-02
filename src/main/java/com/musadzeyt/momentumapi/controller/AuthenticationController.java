@@ -30,12 +30,12 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequestRecord request) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserLoginRequestRecord request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
         String token = jwtTokenUtil.generateToken(userDetails);
         Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
-        return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString()));
+        return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString(), "user", userService.findByEmail(userDetails.getUsername())));
     }
 
     @PostMapping("/register")

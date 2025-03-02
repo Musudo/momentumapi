@@ -23,6 +23,11 @@ public class TaskController {
         return new ResponseEntity<>(taskService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/last30Days")
+    public ResponseEntity<List<TaskDto>> findTasksForLast30Days() {
+        return new ResponseEntity<>(taskService.findAllForLast30Days(), HttpStatus.OK);
+    }
+
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         Task task = taskService.create(taskDto);
