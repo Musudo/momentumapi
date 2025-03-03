@@ -34,6 +34,16 @@ public class ActivityService {
         return activityMapper.entityListToDtoList(activities);
     }
 
+    public List<ActivityDto> findAllForLast6Months() {
+        List<Activity> activities = activityRepository.findAllForLast6Months();
+        return activityMapper.entityListToDtoList(activities);
+    }
+
+    public List<ActivityDto> findAllByType(String type) {
+        List<Activity> activities = activityRepository.findAllByType(type);
+        return activityMapper.entityListToDtoList(activities);
+    }
+
     public ActivityDto findActivityDtoById(UUID id) {
         Activity activity = activityRepository.findById(id)
                 .orElseThrow(ActivityNotFoundException::new);

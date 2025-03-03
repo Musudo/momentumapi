@@ -30,6 +30,16 @@ public class ActivityController {
         return new ResponseEntity<>(activityService.findAllForLast30Days(), HttpStatus.OK);
     }
 
+    @GetMapping("/last6Months")
+    public ResponseEntity<List<ActivityDto>> findActivitiesForLast6Months() {
+        return new ResponseEntity<>(activityService.findAllForLast6Months(), HttpStatus.OK);
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<ActivityDto>> findActivitiesByType(@PathVariable String type) {
+        return new ResponseEntity<>(activityService.findAllByType(type), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> findActivity(@PathVariable UUID id) {
         return new ResponseEntity<>(activityService.findActivityDtoById(id), HttpStatus.OK);

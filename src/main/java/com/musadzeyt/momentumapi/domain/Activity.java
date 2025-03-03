@@ -1,5 +1,6 @@
 package com.musadzeyt.momentumapi.domain;
 
+import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Entity
 @Table
+// TODO: consider removing Lomboks Data annotation here and everywhere else
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +30,7 @@ public class Activity {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    private String type;
+    private ActivityTypeEnum type;
     @NotNull
     private LocalDateTime startTime;
     @NotNull

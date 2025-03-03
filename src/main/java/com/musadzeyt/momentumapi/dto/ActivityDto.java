@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.dto;
 
-import com.musadzeyt.momentumapi.domain.*;
+import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,13 +10,13 @@ import java.util.UUID;
 @Data
 public class ActivityDto {
     private UUID id;
-    private String type;
-    private String startTime;
-    private String endTime;
+    private ActivityTypeEnum type;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String subject;
     private String internalNote;
     private String externalNote;
-    private String emailSentAt;
+    private LocalDateTime emailSentAt;
     private UUID userId;
     private UUID institutionId;
     private InstitutionDto institution;
