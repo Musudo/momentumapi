@@ -19,15 +19,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class InstitutionController {
     private final InstitutionService institutionService;
+    private final IInstitutionMapper institutionMapper;
 
     @GetMapping("")
     public ResponseEntity<List<InstitutionDto>> findInstitutions() {
-        return new ResponseEntity<>(institutionService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(institutionMapper.entityListToDtoList(institutionService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InstitutionDto> findInstitution(@PathVariable UUID id) {
-        return new ResponseEntity<>(institutionService.findInstitutionDtoById(id), HttpStatus.OK);
+        return new ResponseEntity<>(institutionMapper.entityToDto(institutionService.findInstitutionDtoById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

@@ -21,20 +21,21 @@ public class TaskService {
     private final ITaskMapper taskMapper;
     private final ActivityService activityService;
 
-    public List<TaskDto> findAll() {
-        List<Task> tasks = taskRepository.findAll();
-        return taskMapper.entityListToDtoList(tasks);
+    public List<Task> findAll() {
+        return taskRepository.findAll();
     }
 
-    public List<TaskDto> findAllForLast30Days() {
-        List<Task> tasks = taskRepository.findAllForLast30Days();
-        return taskMapper.entityListToDtoList(tasks);
+    public List<Task> findAllForInterval(int days) {
+        return taskRepository.findAllForInterval(days);
     }
 
-    public TaskDto findById(UUID id) {
-        Task task = taskRepository.findById(id)
+    public List<Integer> findAmountPerDayForLastMonth() {
+        return taskRepository.findAmountPerDayForLastMonth();
+    }
+
+    public Task findById(UUID id) {
+        return taskRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return taskMapper.entityToDto(task);
     }
 
     public Task create(TaskDto taskDto) {

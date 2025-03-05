@@ -20,27 +20,28 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ContactController {
     private final ContactService contactService;
+    private final IContactMapper contactMapper;
 
     @GetMapping("")
     public ResponseEntity<List<ContactDto>> findContacts() {
-        return new ResponseEntity<>(contactService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(contactMapper.entityListToDtoList(contactService.findAll()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactDto> findContact(@PathVariable UUID id) {
-        return new ResponseEntity<>(contactService.findContactDtoById(id), HttpStatus.OK);
+        return new ResponseEntity<>(contactMapper.entityToDto(contactService.findContactDtoById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<ContactDto> createContact(@RequestBody ContactDto contactDto) {
         Contact contact = contactService.create(contactDto);
-        return new ResponseEntity<>(IContactMapper.INSTANCE.entityToDto(contact), HttpStatus.OK);
+        return new ResponseEntity<>(contactMapper.entityToDto(contact), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<ContactDto> updateContact(@PathVariable UUID id, @NotNull @Valid @RequestBody ContactDto contactDto) {
         var contact = contactService.update(id, contactDto);
-        return new ResponseEntity<>(IContactMapper.INSTANCE.entityToDto(contact), HttpStatus.OK);
+        return new ResponseEntity<>(contactMapper.entityToDto(contact), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/externalParticipants")
+@RequestMapping("/api/external-participants")
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class ExternalParticipantController {
@@ -20,7 +20,7 @@ public class ExternalParticipantController {
 
     @GetMapping("")
     public ResponseEntity<List<ExternalParticipantDto>> findExternalParticipants() {
-        return new ResponseEntity<>(externalParticipantService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(IExternalParticipantMapper.INSTANCE.entityListToDtoList(externalParticipantService.findAll()), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

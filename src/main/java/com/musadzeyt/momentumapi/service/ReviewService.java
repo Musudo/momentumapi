@@ -19,15 +19,17 @@ public class ReviewService {
     private final IReviewMapper reviewMapper;
     private final ActivityService activityService;
 
-    public List<ReviewDto> findAll() {
-        List<Review> reviews = reviewRepository.findAll();
-        return reviewMapper.entityListToDtoList(reviews);
+    public List<Review> findAll() {
+        return reviewRepository.findAll();
     }
 
-    public ReviewDto findReviewDtoById(UUID id) {
-        Review review = reviewRepository.findById(id)
+    public List<Integer> findAmountPerDayForLastMonth() {
+        return reviewRepository.findAmountPerDayForLastMonth();
+    }
+
+    public Review findReviewDtoById(UUID id) {
+        return reviewRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return reviewMapper.entityToDto(review);
     }
 
     public Review findReviewById(UUID id) {

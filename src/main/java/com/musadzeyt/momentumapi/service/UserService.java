@@ -21,15 +21,13 @@ public class UserService {
     private final IUserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserDto> findAll() {
-        List<User> users = userRepository.findAll();
-        return userMapper.entityListToDtoList(users);
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public UserDto findUserDtoById(UUID id) {
-        User user = userRepository.findById(id)
+    public User findUserDtoById(UUID id) {
+        return userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return userMapper.entityToDto(user);
     }
 
     public User findUserById(UUID id) {
@@ -37,10 +35,9 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
-        return userMapper.entityToDto(user);
     }
 
     @Transactional

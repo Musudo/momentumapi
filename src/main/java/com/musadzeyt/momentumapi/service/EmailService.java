@@ -17,20 +17,21 @@ public class EmailService {
     private final IEmailRepository emailRepository;
     private final IEmailMapper emailMapper;
 
-    public List<EmailDto> findAll() {
-        List<Email> emails = emailRepository.findAll();
-        return emailMapper.entityListToDtoList(emails);
+    public List<Email> findAll() {
+        return emailRepository.findAll();
     }
 
-    public List<EmailDto> findAllForLast30Days() {
-        List<Email> emails = emailRepository.findAllForLast30Days();
-        return emailMapper.entityListToDtoList(emails);
+    public List<Email> findAllForInterval(int days) {
+        return emailRepository.findAllForInterval(days);
     }
 
-    public EmailDto findById(UUID id) {
-        Email email = emailRepository.findById(id)
+    public List<Integer> findAmountPerDayForLastMonth() {
+        return emailRepository.findAmountPerDayForLastMonth();
+    }
+
+    public Email findById(UUID id) {
+        return emailRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return emailMapper.entityToDto(email);
     }
 
     public Email create(EmailDto emailDto) {

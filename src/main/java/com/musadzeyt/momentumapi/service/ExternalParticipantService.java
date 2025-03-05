@@ -17,15 +17,13 @@ public class ExternalParticipantService {
     private final IExternalParticipantRepository externalParticipantRepository;
     private final IExternalParticipantMapper externalParticipantMapper;
 
-    public List<ExternalParticipantDto> findAll() {
-        List<ExternalParticipant> externalParticipants = externalParticipantRepository.findAll();
-        return externalParticipantMapper.entityListToDtoList(externalParticipants);
+    public List<ExternalParticipant> findAll() {
+        return externalParticipantRepository.findAll();
     }
 
-    public ExternalParticipantDto findExternalParticipantDtoById(UUID id) {
-        ExternalParticipant externalParticipant = externalParticipantRepository.findById(id)
+    public ExternalParticipant findExternalParticipantDtoById(UUID id) {
+        return externalParticipantRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return externalParticipantMapper.entityToDto(externalParticipant);
     }
 
     public ExternalParticipant findExternalParticipantById(UUID id) {

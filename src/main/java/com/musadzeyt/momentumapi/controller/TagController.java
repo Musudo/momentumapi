@@ -20,7 +20,7 @@ public class TagController {
 
     @GetMapping("")
     public ResponseEntity<List<TagDto>> findTags() {
-        return new ResponseEntity<>(tagService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(ITagMapper.INSTANCE.entityListToDtoList(tagService.findAll()), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

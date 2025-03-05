@@ -19,15 +19,17 @@ public class VoiceMemoService {
     private final IVoiceMemoMapper voiceMemoMapper;
     private final UserService userService;
 
-    public List<VoiceMemoDto> findAll() {
-        List<VoiceMemo> voiceMemos = voiceMemoRepository.findAll();
-        return voiceMemoMapper.entityListToDtoList(voiceMemos);
+    public List<VoiceMemo> findAll() {
+        return voiceMemoRepository.findAll();
     }
 
-    public VoiceMemoDto findVoiceMemoDtoById(UUID id) {
-        VoiceMemo review = voiceMemoRepository.findById(id)
+    public List<Integer> findAmountPerDayForLastMonth() {
+        return voiceMemoRepository.findAmountPerDayForLastMonth();
+    }
+
+    public VoiceMemo findVoiceMemoDtoById(UUID id) {
+        return voiceMemoRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return voiceMemoMapper.entityToDto(review);
     }
 
     public VoiceMemo findVoiceMemoById(UUID id) {

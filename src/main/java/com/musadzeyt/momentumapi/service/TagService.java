@@ -17,15 +17,13 @@ public class TagService {
     private final ITagRepository tagRepository;
     private final ITagMapper tagMapper;
 
-    public List<TagDto> findAll() {
-        List<Tag> tags = tagRepository.findAll();
-        return tagMapper.entityListToDtoList(tags);
+    public List<Tag> findAll() {
+        return tagRepository.findAll();
     }
 
-    public TagDto findTagDtoById(UUID id) {
-        Tag tag = tagRepository.findById(id)
+    public Tag findTagDtoById(UUID id) {
+        return tagRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return tagMapper.entityToDto(tag);
     }
 
     public Tag findTagById(UUID id) {

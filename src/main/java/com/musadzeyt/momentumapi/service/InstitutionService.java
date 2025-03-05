@@ -17,15 +17,13 @@ public class InstitutionService {
     private final IInstitutionRepository institutionRepository;
     private final IInstitutionMapper institutionMapper;
 
-    public List<InstitutionDto> findAll() {
-        List<Institution> institutions = institutionRepository.findAll();
-        return institutionMapper.entityListToDtoList(institutions);
+    public List<Institution> findAll() {
+        return institutionRepository.findAll();
     }
 
-    public InstitutionDto findInstitutionDtoById(UUID id) {
-        Institution institution = institutionRepository.findById(id)
+    public Institution findInstitutionDtoById(UUID id) {
+        return institutionRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return institutionMapper.entityToDto(institution);
     }
 
     public Institution findInstitutionById(UUID id) {

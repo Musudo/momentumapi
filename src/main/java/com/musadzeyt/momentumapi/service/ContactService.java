@@ -21,15 +21,13 @@ public class ContactService {
     private final InstitutionService institutionService;
     private final CustomUserDetailsService customUserDetailsService;
 
-    public List<ContactDto> findAll() {
-        List<Contact> contacts = contactRepository.findAll();
-        return contactMapper.entityListToDtoList(contacts);
+    public List<Contact> findAll() {
+        return contactRepository.findAll();
     }
 
-    public ContactDto findContactDtoById(UUID id) {
-        Contact contact = contactRepository.findById(id)
+    public Contact findContactDtoById(UUID id) {
+        return contactRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return contactMapper.entityToDto(contact);
     }
 
     public Contact findContactById(UUID id) {

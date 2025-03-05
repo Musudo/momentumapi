@@ -20,12 +20,17 @@ public class EmailController {
 
     @GetMapping("")
     public ResponseEntity<List<EmailDto>> findEmails() {
-        return new ResponseEntity<>(emailService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(IEmailMapper.INSTANCE.entityListToDtoList(emailService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/last30Days")
-    public ResponseEntity<List<EmailDto>> findEmailsForLast30Days() {
-        return new ResponseEntity<>(emailService.findAllForLast30Days(), HttpStatus.OK);
+    @GetMapping("/interval/{days}")
+    public ResponseEntity<List<EmailDto>> findEmailsForInterval(@PathVariable int days) {
+        return new ResponseEntity<>(IEmailMapper.INSTANCE.entityListToDtoList(emailService.findAllForInterval(days)), HttpStatus.OK);
+    }
+
+    @GetMapping("/amount")
+    public ResponseEntity<List<Integer>> findEmailsAmountPerDayForLastMonth() {
+        return new ResponseEntity<>(emailService.findAmountPerDayForLastMonth(), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")
