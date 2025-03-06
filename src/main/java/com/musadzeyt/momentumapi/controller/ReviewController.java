@@ -23,11 +23,6 @@ public class ReviewController {
         return new ResponseEntity<>(IReviewMapper.INSTANCE.entityListToDtoList(reviewService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/amount")
-    public ResponseEntity<List<Integer>> findVoiceMemosAmountPerDayForLastMonth() {
-        return new ResponseEntity<>(reviewService.findAmountPerDayForLastMonth(), HttpStatus.OK);
-    }
-
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<ReviewDto> createReview(@RequestBody ReviewDto reviewDto) {
         Review review = reviewService.create(reviewDto);

@@ -8,10 +8,7 @@ import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -28,25 +25,20 @@ public class ActivityService {
         return activityRepository.findAll();
     }
 
-    public List<Activity> findAllForInterval(int days) {
-        return activityRepository.findAllForInterval(days);
+    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
+        return activityRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
-    public List<Activity> findByType(String type, boolean lastSixMonths) {
-        return activityRepository.findByType(type, lastSixMonths);
+    public List<Activity> findByTypeForIntervalOfDays(String type, boolean interval, int days) {
+        return activityRepository.findByTypeForIntervalOfDays(type, interval, days);
     }
 
-    public List<Activity> findByType(String type) {
-        return findByType(type, true);
+    public List<Activity> findByTypeForIntervalOfDays(String type) {
+        return findByTypeForIntervalOfDays(type, false, 365);
     }
 
-    public List<Integer> findAmountPerMonthForLastSixMonths(String type) {
-        return activityRepository.findAmountPerMonthForLastSixMonths(type);
-    }
-
-    public Activity findActivityDtoById(UUID id) {
-        return activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+    public List<Map<String, Integer>> findAmountsByTypePerMonthForLastSixMonths(String type) {
+        return activityRepository.findAmountsByTypePerMonthForIntervalOfMonths(type, 6);
     }
 
     public Activity findActivityById(UUID id) {

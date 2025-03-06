@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -23,13 +24,8 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public List<Integer> findAmountPerDayForLastMonth() {
-        return reviewRepository.findAmountPerDayForLastMonth();
-    }
-
-    public Review findReviewDtoById(UUID id) {
-        return reviewRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
+        return reviewRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
     public Review findReviewById(UUID id) {

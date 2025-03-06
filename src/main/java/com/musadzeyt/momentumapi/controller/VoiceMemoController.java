@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/voice-memos")
@@ -23,9 +24,9 @@ public class VoiceMemoController {
         return new ResponseEntity<>(IVoiceMemoMapper.INSTANCE.entityListToDtoList(voiceMemoService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/amount")
-    public ResponseEntity<List<Integer>> findVoiceMemosAmountPerDayForLastMonth() {
-        return new ResponseEntity<>(voiceMemoService.findAmountPerDayForLastMonth(), HttpStatus.OK);
+    @GetMapping("/last-month/amounts")
+    public ResponseEntity<List<Map<String, Integer>>> findVoiceMemoAmountsPerDayForLastMonth() {
+        return new ResponseEntity<>(voiceMemoService.findAmountsPerDayForLastMonth(), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

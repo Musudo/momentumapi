@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -25,12 +26,12 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public List<Task> findAllForInterval(int days) {
-        return taskRepository.findAllForInterval(days);
+    public List<Task> findAllForIntervalOfDays(int days) {
+        return taskRepository.findAllForIntervalOfDays(days);
     }
 
-    public List<Integer> findAmountPerDayForLastMonth() {
-        return taskRepository.findAmountPerDayForLastMonth();
+    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
+        return taskRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
     public Task findById(UUID id) {

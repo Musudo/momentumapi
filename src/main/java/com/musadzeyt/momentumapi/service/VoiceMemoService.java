@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -23,13 +24,8 @@ public class VoiceMemoService {
         return voiceMemoRepository.findAll();
     }
 
-    public List<Integer> findAmountPerDayForLastMonth() {
-        return voiceMemoRepository.findAmountPerDayForLastMonth();
-    }
-
-    public VoiceMemo findVoiceMemoDtoById(UUID id) {
-        return voiceMemoRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
+        return voiceMemoRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
     public VoiceMemo findVoiceMemoById(UUID id) {

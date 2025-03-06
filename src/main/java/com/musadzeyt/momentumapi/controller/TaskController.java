@@ -23,15 +23,10 @@ public class TaskController {
         return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/interval/{days}")
-    public ResponseEntity<List<TaskDto>> findTasksForInterval(@PathVariable int days) {
-        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllForInterval(days)), HttpStatus.OK);
-    }
-
-    @GetMapping("/amount")
-    public ResponseEntity<List<Integer>> findTasksAmountPerDayForLastMonth() {
-        return new ResponseEntity<>(taskService.findAmountPerDayForLastMonth(), HttpStatus.OK);
-    }
+//    @GetMapping("/interval/{days}")
+//    public ResponseEntity<List<TaskDto>> findTasksForInterval(@PathVariable int days) {
+//        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllForInterval(days)), HttpStatus.OK);
+//    }
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {

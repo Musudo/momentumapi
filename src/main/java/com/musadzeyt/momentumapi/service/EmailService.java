@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -21,12 +22,12 @@ public class EmailService {
         return emailRepository.findAll();
     }
 
-    public List<Email> findAllForInterval(int days) {
-        return emailRepository.findAllForInterval(days);
+    public List<Email> findAllForIntervalOfDays(int days) {
+        return emailRepository.findAllForIntervalOfDays(days);
     }
 
-    public List<Integer> findAmountPerDayForLastMonth() {
-        return emailRepository.findAmountPerDayForLastMonth();
+    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
+        return emailRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
     public Email findById(UUID id) {

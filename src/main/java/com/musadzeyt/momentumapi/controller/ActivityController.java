@@ -26,30 +26,24 @@ public class ActivityController {
         return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/interval/{days}")
-    public ResponseEntity<List<ActivityDto>> findActivitiesForInterval(@PathVariable int days) {
-        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllForInterval(days)), HttpStatus.OK);
-    }
+//    @GetMapping("/type/{type}")
+//    public ResponseEntity<List<ActivityDto>> findActivitiesByType(@PathVariable String type) {
+//        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findByType(type)), HttpStatus.OK);
+//    }
 
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<ActivityDto>> findActivitiesByType(@PathVariable String type) {
-        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findByType(type)), HttpStatus.OK);
-    }
+//    @GetMapping("/type/{type}/last-six-months")
+//    public ResponseEntity<List<ActivityDto>> findActivitiesByTypeForLastSixMonths(@PathVariable String type) {
+//        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findByTypeForInterval(type, false, 180)), HttpStatus.OK);
+//    }
 
-    @GetMapping("/type/{type}/last-six-months/{lastSixMonths}")
-    public ResponseEntity<List<ActivityDto>> findActivitiesByTypeForLastSixMonths(@PathVariable String type,
-                                                                                  @PathVariable boolean lastSixMonths) {
-        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findByType(type, lastSixMonths)), HttpStatus.OK);
-    }
-
-    @GetMapping("/type/{type}/amount")
-    public ResponseEntity<List<Integer>> findActivitiesAmountPerMonthForLastSixMonths(@PathVariable String type) {
-        return new ResponseEntity<>(activityService.findAmountPerMonthForLastSixMonths(type), HttpStatus.OK);
-    }
+//    @GetMapping("/type/{type}/last-six-months/amounts-per-month")
+//    public ResponseEntity<List<Integer>> findActivitiesAmountsByTypePerMonthForLastSixMonths(@PathVariable String type) {
+//        return new ResponseEntity<>(activityService.findAmountsByTypePerMonthForLastSixMonths(type), HttpStatus.OK);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> findActivity(@PathVariable UUID id) {
-        return new ResponseEntity<>(activityMapper.entityToDto(activityService.findActivityDtoById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(activityMapper.entityToDto(activityService.findActivityById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

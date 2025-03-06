@@ -25,11 +25,6 @@ public class ContactService {
         return contactRepository.findAll();
     }
 
-    public Contact findContactDtoById(UUID id) {
-        return contactRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
     public Contact findContactById(UUID id) {
         return contactRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/emails")
@@ -23,14 +24,14 @@ public class EmailController {
         return new ResponseEntity<>(IEmailMapper.INSTANCE.entityListToDtoList(emailService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/interval/{days}")
-    public ResponseEntity<List<EmailDto>> findEmailsForInterval(@PathVariable int days) {
-        return new ResponseEntity<>(IEmailMapper.INSTANCE.entityListToDtoList(emailService.findAllForInterval(days)), HttpStatus.OK);
+    @GetMapping("/interval-of-days/{days}")
+    public ResponseEntity<List<EmailDto>> findEmailsForIntervalOfDays(@PathVariable int days) {
+        return new ResponseEntity<>(IEmailMapper.INSTANCE.entityListToDtoList(emailService.findAllForIntervalOfDays(days)), HttpStatus.OK);
     }
 
-    @GetMapping("/amount")
-    public ResponseEntity<List<Integer>> findEmailsAmountPerDayForLastMonth() {
-        return new ResponseEntity<>(emailService.findAmountPerDayForLastMonth(), HttpStatus.OK);
+    @GetMapping("/last-month/amounts-per-day")
+    public ResponseEntity<List<Map<String, Integer>>> findEmailsAmountsPerDayForLastMonth() {
+        return new ResponseEntity<>(emailService.findAmountsPerDayForLastMonth(), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")
