@@ -22,8 +22,8 @@ public class StatService {
     public StatCardDto createActivitiesStatCardDto() {
         var data = activityService.findAmountsPerDayForLastMonth();
 
-        List<String> datesList = StatUtil.getDates(data);
-        List<Integer> statCardAmounts = StatUtil.getAmounts(data);
+        List<String> datesList = StatUtil.extractStringValues(data, "date");
+        List<Integer> statCardAmounts = StatUtil.extractIntValues(data, "amount");
 
         int value = statCardAmounts.stream()
                 .filter(num -> num != 0)
@@ -46,8 +46,8 @@ public class StatService {
     public StatCardDto createTasksStatCardDto() {
         var data = taskService.findAmountsPerDayForLastMonth();
 
-        List<String> datesList = StatUtil.getDates(data);
-        List<Integer> statCardAmounts = StatUtil.getAmounts(data);
+        List<String> datesList = StatUtil.extractStringValues(data, "date");
+        List<Integer> statCardAmounts = StatUtil.extractIntValues(data, "amount");
 
         int value = statCardAmounts.stream()
                 .filter(num -> num != 0)
@@ -69,8 +69,8 @@ public class StatService {
     public StatCardDto createReviewsStatCardDto() {
         var data = reviewService.findAmountsPerDayForLastMonth();
 
-        List<String> datesList = StatUtil.getDates(data);
-        List<Integer> statCardAmounts = StatUtil.getAmounts(data);
+        List<String> datesList = StatUtil.extractStringValues(data, "date");
+        List<Integer> statCardAmounts = StatUtil.extractIntValues(data, "amount");
 
         int value = statCardAmounts.stream()
                 .filter(num -> num != 0)
@@ -94,8 +94,8 @@ public class StatService {
 
         var onlineActivities = activityService.findAmountsByTypePerMonthForLastSixMonths("online");
         // months list is normally the same for all activity types
-        List<String> monthsList = StatUtil.getMonths(onlineActivities);
-        List<Integer> onlineActivityAmountsList = StatUtil.getAmounts(onlineActivities);
+        List<String> monthsList = StatUtil.extractStringValues(onlineActivities, "month");
+        List<Integer> onlineActivityAmountsList = StatUtil.extractIntValues(onlineActivities, "amount");
         int valueOnlineActivities = onlineActivityAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -110,7 +110,7 @@ public class StatService {
         barChartSeriesDtos.add(onlineActivitySeriesDto);
 
         var phoneActivityAmounts = activityService.findAmountsByTypePerMonthForLastSixMonths("phone");
-        List<Integer> phoneActivitiesAmountsList = StatUtil.getAmounts(phoneActivityAmounts);
+        List<Integer> phoneActivitiesAmountsList = StatUtil.extractIntValues(phoneActivityAmounts, "amount");
         int valuePhoneActivities = phoneActivitiesAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -125,7 +125,7 @@ public class StatService {
         barChartSeriesDtos.add(phoneActivitySeriesDto);
 
         var physicalActivitiesAmounts = activityService.findAmountsByTypePerMonthForLastSixMonths("physical");
-        List<Integer> physicalActivityAmountsList = StatUtil.getAmounts(physicalActivitiesAmounts);
+        List<Integer> physicalActivityAmountsList = StatUtil.extractIntValues(physicalActivitiesAmounts, "amount");
         int valuePhysicalActivities = physicalActivityAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -159,8 +159,8 @@ public class StatService {
 
         List<Map<String, Integer>> emails = emailService.findAmountsPerDayForLastMonth();
         // months list is normally the same for all activity types
-        List<String> monthsList = StatUtil.getMonths(emails);
-        List<Integer> emailAmountsList = StatUtil.getAmounts(emails);
+        List<String> monthsList = StatUtil.extractStringValues(emails, "month");
+        List<Integer> emailAmountsList = StatUtil.extractIntValues(emails, "amount");
         int valueEmails = emailAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -175,7 +175,7 @@ public class StatService {
         lineChartSeriesDtos.add(emailSeriesDto);
 
         List<Map<String, Integer>> voiceMemos = voiceMemoService.findAmountsPerDayForLastMonth();
-        List<Integer> voiceMemoAmountsList = StatUtil.getAmounts(voiceMemos);
+        List<Integer> voiceMemoAmountsList = StatUtil.extractIntValues(voiceMemos, "amount");
         int valueVoiceMemos = voiceMemoAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -190,7 +190,7 @@ public class StatService {
         lineChartSeriesDtos.add(voiceMemoSeriesDto);
 
         List<Map<String, Integer>> attachments = attachmentService.findAmountsPerDayForLastMonth();
-        List<Integer> attachmentAmountsList = StatUtil.getAmounts(attachments);
+        List<Integer> attachmentAmountsList = StatUtil.extractIntValues(attachments, "amount");
         int valueAttachments = attachmentAmountsList.stream()
                 .filter(num -> num != 0)
                 .mapToInt(Integer::intValue)
@@ -207,7 +207,7 @@ public class StatService {
         LineChartDto lineChartDto = LineChartDto.builder()
                 .title("Other data")
                 .value(valueAttachments + valueEmails + valueVoiceMemos)
-                .caption("Other data per day for the last 30 days")
+                .caption("Created emails, attachments and voice memo's per day for the last 30 days")
                 .series(lineChartSeriesDtos)
                 .months(monthsList)
                 .build();

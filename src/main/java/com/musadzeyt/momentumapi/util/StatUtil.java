@@ -99,89 +99,55 @@ public class StatUtil {
     }
 
     /**
-     * Extracts month values from a list of maps and converts them to Strings.
+     * Extracts string representations of the values associated with the specified key from each map in the provided list.
      * <p>
-     * Each map in the provided list is expected to contain a key "month" with a non-null value.
-     * The value is converted to a String using its {@code toString()} method.
+     * This method iterates over each map in the list, retrieves the value corresponding to the provided key,
+     * and converts it to a String using {@code toString()}. If a map does not contain the key or its value is {@code null},
+     * an {@link IllegalArgumentException} is thrown.
      * </p>
      *
-     * @param mapList a list of maps where each map has a key "month" associated with a value.
-     * @return a List of month values as Strings.
-     * @throws IllegalArgumentException if any map does not contain a "month" key or if its value is null.
+     * @param mapList the list of maps from which to extract values. Each map is expected to have values of type {@code Integer}.
+     * @param key the key whose associated values will be extracted.
+     * @return a {@code List<String>} containing the string representations of the values.
+     * @throws IllegalArgumentException if any map is missing the specified key or if the value is {@code null}.
      */
-    public static List<String> getMonths(List<Map<String, Integer>> mapList) {
+    public static List<String> extractStringValues(List<Map<String, Integer>> mapList, String key) {
         return mapList.stream()
                 .map(map -> {
-                    Object monthObj = map.get("month");
-                    if (monthObj != null) {
-                        return monthObj.toString();
+                    Object obj = map.get(key);
+                    if (obj != null) {
+                        return obj.toString();
                     } else {
-                        throw new IllegalArgumentException("Missing 'month' value in map: " + map);
+                        throw new IllegalArgumentException("Missing value in map: " + map);
                     }
                 })
                 .toList();
     }
 
     /**
-     * Extracts the year values from a list of maps and converts them into a list of strings.
+     * Extracts integer values associated with the specified key from each map in the provided list.
      * <p>
-     * Each map in the provided list is expected to contain a key "year" with a non-null value.
-     * The value is converted to a String using its {@code toString()} method.
-     * If a map does not contain a "year" key or its value is {@code null}, an
-     * {@link IllegalArgumentException} is thrown.
+     * This method iterates over each map in the list, retrieves the value corresponding to the provided key,
+     * and converts it to an integer using {@code intValue()}. If a map does not contain the key or its value is {@code null},
+     * an {@link IllegalArgumentException} is thrown.
      * </p>
      *
-     * @param mapList a list of maps where each map should have a key "year" with an integer value.
-     * @return a {@code List<String>} containing the year values as strings.
-     * @throws IllegalArgumentException if any map in the list is missing the "year" key or has a {@code null} value.
+     * @param mapList the list of maps from which to extract values. Each map is expected to have values of type {@code Integer}.
+     * @param key the key whose associated values will be extracted.
+     * @return a {@code List<Integer>} containing the integer values extracted from the maps.
+     * @throws IllegalArgumentException if any map is missing the specified key or if the value is {@code null}.
      */
-    public static List<String> getYears(List<Map<String, Integer>> mapList) {
+    public static List<Integer> extractIntValues(List<Map<String, Integer>> mapList, String key) {
         return mapList.stream()
                 .map(map -> {
-                    Object yearObj = map.get("year");
-                    if (yearObj != null) {
-                        return yearObj.toString();
+                    Number obj = map.get(key);
+                    if (obj != null) {
+                        return obj.intValue();
                     } else {
-                        throw new IllegalArgumentException("Missing 'year' value in map: " + map);
+                        throw new IllegalArgumentException("Missing value in map: " + map);
                     }
                 })
                 .toList();
     }
 
-    public static List<String> getDates(List<Map<String, Integer>> mapList) {
-        return mapList.stream()
-                .map(map -> {
-                    Object dateObj = map.get("date");
-                    if (dateObj != null) {
-                        return dateObj.toString();
-                    } else {
-                        throw new IllegalArgumentException("Missing 'date' value in map: " + map);
-                    }
-                })
-                .toList();
-    }
-
-    /**
-     * Extracts amount values from a list of maps and converts them to Integers.
-     * <p>
-     * Each map in the provided list is expected to contain a key "amount" with a non-null numeric value.
-     * The numeric value is converted to an int using {@code intValue()}.
-     * </p>
-     *
-     * @param mapList a list of maps where each map has a key "amount" associated with a numeric value.
-     * @return a List of amounts as Integers.
-     * @throws IllegalArgumentException if any map does not contain an "amount" key or if its value is null.
-     */
-    public static List<Integer> getAmounts(List<Map<String, Integer>> mapList) {
-        return mapList.stream()
-                .map(map -> {
-                    Number amountObj = map.get("amount");
-                    if (amountObj != null) {
-                        return amountObj.intValue();
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
-                })
-                .toList();
-    }
 }
