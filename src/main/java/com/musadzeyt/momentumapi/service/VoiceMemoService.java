@@ -28,14 +28,14 @@ public class VoiceMemoService {
         return voiceMemoRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
-    public VoiceMemo findVoiceMemoById(UUID id) {
+    public VoiceMemo findById(UUID id) {
         return voiceMemoRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     public VoiceMemo create(VoiceMemoDto voiceMemoDto) {
         VoiceMemo voiceMemo = voiceMemoMapper.dtoToEntity(voiceMemoDto);
-        User user = userService.findUserById(voiceMemoDto.getUserId());
+        User user = userService.findById(voiceMemoDto.getUserId());
         voiceMemo.setUser(user);
         return voiceMemoRepository.save(voiceMemo);
     }

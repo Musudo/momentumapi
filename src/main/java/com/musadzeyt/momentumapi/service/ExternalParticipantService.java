@@ -21,12 +21,7 @@ public class ExternalParticipantService {
         return externalParticipantRepository.findAll();
     }
 
-    public ExternalParticipant findExternalParticipantDtoById(UUID id) {
-        return externalParticipantRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public ExternalParticipant findExternalParticipantById(UUID id) {
+    public ExternalParticipant findById(UUID id) {
         return externalParticipantRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }

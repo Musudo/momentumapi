@@ -29,7 +29,7 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ContactDto> findContact(@PathVariable UUID id) {
-        return new ResponseEntity<>(contactMapper.entityToDto(contactService.findContactById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(contactMapper.entityToDto(contactService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

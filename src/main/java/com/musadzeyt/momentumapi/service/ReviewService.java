@@ -28,14 +28,14 @@ public class ReviewService {
         return reviewRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
-    public Review findReviewById(UUID id) {
+    public Review findById(UUID id) {
         return reviewRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
     public Review create(ReviewDto reviewDto) {
         Review review = reviewMapper.dtoToEntity(reviewDto);
-        Activity activity = activityService.findActivityById(reviewDto.getActivityId());
+        Activity activity = activityService.findById(reviewDto.getActivityId());
         review.setActivity(activity);
         return reviewRepository.save(review);
     }

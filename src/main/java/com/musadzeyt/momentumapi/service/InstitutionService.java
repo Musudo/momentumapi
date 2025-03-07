@@ -21,12 +21,7 @@ public class InstitutionService {
         return institutionRepository.findAll();
     }
 
-    public Institution findInstitutionDtoById(UUID id) {
-        return institutionRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Institution findInstitutionById(UUID id) {
+    public Institution findById(UUID id) {
         return institutionRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }

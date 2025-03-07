@@ -25,7 +25,11 @@ public class ContactService {
         return contactRepository.findAll();
     }
 
-    public Contact findContactById(UUID id) {
+    public List<Contact> findAllWithInstitution() {
+        return contactRepository.findAllWithInstitution();
+    }
+
+    public Contact findById(UUID id) {
         return contactRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
@@ -34,7 +38,7 @@ public class ContactService {
         Contact contact = contactMapper.dtoToEntity(contactDto);
         User user = customUserDetailsService.getCurrentUser();
         contact.setUser(user);
-        Institution institution = institutionService.findInstitutionById(contactDto.getInstitutionId());
+        Institution institution = institutionService.findById(contactDto.getInstitutionId());
         contact.setInstitution(institution);
         return contactRepository.save(contact);
     }

@@ -33,7 +33,7 @@ public class AttachmentService {
         return attachmentRepository.findAmountsPerDayForIntervalOfDays(29);
     }
 
-    public Attachment findAttachmentById(UUID id) {
+    public Attachment findById(UUID id) {
         return attachmentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }

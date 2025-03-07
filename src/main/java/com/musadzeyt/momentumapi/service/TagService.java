@@ -21,12 +21,7 @@ public class TagService {
         return tagRepository.findAll();
     }
 
-    public Tag findTagDtoById(UUID id) {
-        return tagRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Tag findTagById(UUID id) {
+    public Tag findById(UUID id) {
         return tagRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }

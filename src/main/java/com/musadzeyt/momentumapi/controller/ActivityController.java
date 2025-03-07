@@ -43,7 +43,7 @@ public class ActivityController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityDto> findActivity(@PathVariable UUID id) {
-        return new ResponseEntity<>(activityMapper.entityToDto(activityService.findActivityById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(activityMapper.entityToDto(activityService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

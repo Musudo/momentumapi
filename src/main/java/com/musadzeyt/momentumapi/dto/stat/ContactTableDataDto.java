@@ -1,5 +1,6 @@
 package com.musadzeyt.momentumapi.dto.stat;
 
+import com.musadzeyt.momentumapi.dto.InstitutionDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,4 +16,5 @@ public class ContactTableDataDto {
     private String email;
     private String phone;
     private String jobTitle;
+    private String institutionName;
 }

@@ -2,10 +2,8 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.dto.stat.*;
-import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
-import com.musadzeyt.momentumapi.enums.stat.ColumnNameEnum;
 import com.musadzeyt.momentumapi.util.StatUtil;
-import com.musadzeyt.momentumapi.util.StringUtil;
+import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,7 @@ public class StatService {
     private final VoiceMemoService voiceMemoService;
     private final AttachmentService attachmentService;
     private final ContactService contactService;
+    private final InstitutionService institutionService;
 
     public StatCardDto createActivitiesStatCardDto() {
         var data = activityService.findAmountsPerDayForLastMonth();
@@ -273,6 +272,7 @@ public class StatService {
                     .email(contact.getEmail1())
                     .phone(contact.getPhone1())
                     .jobTitle(contact.getJobTitle())
+                    .institutionName(IInstitutionMapper.INSTANCE.entityToDto(contact.getInstitution()).getName())
                     .build();
             contactTableDataDtos.add(contactTableDataDto);
         });

@@ -25,12 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findUserDtoById(UUID id) {
-        return userRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public User findUserById(UUID id) {
+    public User findById(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }

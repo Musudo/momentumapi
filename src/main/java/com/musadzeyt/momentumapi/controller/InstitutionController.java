@@ -28,7 +28,7 @@ public class InstitutionController {
 
     @GetMapping("/{id}")
     public ResponseEntity<InstitutionDto> findInstitution(@PathVariable UUID id) {
-        return new ResponseEntity<>(institutionMapper.entityToDto(institutionService.findInstitutionDtoById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(institutionMapper.entityToDto(institutionService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")

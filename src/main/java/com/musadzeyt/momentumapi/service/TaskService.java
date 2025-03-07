@@ -41,7 +41,7 @@ public class TaskService {
 
     public Task create(TaskDto taskDto) {
         Task task = taskMapper.dtoToEntity(taskDto);
-        Activity activity = activityService.findActivityById(taskDto.getActivityId());
+        Activity activity = activityService.findById(taskDto.getActivityId());
         task.setActivity(activity);
 
         return taskRepository.save(task);
