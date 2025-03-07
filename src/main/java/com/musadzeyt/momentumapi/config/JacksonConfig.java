@@ -2,12 +2,10 @@ package com.musadzeyt.momentumapi.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.musadzeyt.momentumapi.enums.stat.ColumnNameEnum;
 import com.musadzeyt.momentumapi.enums.stat.StackOrderEnum;
 import com.musadzeyt.momentumapi.enums.stat.TrendEnum;
-import com.musadzeyt.momentumapi.util.CustomLocalDateTimeDeserializer;
-import com.musadzeyt.momentumapi.util.CustomLocalDateTimeSerializer;
-import com.musadzeyt.momentumapi.util.StackOrderEnumSerializer;
-import com.musadzeyt.momentumapi.util.TrendEnumSerializer;
+import com.musadzeyt.momentumapi.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +26,7 @@ public class JacksonConfig {
         module.addDeserializer(LocalDateTime.class, new CustomLocalDateTimeDeserializer());
         module.addSerializer(TrendEnum.class, new TrendEnumSerializer());
         module.addSerializer(StackOrderEnum.class, new StackOrderEnumSerializer());
+        module.addSerializer(ColumnNameEnum.class, new ColumnEnumSerializer());
         objectMapper.registerModule(module);
 
         return objectMapper;

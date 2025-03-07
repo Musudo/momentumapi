@@ -1,7 +1,11 @@
 package com.musadzeyt.momentumapi.service;
 
+import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.dto.stat.*;
+import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
+import com.musadzeyt.momentumapi.enums.stat.ColumnNameEnum;
 import com.musadzeyt.momentumapi.util.StatUtil;
+import com.musadzeyt.momentumapi.util.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ public class StatService {
     private final EmailService emailService;
     private final VoiceMemoService voiceMemoService;
     private final AttachmentService attachmentService;
+    private final ContactService contactService;
 
     public StatCardDto createActivitiesStatCardDto() {
         var data = activityService.findAmountsPerDayForLastMonth();
@@ -89,7 +94,7 @@ public class StatService {
         return statCardDto;
     }
 
-    public BarChartDto createActivitiesBarChartDto() {
+    public BarChartDto createActivityTypesBarChartDto() {
         List<BarChartSeriesDto> barChartSeriesDtos = new ArrayList<>();
 
         var onlineActivities = activityService.findAmountsByTypePerMonthForLastSixMonths("online");
@@ -213,5 +218,65 @@ public class StatService {
                 .build();
 
         return lineChartDto;
+    }
+
+//    public List<ContactTableColumnDto> createContactTableColumnDto() {
+//        List<ContactTableColumnDto> columnDtos = new ArrayList<>();
+//
+//        ContactTableColumnDto firstNameColumn = ContactTableColumnDto.builder()
+//                .field(StringUtil.toCamelCase(ColumnNameEnum.FIRST_NAME.getColumnName()))
+//                .headerName(ColumnNameEnum.FIRST_NAME)
+//                .minWidth(80)
+//                .build();
+//        columnDtos.add(firstNameColumn);
+//
+//        ContactTableColumnDto lastNameColumn = ContactTableColumnDto.builder()
+//                .field(StringUtil.toCamelCase(ColumnNameEnum.LAST_NAME.getColumnName()))
+//                .headerName(ColumnNameEnum.LAST_NAME)
+//                .minWidth(80)
+//                .build();
+//        columnDtos.add(lastNameColumn);
+//
+//        ContactTableColumnDto emailColumnDto = ContactTableColumnDto.builder()
+//                .field(StringUtil.toCamelCase(ColumnNameEnum.EMAIL.getColumnName()))
+//                .headerName(ColumnNameEnum.EMAIL)
+//                .minWidth(80)
+//                .build();
+//        columnDtos.add(emailColumnDto);
+//
+//        ContactTableColumnDto phoneColumnDto = ContactTableColumnDto.builder()
+//                .field(StringUtil.toCamelCase(ColumnNameEnum.PHONE.getColumnName()))
+//                .headerName(ColumnNameEnum.PHONE)
+//                .minWidth(80)
+//                .build();
+//        columnDtos.add(phoneColumnDto);
+//
+//        ContactTableColumnDto jobTitleColumnDto = ContactTableColumnDto.builder()
+//                .field(StringUtil.toCamelCase(ColumnNameEnum.JOB_TITLE.getColumnName()))
+//                .headerName(ColumnNameEnum.JOB_TITLE)
+//                .minWidth(80)
+//                .build();
+//        columnDtos.add(jobTitleColumnDto);
+//
+//        return columnDtos;
+//    }
+
+    public List<ContactTableDataDto> createContactTableDataDto() {
+        List<ContactTableDataDto> contactTableDataDtos = new ArrayList<>();
+        List<Contact> contacts = contactService.findAll();
+
+        contacts.forEach(contact -> {
+            ContactTableDataDto contactTableDataDto = ContactTableDataDto.builder()
+                    .id(contact.getId())
+                    .firstName(contact.getFirstName())
+                    .lastName(contact.getLastName())
+                    .email(contact.getEmail1())
+                    .phone(contact.getPhone1())
+                    .jobTitle(contact.getJobTitle())
+                    .build();
+            contactTableDataDtos.add(contactTableDataDto);
+        });
+
+        return contactTableDataDtos;
     }
 }

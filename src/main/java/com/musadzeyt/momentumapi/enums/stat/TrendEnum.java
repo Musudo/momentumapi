@@ -1,19 +1,37 @@
 package com.musadzeyt.momentumapi.enums.stat;
 
 /**
- * Enum representing the possible trends for a statistic.
+ * {@code TrendEnum} defines the possible trends that can be observed within the system.
  *
- * <p>This enum is used to indicate the direction of a trend in data,
- * providing a type-safe way to represent the following choices:
+ * <p>This enumeration is used to indicate the direction of change or movement in various contexts.
+ * The available trend options include:
  * <ul>
- *   <li><b>{@code UP}</b> - Indicates an increasing or upward trend.</li>
- *   <li><b>{@code DOWN}</b> - Indicates a decreasing or downward trend.</li>
- *   <li><b>{@code NEUTRAL}</b> - Indicates no significant change or a balanced trend.</li>
+ *   <li>{@code UP} - Indicates an upward trend or positive change.</li>
+ *   <li>{@code DOWN} - Indicates a downward trend or negative change.</li>
+ *   <li>{@code NEUTRAL} - Indicates a neutral state with no significant change.</li>
  * </ul>
- * </p>
+ *
+ * <p>Example usage:
+ * <pre>
+ *     TrendEnum trend = TrendEnum.UP;
+ *     if (trend == TrendEnum.UP) {
+ *         // Execute logic for upward trend.
+ *     }
+ * </pre>
  */
 public enum TrendEnum {
+    /**
+     * Indicates an upward trend or positive change.
+     */
     UP,
+
+    /**
+     * Indicates a downward trend or negative change.
+     */
     DOWN,
+
+    /**
+     * Indicates a neutral state with no significant change.
+     */
     NEUTRAL;
 }

@@ -1,6 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.dto.stat.BarChartDto;
+import com.musadzeyt.momentumapi.dto.stat.ContactTableDataDto;
 import com.musadzeyt.momentumapi.dto.stat.LineChartDto;
 import com.musadzeyt.momentumapi.dto.stat.StatCardDto;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/stat")
@@ -41,7 +44,7 @@ public class StatController {
 
     @GetMapping("/activities/last-six-months/amounts-per-month")
     public ResponseEntity<BarChartDto> createActivitiesBarChartDto() {
-        var activitiesBarChartDto = statService.createActivitiesBarChartDto();
+        var activitiesBarChartDto = statService.createActivityTypesBarChartDto();
         return new ResponseEntity<>(activitiesBarChartDto, HttpStatus.OK);
     }
 
@@ -49,5 +52,11 @@ public class StatController {
     public ResponseEntity<LineChartDto> createLineChartDto() {
         var lineChartDto = statService.createLineChartDto();
         return new ResponseEntity<>(lineChartDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/contacts-table-data")
+    public ResponseEntity<List<ContactTableDataDto>> createContactTableData() {
+        var contactTableDataDtos = statService.createContactTableDataDto();
+        return new ResponseEntity<>(contactTableDataDtos, HttpStatus.OK);
     }
 }
