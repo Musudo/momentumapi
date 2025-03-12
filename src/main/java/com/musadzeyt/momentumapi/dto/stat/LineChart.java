@@ -8,11 +8,11 @@ import java.util.Map;
 
 @Data
 @Builder
-public class LineChartDto {
+public class LineChart {
     private String title;
     private int value;
     private String caption;
-    private List<LineChartSeriesDto> series;
+    private List<LineChartSeries> series;
     private List<String> months;
     @Builder.Default
     private boolean legendHidden = true;

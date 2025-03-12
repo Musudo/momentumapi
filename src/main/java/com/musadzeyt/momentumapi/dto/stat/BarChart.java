@@ -9,12 +9,12 @@ import java.util.Map;
 
 @Data
 @Builder
-public class BarChartDto {
+public class BarChart {
     private String title;
     private int value;
     private String caption;
     private TrendEnum trend;
-    private List<BarChartSeriesDto> series;
+    private List<BarChartSeries> series;
     private List<String> months;
     @Builder.Default
     private int borderRadius = 8;

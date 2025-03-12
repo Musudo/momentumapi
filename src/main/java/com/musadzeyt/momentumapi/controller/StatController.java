@@ -1,9 +1,9 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.stat.BarChartDto;
-import com.musadzeyt.momentumapi.dto.stat.ContactTableDataDto;
-import com.musadzeyt.momentumapi.dto.stat.LineChartDto;
-import com.musadzeyt.momentumapi.dto.stat.StatCardDto;
+import com.musadzeyt.momentumapi.dto.stat.BarChart;
+import com.musadzeyt.momentumapi.dto.stat.ContactTableData;
+import com.musadzeyt.momentumapi.dto.stat.LineChart;
+import com.musadzeyt.momentumapi.dto.stat.StatCard;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.service.StatService;
 import lombok.AllArgsConstructor;
@@ -25,38 +25,38 @@ public class StatController {
     private final IActivityRepository activityRepository;
 
     @GetMapping("/activities/last-month/amounts-per-day")
-    public ResponseEntity<StatCardDto> createActivitiesStatCardDto() {
-        var activitiesStatCardDto = statService.createActivitiesStatCardDto();
-        return new ResponseEntity<>(activitiesStatCardDto, HttpStatus.OK);
+    public ResponseEntity<StatCard> createActivitiesStatCard() {
+        var activitiesStatCard = statService.createActivitiesStatCard();
+        return new ResponseEntity<>(activitiesStatCard, HttpStatus.OK);
     }
 
     @GetMapping("/tasks/last-month/amounts-per-day")
-    public ResponseEntity<StatCardDto> createTasksStatCardDto() {
-        var tasksStatCardDto = statService.createTasksStatCardDto();
-        return new ResponseEntity<>(tasksStatCardDto, HttpStatus.OK);
+    public ResponseEntity<StatCard> createTasksStatCard() {
+        var tasksStatCard = statService.createTasksStatCard();
+        return new ResponseEntity<>(tasksStatCard, HttpStatus.OK);
     }
 
     @GetMapping("/reviews/last-month/amounts-per-day")
-    public ResponseEntity<StatCardDto> createReviewsStatCardDto() {
-        var reviewsStatCardDto = statService.createReviewsStatCardDto();
-        return new ResponseEntity<>(reviewsStatCardDto, HttpStatus.OK);
+    public ResponseEntity<StatCard> createReviewsStatCard() {
+        var reviewsStatCard = statService.createReviewsStatCard();
+        return new ResponseEntity<>(reviewsStatCard, HttpStatus.OK);
     }
 
     @GetMapping("/activities/last-six-months/amounts-per-month")
-    public ResponseEntity<BarChartDto> createActivitiesBarChartDto() {
-        var activitiesBarChartDto = statService.createActivityTypesBarChartDto();
-        return new ResponseEntity<>(activitiesBarChartDto, HttpStatus.OK);
+    public ResponseEntity<BarChart> createActivitiesBarChart() {
+        var activitiesBarChart = statService.createActivityTypesBarChart();
+        return new ResponseEntity<>(activitiesBarChart, HttpStatus.OK);
     }
 
     @GetMapping("/line-chart-data/last-month/amounts-per-day")
-    public ResponseEntity<LineChartDto> createLineChartDto() {
-        var lineChartDto = statService.createLineChartDto();
-        return new ResponseEntity<>(lineChartDto, HttpStatus.OK);
+    public ResponseEntity<LineChart> createLineChart() {
+        var lineChart = statService.createLineChart();
+        return new ResponseEntity<>(lineChart, HttpStatus.OK);
     }
 
     @GetMapping("/contacts-table-data")
-    public ResponseEntity<List<ContactTableDataDto>> createContactTableData() {
-        var contactTableDataDtos = statService.createContactTableDataDto();
-        return new ResponseEntity<>(contactTableDataDtos, HttpStatus.OK);
+    public ResponseEntity<List<ContactTableData>> createContactTableData() {
+        var contactTableData = statService.createContactTableData();
+        return new ResponseEntity<>(contactTableData, HttpStatus.OK);
     }
 }

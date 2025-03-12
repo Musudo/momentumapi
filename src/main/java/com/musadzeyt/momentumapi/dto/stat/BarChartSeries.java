@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class BarChartSeriesDto {
+public class BarChartSeries {
     private String id;
     private String label;
     private List<Integer> data;

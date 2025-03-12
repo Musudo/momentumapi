@@ -64,7 +64,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
             FROM dates
             LEFT JOIN activity a ON DATE(a.created_at) = dates.dt
             LEFT JOIN user u ON a.user_id = u.id
-            WHERE u.email = :email
+            WHERE u.email = :email OR u.email IS NULL
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
@@ -109,7 +109,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
                 LEFT JOIN user u ON a.user_id = u.id
                 WHERE a.type = :type
                     AND a.created_at >= DATE_SUB(CURDATE(), INTERVAL :months MONTH)
-                    AND u.email = :email
+                    AND u.email = :email OR u.email IS NULL
                 GROUP BY DATE_FORMAT(a.created_at, '%Y-%m')
             ) a
                 ON DATE_FORMAT(m.month_date, '%Y-%m') = a.month
@@ -120,14 +120,23 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
                                                                             @Param("email") String email);
 
     @Query(value = """
-            SELECT COUNT(a.id) AS amount
-            FROM activity a
+            WITH RECURSIVE dates AS (
+                SELECT CURDATE() - INTERVAL :days DAY AS dt
+                UNION ALL
+                SELECT dt + INTERVAL 1 DAY
+                FROM dates
+                WHERE dt + INTERVAL 1 DAY <= CURDATE()
+            )
+            SELECT
+                DATE_FORMAT(dates.dt, '%Y-%m-%d') AS date,
+                COALESCE(COUNT(a.id), 0) AS amount
+            FROM dates
+            LEFT JOIN activity a ON DATE(a.start_time) = dates.dt
             LEFT JOIN user u ON a.user_id = u.id
-            WHERE a.type = :type
-                AND a.start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
-                AND u.email = :email
-            GROUP BY DATE_FORMAT(a.start_time, '%Y-%m-%d')
-            ORDER BY DATE_FORMAT(a.start_time, '%Y-%m-%d')
+            WHERE (u.email = :email OR u.email IS NULL)
+              AND (a.type = :type OR a.type IS NULL)
+            GROUP BY dates.dt
+            ORDER BY dates.dt;
             """, nativeQuery = true)
     List<Integer> findAmountsByTypePerDayForIntervalOfDays(@Param("type") String type,
                                                            @Param("days") int days,

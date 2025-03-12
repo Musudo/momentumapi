@@ -22,7 +22,7 @@ public class StatService {
     private final AttachmentService attachmentService;
     private final ContactService contactService;
 
-    public StatCardDto createActivitiesStatCardDto() {
+    public StatCard createActivitiesStatCard() {
         var data = activityService.findAmountsPerDayForLastMonth();
 
         List<String> datesList = StatUtil.extractStringValues(data, "date");
@@ -34,7 +34,7 @@ public class StatService {
                 .sum();
         var trend = StatUtil.trendCalculator(statCardAmounts);
 
-        StatCardDto statCardDto = StatCardDto.builder()
+        StatCard statCard = StatCard.builder()
                 .title("Activities")
                 .value(value)
                 .caption("Last 30 days")
@@ -43,10 +43,10 @@ public class StatService {
                 .dates(datesList)
                 .build();
 
-        return statCardDto;
+        return statCard;
     }
 
-    public StatCardDto createTasksStatCardDto() {
+    public StatCard createTasksStatCard() {
         var data = taskService.findAmountsPerDayForLastMonth();
 
         List<String> datesList = StatUtil.extractStringValues(data, "date");
@@ -58,7 +58,7 @@ public class StatService {
                 .sum();
         var trend = StatUtil.trendCalculator(statCardAmounts);
 
-        StatCardDto statCardDto = StatCardDto.builder()
+        StatCard statCard = StatCard.builder()
                 .title("Tasks")
                 .value(value)
                 .data(statCardAmounts)
@@ -66,10 +66,10 @@ public class StatService {
                 .dates(datesList)
                 .build();
 
-        return statCardDto;
+        return statCard;
     }
 
-    public StatCardDto createReviewsStatCardDto() {
+    public StatCard createReviewsStatCard() {
         var data = reviewService.findAmountsPerDayForLastMonth();
 
         List<String> datesList = StatUtil.extractStringValues(data, "date");
@@ -81,7 +81,7 @@ public class StatService {
                 .sum();
         var trend = StatUtil.trendCalculator(statCardAmounts);
 
-        StatCardDto statCardDto = StatCardDto.builder()
+        StatCard statCard = StatCard.builder()
                 .title("Reviews")
                 .value(value)
                 .data(statCardAmounts)
@@ -89,11 +89,11 @@ public class StatService {
                 .dates(datesList)
                 .build();
 
-        return statCardDto;
+        return statCard;
     }
 
-    public BarChartDto createActivityTypesBarChartDto() {
-        List<BarChartSeriesDto> barChartSeriesDtos = new ArrayList<>();
+    public BarChart createActivityTypesBarChart() {
+        List<BarChartSeries> barChartSeries = new ArrayList<>();
 
         var onlineActivities = activityService.findAmountsByTypePerMonthForLastSixMonths("online");
         // months list is normally the same for all activity types
@@ -104,13 +104,13 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        BarChartSeriesDto onlineActivitySeriesDto = BarChartSeriesDto.builder()
+        BarChartSeries onlineActivitySeries = BarChartSeries.builder()
                 .id("online")
                 .label("Online")
                 .data(onlineActivityAmountsList)
                 .build();
 
-        barChartSeriesDtos.add(onlineActivitySeriesDto);
+        barChartSeries.add(onlineActivitySeries);
 
         var phoneActivityAmounts = activityService.findAmountsByTypePerMonthForLastSixMonths("phone");
         List<Integer> phoneActivitiesAmountsList = StatUtil.extractIntValues(phoneActivityAmounts, "amount");
@@ -119,13 +119,13 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        BarChartSeriesDto phoneActivitySeriesDto = BarChartSeriesDto.builder()
+        BarChartSeries phoneActivitySeries = BarChartSeries.builder()
                 .id("phone")
                 .label("Phone")
                 .data(phoneActivitiesAmountsList)
                 .build();
 
-        barChartSeriesDtos.add(phoneActivitySeriesDto);
+        barChartSeries.add(phoneActivitySeries);
 
         var physicalActivitiesAmounts = activityService.findAmountsByTypePerMonthForLastSixMonths("physical");
         List<Integer> physicalActivityAmountsList = StatUtil.extractIntValues(physicalActivitiesAmounts, "amount");
@@ -134,31 +134,31 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        BarChartSeriesDto physicalActivitySeriesDto = BarChartSeriesDto.builder()
+        BarChartSeries physicalActivitySeries = BarChartSeries.builder()
                 .id("physical")
                 .label("Physical")
                 .data(physicalActivityAmountsList)
                 .build();
 
-        barChartSeriesDtos.add(physicalActivitySeriesDto);
+        barChartSeries.add(physicalActivitySeries);
 
         var allAmounts = StatUtil.sumParallelValues(physicalActivityAmountsList, onlineActivityAmountsList, phoneActivitiesAmountsList);
         var trend = StatUtil.trendCalculator(allAmounts);
 
-        BarChartDto barChartDto = BarChartDto.builder()
+        BarChart barChart = BarChart.builder()
                 .title("Activity types")
                 .value(valuePhysicalActivities + valueOnlineActivities + valuePhoneActivities)
                 .caption("Created activity types for the last 6 months")
                 .trend(trend)
-                .series(barChartSeriesDtos)
+                .series(barChartSeries)
                 .months(monthsList)
                 .build();
 
-        return barChartDto;
+        return barChart;
     }
 
-    public LineChartDto createLineChartDto() {
-        List<LineChartSeriesDto> lineChartSeriesDtos = new ArrayList<>();
+    public LineChart createLineChart() {
+        List<LineChartSeries> lineChartSeries = new ArrayList<>();
 
         List<Map<String, Integer>> emails = emailService.findAmountsPerDayForLastMonth();
         // months list is normally the same for all activity types
@@ -169,13 +169,13 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        LineChartSeriesDto emailSeriesDto = LineChartSeriesDto.builder()
+        LineChartSeries emailSeries = LineChartSeries.builder()
                 .id("emails")
                 .label("Emails")
                 .data(emailAmountsList)
                 .build();
 
-        lineChartSeriesDtos.add(emailSeriesDto);
+        lineChartSeries.add(emailSeries);
 
         List<Map<String, Integer>> voiceMemos = voiceMemoService.findAmountsPerDayForLastMonth();
         List<Integer> voiceMemoAmountsList = StatUtil.extractIntValues(voiceMemos, "amount");
@@ -184,13 +184,13 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        LineChartSeriesDto voiceMemoSeriesDto = LineChartSeriesDto.builder()
+        LineChartSeries voiceMemoSeries = LineChartSeries.builder()
                 .id("voiceMemos")
                 .label("Voice Memos")
                 .data(voiceMemoAmountsList)
                 .build();
 
-        lineChartSeriesDtos.add(voiceMemoSeriesDto);
+        lineChartSeries.add(voiceMemoSeries);
 
         List<Map<String, Integer>> attachments = attachmentService.findAmountsPerDayForLastMonth();
         List<Integer> attachmentAmountsList = StatUtil.extractIntValues(attachments, "amount");
@@ -199,23 +199,23 @@ public class StatService {
                 .mapToInt(Integer::intValue)
                 .sum();
 
-        LineChartSeriesDto attachmentSeriesDto = LineChartSeriesDto.builder()
+        LineChartSeries attachmentSeries = LineChartSeries.builder()
                 .id("attachments")
                 .label("Attachments")
                 .data(attachmentAmountsList)
                 .build();
 
-        lineChartSeriesDtos.add(attachmentSeriesDto);
+        lineChartSeries.add(attachmentSeries);
 
-        LineChartDto lineChartDto = LineChartDto.builder()
-                .title("Other data")
+        LineChart lineChart = LineChart.builder()
+                .title("Various data")
                 .value(valueAttachments + valueEmails + valueVoiceMemos)
                 .caption("Created emails, attachments and voice memo's per day for the last 30 days")
-                .series(lineChartSeriesDtos)
+                .series(lineChartSeries)
                 .months(monthsList)
                 .build();
 
-        return lineChartDto;
+        return lineChart;
     }
 
 //    public List<ContactTableColumnDto> createContactTableColumnDto() {
@@ -259,12 +259,12 @@ public class StatService {
 //        return columnDtos;
 //    }
 
-    public List<ContactTableDataDto> createContactTableDataDto() {
-        List<ContactTableDataDto> contactTableDataDtos = new ArrayList<>();
+    public List<ContactTableData> createContactTableData() {
+        List<ContactTableData> contactTableData = new ArrayList<>();
         List<Contact> contacts = contactService.findAll();
 
         contacts.forEach(contact -> {
-            ContactTableDataDto contactTableDataDto = ContactTableDataDto.builder()
+            ContactTableData contactTableDataDto = ContactTableData.builder()
                     .id(contact.getId())
                     .firstName(contact.getFirstName())
                     .lastName(contact.getLastName())
@@ -273,9 +273,9 @@ public class StatService {
                     .jobTitle(contact.getJobTitle())
                     .institutionName(IInstitutionMapper.INSTANCE.entityToDto(contact.getInstitution()).getName())
                     .build();
-            contactTableDataDtos.add(contactTableDataDto);
+            contactTableData.add(contactTableDataDto);
         });
 
-        return contactTableDataDtos;
+        return contactTableData;
     }
 }

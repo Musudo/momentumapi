@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class StatCardDto {
+public class StatCard {
     private String title;
     private int value;
     @Builder.Default

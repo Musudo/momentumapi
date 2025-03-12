@@ -18,6 +18,8 @@ public class DataSeeder {
     private final TaskGenerator taskGenerator;
     private final ReviewGenerator reviewGenerator;
     private final VoiceMemoGenerator voiceMemoGenerator;
+    private final EmailGenerator emailGenerator;
+    private final AttachmentGenerator attachmentGenerator;
     private final IInstitutionRepository institutionRepository;
     private final IContactRepository contactRepository;
     private final IActivityRepository activityRepository;
@@ -25,6 +27,8 @@ public class DataSeeder {
     private final ITaskRepository taskRepository;
     private final IReviewRepository reviewRepository;
     private final IVoiceMemoRepository voiceMemoRepository;
+    private final IEmailRepository emailRepository;
+    private final IAttachmentRepository attachmentRepository;
 
     public void seed() {
         // Order creations to handle potential foreign key constraints
@@ -47,6 +51,12 @@ public class DataSeeder {
         List<Review> reviews = reviewGenerator.createReviews(10);
         reviewRepository.saveAll(reviews);
 
+        List<Email> emails = emailGenerator.createEmails(20);
+        emailRepository.saveAll(emails);
+
+        List<Attachment> attachments = attachmentGenerator.createAttachments(20);
+        attachmentRepository.saveAll(attachments);
+
         List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(10);
         voiceMemoRepository.saveAll(voiceMemos);
     }
@@ -54,6 +64,8 @@ public class DataSeeder {
     public void eraseData() {
         // Order deletions to handle potential foreign key constraints
         voiceMemoRepository.deleteAll();
+        attachmentRepository.deleteAll();
+        emailRepository.deleteAll();
         reviewRepository.deleteAll();
         taskRepository.deleteAll();
         contactRepository.deleteAll();

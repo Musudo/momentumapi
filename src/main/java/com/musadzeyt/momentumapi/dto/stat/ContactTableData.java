@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class ContactTableDataDto {
+public class ContactTableData {
     private UUID id;
     private String firstName;
     private String lastName;

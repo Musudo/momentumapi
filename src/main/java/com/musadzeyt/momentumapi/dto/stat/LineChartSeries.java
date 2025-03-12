@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class LineChartSeriesDto {
+public class LineChartSeries {
     private String id;
     private String label;
     private List<Integer> data;

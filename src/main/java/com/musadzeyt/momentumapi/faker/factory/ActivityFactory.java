@@ -32,13 +32,13 @@ public class ActivityFactory {
                 .subject(faker.name().title())
                 .startTime(
                         LocalDateTime.parse(
-                                faker.date().future(1, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                faker.date().future(30,0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                         )
                 )
                 .endTime(
                         LocalDateTime.parse(
-                                faker.date().future(10, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                faker.date().future(30,0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                         )
                 )

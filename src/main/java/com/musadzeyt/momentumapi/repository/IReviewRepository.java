@@ -28,7 +28,7 @@ public interface IReviewRepository extends JpaRepository<Review, UUID>, JpaSpeci
             FROM dates
             LEFT JOIN review r ON DATE(r.created_at) = dates.dt
             LEFT JOIN user u ON r.user_id = u.id
-            WHERE u.email = :email
+            WHERE u.email = :email OR u.email IS NULL
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
