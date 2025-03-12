@@ -26,12 +26,14 @@ public interface IEmailRepository extends JpaRepository<Email, UUID> {
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %e') AS month,
-              COUNT(e.created_at) AS amount
+              COUNT(e.id) AS amount
             FROM dates
-            LEFT JOIN email e
-              ON DATE(e.created_at) = dates.dt
+            LEFT JOIN email e ON DATE(e.created_at) = dates.dt
+            LEFT JOIN review r ON e.review_id = r.id
+            LEFT JOIN user u ON r.user_id = u.id
+            WHERE u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 }

@@ -59,11 +59,11 @@ public class ActivityService {
 
     public List<Activity> findAllForToday() {
         LocalDate today = LocalDate.now();
-        LocalDateTime startDate = today.atStartOfDay(); // Start of today (00:00)
-        LocalDateTime endDate = today.atTime(LocalTime.MAX); // End of today (23:59:59)
+        LocalDateTime startTime = today.atStartOfDay(); // Start of today (00:00)
+        LocalDateTime endTime = today.atTime(LocalTime.MAX); // End of today (23:59:59)
 
-        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startDate);
-        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endDate);
+        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
@@ -72,11 +72,11 @@ public class ActivityService {
 
     public List<Activity> findAllForNextSevenDays() {
         LocalDate today = LocalDate.now().plusDays(1);
-        LocalDateTime startDate = today.atStartOfDay(); // Start of today (00:00)
-        LocalDateTime endDate = today.plusDays(7).atTime(LocalTime.MAX); // End of today (23:59:59)
+        LocalDateTime startTime = today.atStartOfDay(); // Start of today (00:00)
+        LocalDateTime endTime = today.plusDays(7).atTime(LocalTime.MAX); // End of today (23:59:59)
 
-        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startDate);
-        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endDate);
+        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
@@ -85,11 +85,11 @@ public class ActivityService {
 
     public List<Activity> findAllForNextThirtyDays() {
         LocalDate today = LocalDate.now().plusDays(8);
-        LocalDateTime startDate = today.atStartOfDay(); // Start of today (00:00)
-        LocalDateTime endDate = today.plusDays(30).atTime(LocalTime.MAX); // End of today (23:59:59)
+        LocalDateTime startTime = today.atStartOfDay(); // Start of today (00:00)
+        LocalDateTime endTime = today.plusDays(30).atTime(LocalTime.MAX); // End of today (23:59:59)
 
-        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startDate);
-        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endDate);
+        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))

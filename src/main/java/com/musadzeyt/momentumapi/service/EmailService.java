@@ -17,6 +17,11 @@ import java.util.UUID;
 public class EmailService {
     private final IEmailRepository emailRepository;
     private final IEmailMapper emailMapper;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private String getUsername() {
+        return customUserDetailsService.getCurrentUsername();
+    }
 
     public List<Email> findAll() {
         return emailRepository.findAll();
@@ -27,7 +32,7 @@ public class EmailService {
     }
 
     public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
-        return emailRepository.findAmountsPerDayForIntervalOfDays(29);
+        return emailRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
     }
 
     public Email findById(UUID id) {

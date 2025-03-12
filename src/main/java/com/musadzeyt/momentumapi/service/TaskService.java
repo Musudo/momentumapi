@@ -2,8 +2,8 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Task;
-import com.musadzeyt.momentumapi.dto.TaskDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.dto.TaskDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.ITaskRepository;
 import com.musadzeyt.momentumapi.specification.TaskSpecification;
@@ -24,24 +24,30 @@ public class TaskService {
     private final ITaskRepository taskRepository;
     private final ITaskMapper taskMapper;
     private final ActivityService activityService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    private String getUsername() {
+        return customUserDetailsService.getCurrentUsername();
     }
 
-    public List<Task> findAllForIntervalOfDays(int days) {
-        return taskRepository.findAllForIntervalOfDays(days);
+    private Specification<Task> getUsernameSpec() {
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        return new TaskSpecification(criteria);
+    }
+
+    public List<Task> findAll() {
+        return taskRepository.findAll(getUsernameSpec());
     }
 
     public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
-        return taskRepository.findAmountsPerDayForIntervalOfDays(29);
+        return taskRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
     }
 
     public List<Task> findAllByActivity(String subject) {
         SearchCriteria taskCriteria = new SearchCriteria("activity.subject", ":", subject);
         Specification<Task> taskSpec = new TaskSpecification(taskCriteria);
 
-        return taskRepository.findAll(taskSpec);
+        return taskRepository.findAll(getUsernameSpec().and(taskSpec));
     }
 
     public Task findById(UUID id) {

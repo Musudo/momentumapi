@@ -23,12 +23,14 @@ public interface IAttachmentRepository extends JpaRepository<Attachment, UUID> {
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %e') AS month,
-              COUNT(a.created_at) AS amount
+              COUNT(a.id) AS amount
             FROM dates
-            LEFT JOIN attachment a
-              ON DATE(a.created_at) = dates.dt
+            LEFT JOIN attachment a ON DATE(a.created_at) = dates.dt
+            LEFT JOIN review r ON a.review_id = r.id
+            LEFT JOIN user u ON r.user_id = u.id
+            WHERE u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 }

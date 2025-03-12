@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.repository;
 
 import com.musadzeyt.momentumapi.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Repository
-public interface IReviewRepository extends JpaRepository<Review, UUID> {
+public interface IReviewRepository extends JpaRepository<Review, UUID>, JpaSpecificationExecutor<Review> {
     @Query(value = """
             WITH RECURSIVE dates AS (
               -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
@@ -23,12 +24,13 @@ public interface IReviewRepository extends JpaRepository<Review, UUID> {
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %d') AS date,
-              COUNT(r.created_at) AS amount
+              COUNT(r.id) AS amount
             FROM dates
-            LEFT JOIN review r
-              ON DATE(r.created_at) = dates.dt
+            LEFT JOIN review r ON DATE(r.created_at) = dates.dt
+            LEFT JOIN user u ON r.user_id = u.id
+            WHERE u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 }

@@ -3,10 +3,13 @@ package com.musadzeyt.momentumapi.service;
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Review;
 import com.musadzeyt.momentumapi.dto.ReviewDto;
+import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IReviewRepository;
+import com.musadzeyt.momentumapi.specification.ReviewSpecification;
 import com.musadzeyt.momentumapi.util.mapper.IReviewMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +22,23 @@ public class ReviewService {
     private final IReviewRepository reviewRepository;
     private final IReviewMapper reviewMapper;
     private final ActivityService activityService;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private String getUsername() {
+        return customUserDetailsService.getCurrentUsername();
+    }
+
+    private Specification<Review> getUsernameSpec() {
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        return new ReviewSpecification(criteria);
+    }
 
     public List<Review> findAll() {
-        return reviewRepository.findAll();
+        return reviewRepository.findAll(getUsernameSpec());
     }
 
     public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
-        return reviewRepository.findAmountsPerDayForIntervalOfDays(29);
+        return reviewRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
     }
 
     public Review findById(UUID id) {

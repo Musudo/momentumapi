@@ -68,8 +68,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days,
-                                                                  @Param("email") String email);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 
     /**
      * Returns a list of monthly activity counts filtered by type for the specified interval of months.

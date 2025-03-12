@@ -13,9 +13,6 @@ import java.util.UUID;
 
 @Repository
 public interface ITaskRepository extends JpaRepository<Task, UUID>, JpaSpecificationExecutor<Task> {
-    @Query(value = "SELECT * FROM task WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL :days DAY)", nativeQuery = true)
-    List<Task> findAllForIntervalOfDays(@Param("days") int days);
-
     @Query(value = """
             WITH RECURSIVE dates AS (
               -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
@@ -27,11 +24,13 @@ public interface ITaskRepository extends JpaRepository<Task, UUID>, JpaSpecifica
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %d') AS date,
-              COUNT(t.created_at) AS amount
+              COUNT(t.id) AS amount
             FROM dates
             LEFT JOIN task t ON DATE(t.created_at) = dates.dt
+            LEFT JOIN user u ON t.user_id = u.id
+            WHERE u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 }

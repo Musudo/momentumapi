@@ -21,7 +21,6 @@ public class StatService {
     private final VoiceMemoService voiceMemoService;
     private final AttachmentService attachmentService;
     private final ContactService contactService;
-    private final InstitutionService institutionService;
 
     public StatCardDto createActivitiesStatCardDto() {
         var data = activityService.findAmountsPerDayForLastMonth();

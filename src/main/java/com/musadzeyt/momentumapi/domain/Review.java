@@ -43,4 +43,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(updatable = false)
     private Activity activity;
+    @ManyToOne
+    @JoinColumn(updatable = false)
+    private User user;
 }

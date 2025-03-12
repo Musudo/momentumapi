@@ -1,16 +1,9 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Attachment;
-import com.musadzeyt.momentumapi.domain.Review;
-import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.domain.VoiceMemo;
-import com.musadzeyt.momentumapi.dto.AttachmentDto;
-import com.musadzeyt.momentumapi.dto.VoiceMemoDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IAttachmentRepository;
-import com.musadzeyt.momentumapi.repository.IVoiceMemoRepository;
 import com.musadzeyt.momentumapi.util.mapper.IAttachmentMapper;
-import com.musadzeyt.momentumapi.util.mapper.IVoiceMemoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +17,18 @@ public class AttachmentService {
     private final IAttachmentRepository attachmentRepository;
     private final IAttachmentMapper attachmentMapper;
     private final ReviewService reviewService;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private String getUsername() {
+        return customUserDetailsService.getCurrentUsername();
+    }
 
     public List<Attachment> findAll() {
         return attachmentRepository.findAll();
     }
 
     public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
-        return attachmentRepository.findAmountsPerDayForIntervalOfDays(29);
+        return attachmentRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
     }
 
     public Attachment findById(UUID id) {

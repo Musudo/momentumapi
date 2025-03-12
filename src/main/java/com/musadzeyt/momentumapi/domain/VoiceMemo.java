@@ -29,7 +29,6 @@ public class VoiceMemo {
     private UUID id;
     @NotNull
     private String path;
-    private boolean completed;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
