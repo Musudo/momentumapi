@@ -42,6 +42,11 @@ public class ActivityController {
         return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllForNextThirtyDays()), HttpStatus.OK);
     }
 
+    @GetMapping("/archived")
+    public ResponseEntity<List<ActivityDto>> findArchivedActivities() {
+        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllArchived()), HttpStatus.OK);
+    }
+
     @GetMapping("/type/{type}")
     public ResponseEntity<List<ActivityDto>> findActivitiesByType(@PathVariable String type) {
         return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findByType(type)), HttpStatus.OK);

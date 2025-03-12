@@ -8,6 +8,7 @@ import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ActivityService {
@@ -63,7 +65,7 @@ public class ActivityService {
         LocalDateTime endTime = today.atTime(LocalTime.MAX); // End of today (23:59:59)
 
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
-        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
@@ -76,7 +78,7 @@ public class ActivityService {
         LocalDateTime endTime = today.plusDays(7).atTime(LocalTime.MAX); // End of today (23:59:59)
 
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
-        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
@@ -89,11 +91,21 @@ public class ActivityService {
         LocalDateTime endTime = today.plusDays(30).atTime(LocalTime.MAX); // End of today (23:59:59)
 
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
-        SearchCriteria endTimeCriteria = new SearchCriteria("endTime", "<=", endTime);
+        SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
                 .and(new ActivitySpecification(endTimeCriteria)));
+    }
+
+    public List<Activity> findAllArchived() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDateTime startTime = yesterday.atStartOfDay(); // Start of today (00:00)
+
+        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", "<=", startTime);
+
+        return activityRepository.findAll(getUsernameSpec()
+                .and(new ActivitySpecification(startTimeCriteria)));
     }
 
     public Activity findById(UUID id) {
