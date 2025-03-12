@@ -1,11 +1,9 @@
 package com.musadzeyt.momentumapi.dto.stat;
 
-import com.musadzeyt.momentumapi.dto.InstitutionDto;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
-
 
 @Data
 @Builder

@@ -1,11 +1,10 @@
 package com.musadzeyt.momentumapi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.musadzeyt.momentumapi.enums.TagNameEnum;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,14 +21,16 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Tag {
     @Id
     @GeneratedValue
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
-    @NotNull
-    private String name;
+    @NotNull // application level constraint
+    @Column(unique = true, nullable = false) // database level constraint
+    private TagNameEnum name;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

@@ -24,6 +24,7 @@ public class Attachment {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
+    @Column(nullable = false)
     private String path;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

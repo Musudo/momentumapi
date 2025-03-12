@@ -23,6 +23,11 @@ public class TaskController {
         return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAll()), HttpStatus.OK);
     }
 
+    @GetMapping("/by-activity/{subject}")
+    public ResponseEntity<List<TaskDto>> findTasks(@PathVariable String subject) {
+        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllByActivity(subject)), HttpStatus.OK);
+    }
+
 //    @GetMapping("/interval/{days}")
 //    public ResponseEntity<List<TaskDto>> findTasksForInterval(@PathVariable int days) {
 //        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllForInterval(days)), HttpStatus.OK);

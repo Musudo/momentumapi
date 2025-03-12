@@ -27,6 +27,7 @@ public class Email {
     private UUID id;
     @NotNull
     @jakarta.validation.constraints.Email
+    @Column(unique = true, nullable = false)
     private String email;
     @CreationTimestamp
     private LocalDateTime createdAt;

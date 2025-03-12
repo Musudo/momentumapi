@@ -3,11 +3,14 @@ package com.musadzeyt.momentumapi.service;
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Task;
 import com.musadzeyt.momentumapi.dto.TaskDto;
+import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.ITaskRepository;
+import com.musadzeyt.momentumapi.specification.TaskSpecification;
 import com.musadzeyt.momentumapi.util.mapper.ITaskMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +35,13 @@ public class TaskService {
 
     public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
         return taskRepository.findAmountsPerDayForIntervalOfDays(29);
+    }
+
+    public List<Task> findAllByActivity(String subject) {
+        SearchCriteria taskCriteria = new SearchCriteria("activity.subject", ":", subject);
+        Specification<Task> taskSpec = new TaskSpecification(taskCriteria);
+
+        return taskRepository.findAll(taskSpec);
     }
 
     public Task findById(UUID id) {

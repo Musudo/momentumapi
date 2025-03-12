@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.repository;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,12 +12,30 @@ import java.util.Map;
 import java.util.UUID;
 
 @Repository
-public interface IActivityRepository extends JpaRepository<Activity, UUID> {
-    @Query(value = "SELECT * FROM activity WHERE start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY)", nativeQuery = true)
-    List<Activity> findAllForIntervalOfDays(@Param("days") int days);
+public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaSpecificationExecutor<Activity> {
+    // TODO: replace this with specification and criteria in the future
+    @Query(value = """
+            SELECT a.*
+            FROM activity a
+            LEFT JOIN user u ON a.user_id = u.id
+            WHERE a.start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
+                AND u.email = :email
+            """, nativeQuery = true)
+    List<Activity> findAllForIntervalOfDays(@Param("days") int days, @Param("email") String email);
 
-    @Query(value = "SELECT * FROM activity WHERE type = :type AND (:interval = false OR start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY))", nativeQuery = true)
-    List<Activity> findByTypeForIntervalOfDays(@Param("type") String type, @Param("interval") boolean interval, @Param("days") int days);
+    @Query(value = """
+            SELECT a.*
+            FROM activity a
+            LEFT JOIN user u ON a.user_id = u.id
+            WHERE a.type = :type
+                AND u.email = :email
+                AND (:interval = false
+                        OR a.start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY))
+            """, nativeQuery = true)
+    List<Activity> findByTypeForIntervalOfDays(@Param("type") String type,
+                                               @Param("interval") boolean interval,
+                                               @Param("days") int days,
+                                               @Param("email") String email);
 
     /**
      * Returns a list of daily activity counts for the specified interval of days.
@@ -41,14 +60,16 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID> {
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %d') AS date,
-              COUNT(a.created_at) AS amount
+              COUNT(a.id) AS amount
             FROM dates
-            LEFT JOIN activity a
-              ON DATE(a.created_at) = dates.dt
+            LEFT JOIN activity a ON DATE(a.created_at) = dates.dt
+            LEFT JOIN user u ON a.user_id = u.id
+            WHERE u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days);
+    List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days,
+                                                                  @Param("email") String email);
 
     /**
      * Returns a list of monthly activity counts filtered by type for the specified interval of months.
@@ -83,18 +104,33 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID> {
             FROM months m
             LEFT JOIN (
                 SELECT
-                    DATE_FORMAT(created_at, '%Y-%m') AS month,
-                    COUNT(*) AS activity_count
-                FROM activity
-                WHERE type = :type
-                  AND created_at >= DATE_SUB(CURDATE(), INTERVAL :months MONTH)
-                GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+                    DATE_FORMAT(a.created_at, '%Y-%m') AS month,
+                    COUNT(a.id) AS activity_count
+                FROM activity a
+                LEFT JOIN user u ON a.user_id = u.id
+                WHERE a.type = :type
+                    AND a.created_at >= DATE_SUB(CURDATE(), INTERVAL :months MONTH)
+                    AND u.email = :email
+                GROUP BY DATE_FORMAT(a.created_at, '%Y-%m')
             ) a
                 ON DATE_FORMAT(m.month_date, '%Y-%m') = a.month
             ORDER BY m.month_date;
             """, nativeQuery = true)
-    List<Map<String, Integer>> findAmountsByTypePerMonthForIntervalOfMonths(@Param("type") String type, @Param("months") int months);
+    List<Map<String, Integer>> findAmountsByTypePerMonthForIntervalOfMonths(@Param("type") String type,
+                                                                            @Param("months") int months,
+                                                                            @Param("email") String email);
 
-    @Query(value = "SELECT COUNT(*) AS amount FROM activity WHERE type = :type AND start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY) GROUP BY DATE_FORMAT(start_time, '%Y-%m-%d') ORDER BY DATE_FORMAT(start_time, '%Y-%m-%d')", nativeQuery = true)
-    List<Integer> findAmountsByTypePerDayForIntervalOfDays(@Param("type") String type, @Param("days") int days);
+    @Query(value = """
+            SELECT COUNT(a.id) AS amount
+            FROM activity a
+            LEFT JOIN user u ON a.user_id = u.id
+            WHERE a.type = :type
+                AND a.start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
+                AND u.email = :email
+            GROUP BY DATE_FORMAT(a.start_time, '%Y-%m-%d')
+            ORDER BY DATE_FORMAT(a.start_time, '%Y-%m-%d')
+            """, nativeQuery = true)
+    List<Integer> findAmountsByTypePerDayForIntervalOfDays(@Param("type") String type,
+                                                           @Param("days") int days,
+                                                           @Param("email") String email);
 }

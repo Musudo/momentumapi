@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +22,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue
@@ -33,6 +35,7 @@ public class User {
     private String lastName;
     @NotNull
     @Email
+    @Column(unique = true, nullable = false)
     private String email;
     @Column(name = "roles", columnDefinition = "TEXT")
     @Convert(converter = RolesConverter.class)
@@ -42,16 +45,4 @@ public class User {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<Activity> activities;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<Review> reviews;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<Institution> institutions;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<Contact> contacts;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<VoiceMemo> voiceMemos;
-//    @OneToMany(cascade = CascadeType.REMOVE)
-//    private List<Task> tasks;
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Contact {
     @Id
     @GeneratedValue
@@ -32,11 +34,15 @@ public class Contact {
     private String lastName;
     @NotNull
     @Email
+    @Column(unique = true, nullable = false)
     private String email1;
     @Email
+    @Column(unique = true)
     private String email2;
     @NotNull
+    @Column(unique = true, nullable = false)
     private String phone1;
+    @Column(unique = true)
     private String phone2;
     private String jobTitle;
     @CreationTimestamp

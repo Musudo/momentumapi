@@ -3,6 +3,7 @@ package com.musadzeyt.momentumapi.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Task {
     @Id
     @GeneratedValue
@@ -26,13 +28,17 @@ public class Task {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
+    @Column(nullable = false)
     private String description;
     private boolean completed;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(updatable = false)
     private Activity activity;
+    @ManyToOne
+    @JoinColumn(updatable = false)
+    private User user;
 }
