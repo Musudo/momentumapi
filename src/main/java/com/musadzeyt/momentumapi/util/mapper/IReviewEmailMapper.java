@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
-import com.musadzeyt.momentumapi.domain.Email;
-import com.musadzeyt.momentumapi.dto.EmailDto;
+import com.musadzeyt.momentumapi.domain.ReviewEmail;
+import com.musadzeyt.momentumapi.dto.ReviewEmailDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,24 +10,24 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface IEmailMapper {
-    IEmailMapper INSTANCE = Mappers.getMapper(IEmailMapper.class);
+public interface IReviewEmailMapper {
+    IReviewEmailMapper INSTANCE = Mappers.getMapper(IReviewEmailMapper.class);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "reviewId", source = "review.id")
-    EmailDto entityToDto(Email email);
+    ReviewEmailDto entityToDto(ReviewEmail reviewEmail);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
-    Email dtoToEntity(EmailDto emailDto);
+    ReviewEmail dtoToEntity(ReviewEmailDto reviewEmailDto);
 
-    List<EmailDto> entityListToDtoList(List<Email> list);
+    List<ReviewEmailDto> entityListToDtoList(List<ReviewEmail> list);
 
-    List<Email> dtoListToEntityList(List<EmailDto> list);
+    List<ReviewEmail> dtoListToEntityList(List<ReviewEmailDto> list);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Email update(EmailDto emailDto, @MappingTarget Email email);
+    ReviewEmail update(ReviewEmailDto reviewEmailDto, @MappingTarget ReviewEmail reviewEmail);
 }

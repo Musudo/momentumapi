@@ -11,13 +11,14 @@ import java.util.UUID;
 public class ActivityDto {
     private UUID id;
     private ActivityTypeEnum type;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
     private String subject;
     private String internalNote;
     private String externalNote;
-    private LocalDateTime emailSentAt;
+    private String emailSentAt;
     private UUID userId;
+    private String institutionName;
     private UUID institutionId;
     private InstitutionDto institution;
     private List<UUID> tagIds;

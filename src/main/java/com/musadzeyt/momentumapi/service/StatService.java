@@ -17,9 +17,9 @@ public class StatService {
     private final ActivityService activityService;
     private final TaskService taskService;
     private final ReviewService reviewService;
-    private final EmailService emailService;
+    private final ReviewEmailService reviewEmailService;
     private final VoiceMemoService voiceMemoService;
-    private final AttachmentService attachmentService;
+    private final ReviewAttachmentService reviewAttachmentService;
     private final ContactService contactService;
 
     public StatCard createActivitiesStatCard() {
@@ -160,7 +160,7 @@ public class StatService {
     public LineChart createLineChart() {
         List<LineChartSeries> lineChartSeries = new ArrayList<>();
 
-        List<Map<String, Integer>> emails = emailService.findAmountsPerDayForLastMonth();
+        List<Map<String, Integer>> emails = reviewEmailService.findAmountsPerDayForLastMonth();
         // months list is normally the same for all activity types
         List<String> monthsList = StatUtil.extractStringValues(emails, "month");
         List<Integer> emailAmountsList = StatUtil.extractIntValues(emails, "amount");
@@ -192,7 +192,7 @@ public class StatService {
 
         lineChartSeries.add(voiceMemoSeries);
 
-        List<Map<String, Integer>> attachments = attachmentService.findAmountsPerDayForLastMonth();
+        List<Map<String, Integer>> attachments = reviewAttachmentService.findAmountsPerDayForLastMonth();
         List<Integer> attachmentAmountsList = StatUtil.extractIntValues(attachments, "amount");
         int valueAttachments = attachmentAmountsList.stream()
                 .filter(num -> num != 0)

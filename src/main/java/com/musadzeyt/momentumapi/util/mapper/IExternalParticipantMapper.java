@@ -13,7 +13,7 @@ import java.util.List;
 public interface IExternalParticipantMapper {
     IExternalParticipantMapper INSTANCE = Mappers.getMapper(IExternalParticipantMapper.class);
 
-    @Mapping(target = "id", source = "id")
+//    @Mapping(target = "id", source = "id")
     ExternalParticipantDto entityToDto(ExternalParticipant externalParticipant);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore

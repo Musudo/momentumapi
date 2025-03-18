@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
-import com.musadzeyt.momentumapi.dto.AttachmentDto;
+import com.musadzeyt.momentumapi.domain.ReviewAttachment;
+import com.musadzeyt.momentumapi.dto.ReviewAttachmentDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,24 +10,24 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface IAttachmentMapper {
-    IAttachmentMapper INSTANCE = Mappers.getMapper(IAttachmentMapper.class);
+public interface IReviewAttachmentMapper {
+    IReviewAttachmentMapper INSTANCE = Mappers.getMapper(IReviewAttachmentMapper.class);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "reviewId", source = "review.id")
-    AttachmentDto entityToDto(Attachment attachment);
+    ReviewAttachmentDto entityToDto(ReviewAttachment reviewAttachment);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
-    Attachment dtoToEntity(AttachmentDto attachmentDto);
+    ReviewAttachment dtoToEntity(ReviewAttachmentDto attachmentDto);
 
-    List<AttachmentDto> entityListToDtoList(List<Attachment> list);
+    List<ReviewAttachmentDto> entityListToDtoList(List<ReviewAttachment> list);
 
-    List<Attachment> dtoListToEntityList(List<AttachmentDto> list);
+    List<ReviewAttachment> dtoListToEntityList(List<ReviewAttachmentDto> list);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    Attachment update(AttachmentDto attachmentDto, @MappingTarget Attachment attachment);
+    ReviewAttachment update(ReviewAttachmentDto reviewAttachmentDto, @MappingTarget ReviewAttachment reviewAttachment);
 }

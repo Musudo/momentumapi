@@ -8,4 +8,5 @@ import java.util.UUID;
 public class TagDto {
     private UUID id;
     private String name;
+    private String createdAt;
 }

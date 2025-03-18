@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.faker.generator;
 
-import com.musadzeyt.momentumapi.domain.Email;
-import com.musadzeyt.momentumapi.faker.factory.EmailFactory;
+import com.musadzeyt.momentumapi.domain.ReviewEmail;
+import com.musadzeyt.momentumapi.faker.factory.ReviewEmailFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,8 @@ import java.util.stream.IntStream;
 
 @Component
 @AllArgsConstructor
-public class EmailGenerator {
-    private final EmailFactory emailFactory;
+public class ReviewEmailGenerator {
+    private final ReviewEmailFactory reviewEmailFactory;
 
     /**
      * Creates a list of emails using the EmailFactory.
@@ -20,9 +20,9 @@ public class EmailGenerator {
      * @param count the number of emails to generate.
      * @return a List of generated Email objects.
      */
-    public List<Email> createEmails(int count) {
+    public List<ReviewEmail> createEmails(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> emailFactory.create())
+                .mapToObj(i -> reviewEmailFactory.create())
                 .collect(Collectors.toList());
     }
 }

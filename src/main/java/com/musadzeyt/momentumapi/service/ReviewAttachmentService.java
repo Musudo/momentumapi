@@ -1,9 +1,9 @@
 package com.musadzeyt.momentumapi.service;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
+import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IAttachmentRepository;
-import com.musadzeyt.momentumapi.util.mapper.IAttachmentMapper;
+import com.musadzeyt.momentumapi.repository.IReviewAttachmentRepository;
+import com.musadzeyt.momentumapi.util.mapper.IReviewAttachmentMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AttachmentService {
-    private final IAttachmentRepository attachmentRepository;
-    private final IAttachmentMapper attachmentMapper;
+public class ReviewAttachmentService {
+    private final IReviewAttachmentRepository attachmentRepository;
+    private final IReviewAttachmentMapper reviewAttachmentMapper;
     private final ReviewService reviewService;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -23,7 +23,7 @@ public class AttachmentService {
         return customUserDetailsService.getCurrentUsername();
     }
 
-    public List<Attachment> findAll() {
+    public List<ReviewAttachment> findAll() {
         return attachmentRepository.findAll();
     }
 
@@ -31,13 +31,13 @@ public class AttachmentService {
         return attachmentRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
     }
 
-    public Attachment findById(UUID id) {
+    public ReviewAttachment findById(UUID id) {
         return attachmentRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
 //    public VoiceMemo create(AttachmentDto attachmentDto) {
-//        Attachment attachment = attachmentMapper.dtoToEntity(attachmentDto);
+//        ReviewAttachment attachment = attachmentMapper.dtoToEntity(attachmentDto);
 //        Review review = reviewService.findReviewById(attachmentDto.getReviewId());
 //        review.setAttachments(review);
 //        return attachmentRepository.save(attachment);

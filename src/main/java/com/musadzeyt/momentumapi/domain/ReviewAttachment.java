@@ -6,9 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
@@ -21,21 +19,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Email {
+public class ReviewAttachment {
     @Id
     @GeneratedValue
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    @jakarta.validation.constraints.Email
     @Column(nullable = false)
-    private String email;
-    @CreationTimestamp
+    private String path;
     private LocalDateTime createdAt;
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(updatable = false)
     private Review review;
 }

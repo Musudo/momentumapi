@@ -1,58 +1,56 @@
 package com.musadzeyt.momentumapi.service;
 
-import com.musadzeyt.momentumapi.domain.Email;
 import com.musadzeyt.momentumapi.dto.EmailDto;
-import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IEmailRepository;
-import com.musadzeyt.momentumapi.util.mapper.IEmailMapper;
-import lombok.AllArgsConstructor;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Service
-@AllArgsConstructor
+//@ConfigurationProperties(prefix = "spring.mail")
+@RequiredArgsConstructor
 public class EmailService {
-    private final IEmailRepository emailRepository;
-    private final IEmailMapper emailMapper;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}")
+    private String sender;
+    private final SpringTemplateEngine templateEngine;
 
-    private String getUsername() {
-        return customUserDetailsService.getCurrentUsername();
-    }
+    public void sendConfirmationEmail(EmailDto email) {
+        try {
+            // create email context and template
+            Context context = new Context();
+            context.setVariable("recipientName", email.getRecipientName());
+            context.setVariable("activityName", email.getActivityName());
+            context.setVariable("activityStartTime", email.getActivityStartTime());
+            context.setVariable("reservationNumber", email.getReservationNumber());
+            String template;
+            if (email.getSubject().equals("Reservatie aangemaakt")) {
+                template = templateEngine.process("reservation_confirmation_template", context);
+            } else {
+                template = templateEngine.process("payment_confirmation_template", context);
+            }
 
-    public List<Email> findAll() {
-        return emailRepository.findAll();
-    }
+            // prepare email
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            messageHelper.setFrom(sender);
+            messageHelper.setTo(email.getRecipientEmail());
+            messageHelper.setSubject(email.getSubject());
+            messageHelper.setText(template, true);
 
-    public List<Email> findAllForIntervalOfDays(int days) {
-        return emailRepository.findAllForIntervalOfDays(days);
-    }
-
-    public List<Map<String, Integer>> findAmountsPerDayForLastMonth() {
-        return emailRepository.findAmountsPerDayForIntervalOfDays(29, getUsername());
-    }
-
-    public Email findById(UUID id) {
-        return emailRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-    }
-
-    public Email create(EmailDto emailDto) {
-        Email email = emailMapper.dtoToEntity(emailDto);
-        return emailRepository.save(email);
-    }
-
-    public Email update(UUID id, EmailDto emailDto) {
-        Email email = emailRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
-        emailMapper.update(emailDto, email);
-        return emailRepository.save(email);
-    }
-
-    public void delete(UUID id) {
-        emailRepository.deleteById(id);
+            // send email
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            log.error("Failed to send email");
+        }
     }
 }

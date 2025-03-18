@@ -7,6 +7,7 @@ import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class ExternalParticipantService {
     private final IExternalParticipantRepository externalParticipantRepository;
     private final IExternalParticipantMapper externalParticipantMapper;
+//    private final ActivityService activityService;
 
     public List<ExternalParticipant> findAll() {
         return externalParticipantRepository.findAll();
@@ -27,8 +29,8 @@ public class ExternalParticipantService {
     }
 
     public ExternalParticipant create(ExternalParticipantDto externalParticipantDto) {
-        ExternalParticipant tag = externalParticipantMapper.dtoToEntity(externalParticipantDto);
-        return externalParticipantRepository.save(tag);
+        ExternalParticipant externalParticipant = externalParticipantMapper.dtoToEntity(externalParticipantDto);
+        return externalParticipantRepository.save(externalParticipant);
     }
 
     public ExternalParticipant update(UUID id, ExternalParticipantDto externalParticipantDto) {
@@ -36,9 +38,5 @@ public class ExternalParticipantService {
                 .orElseThrow(EntityNotFoundException::new);
         externalParticipantMapper.update(externalParticipantDto, externalParticipant);
         return externalParticipantRepository.save(externalParticipant);
-    }
-
-    public void delete(UUID id) {
-        externalParticipantRepository.deleteById(id);
     }
 }

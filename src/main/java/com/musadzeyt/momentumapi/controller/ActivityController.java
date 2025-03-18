@@ -42,9 +42,9 @@ public class ActivityController {
         return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllForNextThirtyDays()), HttpStatus.OK);
     }
 
-    @GetMapping("/archived")
-    public ResponseEntity<List<ActivityDto>> findArchivedActivities() {
-        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllArchived()), HttpStatus.OK);
+    @GetMapping("/archived/{year}")
+    public ResponseEntity<List<ActivityDto>> findArchivedActivities(@PathVariable String year) {
+        return new ResponseEntity<>(activityMapper.entityListToDtoList(activityService.findAllArchived(year)), HttpStatus.OK);
     }
 
     @GetMapping("/type/{type}")
@@ -79,9 +79,33 @@ public class ActivityController {
         return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
     }
 
+    @PatchMapping(value = "/{id}/external-note", produces = "application/json")
+    public ResponseEntity<ActivityDto> updateExternalNote(@PathVariable UUID id, @NotNull @Valid @RequestBody Map<String, String> data) {
+        var activity = activityService.updateExternalNote(id, data.get("externalNote"));
+        return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/{id}/internal-note", produces = "application/json")
+    public ResponseEntity<ActivityDto> updateInternalNote(@PathVariable UUID id, @NotNull @Valid @RequestBody Map<String, String> data) {
+        var activity = activityService.updateInternalNote(id, data.get("internalNote"));
+        return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteActivity(@PathVariable UUID id) {
         activityService.delete(id);
         return new ResponseEntity<>("Activity deleted", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{activityId}/contact/{contactId}")
+    public ResponseEntity<String> deleteParticipant(@PathVariable UUID activityId, @PathVariable UUID contactId) {
+        activityService.deleteContact(activityId, contactId);
+        return new ResponseEntity<>("Participant deleted", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{activityId}/external-participant/{externalParticipantId}")
+    public ResponseEntity<String> deleteExternalParticipant(@PathVariable UUID activityId, @PathVariable UUID externalParticipantId) {
+        activityService.deleteExternalParticipant(activityId, externalParticipantId);
+        return new ResponseEntity<>("External participant deleted", HttpStatus.OK);
     }
 }

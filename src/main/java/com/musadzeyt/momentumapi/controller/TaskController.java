@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -23,9 +24,14 @@ public class TaskController {
         return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/by-activity/{subject}")
-    public ResponseEntity<List<TaskDto>> findTasks(@PathVariable String subject) {
-        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllByActivity(subject)), HttpStatus.OK);
+    @GetMapping("/by-activity-id/{id}")
+    public ResponseEntity<List<TaskDto>> findTasksByActivityId(@PathVariable UUID id) {
+        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllByActivityId(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-activity-subject/{subject}")
+    public ResponseEntity<List<TaskDto>> findTasksByActivitySubject(@PathVariable String subject) {
+        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityListToDtoList(taskService.findAllByActivitySubject(subject)), HttpStatus.OK);
     }
 
 //    @GetMapping("/interval/{days}")
@@ -37,5 +43,17 @@ public class TaskController {
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         Task task = taskService.create(taskDto);
         return new ResponseEntity<>(ITaskMapper.INSTANCE.entityToDto(task), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable UUID id, @RequestBody TaskDto taskDto) {
+        Task task = taskService.update(id, taskDto);
+        return new ResponseEntity<>(ITaskMapper.INSTANCE.entityToDto(task), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<String> deleteTask(@PathVariable UUID id) {
+        taskService.delete(id);
+        return new ResponseEntity<>("Task deleted", HttpStatus.OK);
     }
 }

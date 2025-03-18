@@ -4,13 +4,21 @@ import com.musadzeyt.momentumapi.domain.*;
 import com.musadzeyt.momentumapi.dto.ActivityDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.ActivityNotFoundException;
+import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
+import com.musadzeyt.momentumapi.repository.IContactRepository;
+import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
+import com.musadzeyt.momentumapi.specification.InstitutionSpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
+import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +29,8 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class ActivityService {
+    private final IExternalParticipantRepository iExternalParticipantRepository;
+    private final IContactRepository iContactRepository;
     private final IActivityRepository activityRepository;
     private final IActivityMapper activityMapper;
     private final TagService tagService;
@@ -29,6 +39,7 @@ public class ActivityService {
     private final ContactService contactService;
     private final ExternalParticipantService externalParticipantService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final EntityManager entityManager;
 
     private String getUsername() {
         return customUserDetailsService.getCurrentUsername();
@@ -67,9 +78,11 @@ public class ActivityService {
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
         SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
+        Sort sort = Sort.by(Sort.Direction.ASC, "startTime");
+
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
-                .and(new ActivitySpecification(endTimeCriteria)));
+                .and(new ActivitySpecification(endTimeCriteria)), sort);
     }
 
     public List<Activity> findAllForNextSevenDays() {
@@ -80,9 +93,11 @@ public class ActivityService {
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
         SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
+        Sort sort = Sort.by(Sort.Direction.ASC, "startTime");
+
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
-                .and(new ActivitySpecification(endTimeCriteria)));
+                .and(new ActivitySpecification(endTimeCriteria)), sort);
     }
 
     public List<Activity> findAllForNextThirtyDays() {
@@ -93,33 +108,55 @@ public class ActivityService {
         SearchCriteria startTimeCriteria = new SearchCriteria("startTime", ">=", startTime);
         SearchCriteria endTimeCriteria = new SearchCriteria("startTime", "<=", endTime);
 
+        Sort sort = Sort.by(Sort.Direction.ASC, "startTime");
+
         return activityRepository.findAll(getUsernameSpec()
                 .and(new ActivitySpecification(startTimeCriteria))
-                .and(new ActivitySpecification(endTimeCriteria)));
+                .and(new ActivitySpecification(endTimeCriteria)), sort);
     }
 
-    public List<Activity> findAllArchived() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
-        LocalDateTime startTime = yesterday.atStartOfDay(); // Start of today (00:00)
+    public List<Activity> findAllArchived(String yearStr) {
+        LocalDateTime upperBound;
+        LocalDateTime lowerBound;
 
-        SearchCriteria startTimeCriteria = new SearchCriteria("startTime", "<=", startTime);
+        if (Integer.parseInt(yearStr) == LocalDate.now().getYear()) {
+            LocalDate yesterday = LocalDate.now().minusDays(1);
+            upperBound = yesterday.atTime(LocalTime.MAX);
+            lowerBound = LocalDate.of(Integer.parseInt(yearStr), 1, 1).atStartOfDay();
+        } else {
+            upperBound = LocalDate.of(Integer.parseInt(yearStr), 12, 31).atTime(LocalTime.MAX);
+            lowerBound = LocalDate.of(Integer.parseInt(yearStr), 1, 1).atStartOfDay();
+        }
+
+        SearchCriteria upperBoundCriteria = new SearchCriteria("startTime", "<=", upperBound);
+        SearchCriteria lowerBoundCriteria = new SearchCriteria("startTime", ">=", lowerBound);
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "startTime");
 
         return activityRepository.findAll(getUsernameSpec()
-                .and(new ActivitySpecification(startTimeCriteria)));
+                .and(new ActivitySpecification(upperBoundCriteria))
+                .and(new ActivitySpecification(lowerBoundCriteria)), sort);
     }
+
+//    public List<Activity> findByInstitutionName(String institutionName) {
+//        SearchCriteria institutionNameCriteria = new SearchCriteria("institution.name", ":", institutionName);
+//
+//        return activityRepository.findAll(getUsernameSpec().and(new ActivitySpecification(institutionNameCriteria)));
+//    }
 
     public Activity findById(UUID id) {
         return activityRepository.findById(id)
                 .orElseThrow(ActivityNotFoundException::new);
     }
 
+    @Transactional
     public Activity create(ActivityDto activityDto) {
         Activity activity = activityMapper.dtoToEntity(activityDto);
 
-        User user = userService.findById(activityDto.getUserId());
+        User user = userService.findByEmail(getUsername());
         activity.setUser(user);
 
-        Institution institution = institutionService.findById(activityDto.getInstitutionId());
+        Institution institution = institutionService.findByName(activityDto.getInstitutionName());
         activity.setInstitution(institution);
 
         Set<Tag> tags = new HashSet<>();
@@ -138,26 +175,84 @@ public class ActivityService {
             activity.setContacts(contacts);
         }
 
-        if (activityDto.getExternalParticipantIds() != null) {
+        if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
             Set<ExternalParticipant> externalParticipants = new HashSet<>();
-            activityDto.getExternalParticipantIds().forEach(id -> {
-                ExternalParticipant externalParticipant = externalParticipantService.findById(id);
+            activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
+                ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
                 externalParticipants.add(externalParticipant);
             });
             activity.setExternalParticipants(externalParticipants);
         }
 
+        if (activityDto.getEmailSentAt() != null) {
+            
+        }
+
         return activityRepository.save(activity);
     }
 
+    @Transactional
     public Activity update(UUID id, ActivityDto activityDto) {
         Activity activity = activityRepository.findById(id)
                 .orElseThrow(ActivityNotFoundException::new);
+
         activityMapper.update(activityDto, activity);
+
+        Set<Tag> currentTags = activity.getTags();
+        Set<Tag> newTags = new HashSet<>(tagService.findAllById(activityDto.getTagIds()));
+
+        currentTags.clear();
+        currentTags.addAll(newTags);
+
         return activityRepository.save(activity);
     }
 
+    @Transactional
+    public Activity updateExternalNote(UUID id, String externalNote) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(ActivityNotFoundException::new);
+        activity.setExternalNote(externalNote);
+
+        return activityRepository.save(activity);
+    }
+
+    @Transactional
+    public Activity updateInternalNote(UUID id, String internalNote) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(ActivityNotFoundException::new);
+        activity.setInternalNote(internalNote);
+
+        return activityRepository.save(activity);
+    }
+
+    @Transactional
     public void delete(UUID id) {
         activityRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteContact(UUID activityId, UUID contactId) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(ActivityNotFoundException::new);
+        activity.getContacts().removeIf(contact -> contact.getId().equals(contactId));
+    }
+
+    @Transactional
+    public void deleteExternalParticipant(UUID activityId, UUID externalParticipantId) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(ActivityNotFoundException::new);
+
+        // Find the specific contact from the activity's collection
+        ExternalParticipant externalParticipant = activity.getExternalParticipants()
+                .stream()
+                .filter(ep -> ep.getId().equals(externalParticipantId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("External participant not found"));
+
+        // Remove the association from the activity's collection
+        activity.getExternalParticipants().remove(externalParticipant);
+
+        // Delete the child record from the database
+        iExternalParticipantRepository.delete(externalParticipant);
     }
 }

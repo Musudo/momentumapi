@@ -12,7 +12,7 @@ public class ReviewDto {
     private String content;
     private UUID activityId;
     private List<UUID> attachmentIds;
-    private List<AttachmentDto> attachments;
+    private List<ReviewAttachmentDto> reviewAttachmentDtos;
     private List<UUID> emailIds;
-    private List<EmailDto> emails;
+    private List<ReviewEmailDto> reviewEmailDtos;
 }

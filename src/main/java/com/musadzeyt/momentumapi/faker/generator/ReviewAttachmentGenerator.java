@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.faker.generator;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
-import com.musadzeyt.momentumapi.faker.factory.AttachmentFactory;
+import com.musadzeyt.momentumapi.domain.ReviewAttachment;
+import com.musadzeyt.momentumapi.faker.factory.ReviewAttachmentFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,8 @@ import java.util.stream.IntStream;
 
 @Component
 @AllArgsConstructor
-public class AttachmentGenerator {
-    private final AttachmentFactory attachmentFactory;
+public class ReviewAttachmentGenerator {
+    private final ReviewAttachmentFactory reviewAttachmentFactory;
 
     /**
      * Creates a list of attachments using the AttachmentFactory.
@@ -20,9 +20,9 @@ public class AttachmentGenerator {
      * @param count the number of attachments to generate.
      * @return a List of generated Attachment objects.
      */
-    public List<Attachment> createAttachments(int count) {
+    public List<ReviewAttachment> createAttachments(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> attachmentFactory.create())
+                .mapToObj(i -> reviewAttachmentFactory.create())
                 .collect(Collectors.toList());
     }
 }

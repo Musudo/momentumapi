@@ -1,13 +1,13 @@
 package com.musadzeyt.momentumapi.faker.factory;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
+import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.repository.IReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class AttachmentFactory {
+public class ReviewAttachmentFactory {
     private final IReviewRepository reviewRepository;
 
     /**
@@ -15,8 +15,8 @@ public class AttachmentFactory {
      *
      * @return a new Attachment instance with default values.
      */
-    public Attachment create() {
-        return Attachment.builder()
+    public ReviewAttachment create() {
+        return ReviewAttachment.builder()
                 .path("/test/path")
                 .review(reviewRepository.findAll().getFirst())
                 .build();
@@ -26,8 +26,8 @@ public class AttachmentFactory {
      * Optional: Customize the attachment after instantiation.
      * This method is analogous to the `afterInstantiate` hook in Zenstruck Foundry.
      */
-    public Attachment initialize(Attachment attachment) {
+    public ReviewAttachment initialize(ReviewAttachment reviewAttachment) {
         // Perform any post-processing if needed
-        return attachment;
+        return reviewAttachment;
     }
 }

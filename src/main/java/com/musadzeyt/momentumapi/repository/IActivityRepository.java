@@ -3,6 +3,7 @@ package com.musadzeyt.momentumapi.repository;
 import com.musadzeyt.momentumapi.domain.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaSpecificationExecutor<Activity> {
-    // TODO: replace this with specification and criteria in the future
+    // TODO: replace this with specification and criteria in the future (in other repo's also)
     @Query(value = """
             SELECT a.*
             FROM activity a

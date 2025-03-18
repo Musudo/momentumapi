@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.repository;
 
-import com.musadzeyt.momentumapi.domain.Attachment;
+import com.musadzeyt.momentumapi.domain.ReviewEmail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +11,10 @@ import java.util.Map;
 import java.util.UUID;
 
 @Repository
-public interface IAttachmentRepository extends JpaRepository<Attachment, UUID> {
+public interface IReviewEmailRepository extends JpaRepository<ReviewEmail, UUID> {
+    @Query(value = "SELECT * FROM email WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL :days DAY)", nativeQuery = true)
+    List<ReviewEmail> findAllForIntervalOfDays(@Param("days") int days);
+
     @Query(value = """
             WITH RECURSIVE dates AS (
               -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
@@ -23,10 +26,10 @@ public interface IAttachmentRepository extends JpaRepository<Attachment, UUID> {
             )
             SELECT
               DATE_FORMAT(dates.dt, '%b %e') AS month,
-              COUNT(a.id) AS amount
+              COUNT(e.id) AS amount
             FROM dates
-            LEFT JOIN attachment a ON DATE(a.created_at) = dates.dt
-            LEFT JOIN review r ON a.review_id = r.id
+            LEFT JOIN email e ON DATE(e.created_at) = dates.dt
+            LEFT JOIN review r ON e.review_id = r.id
             LEFT JOIN user u ON r.user_id = u.id
             WHERE u.email = :email
             GROUP BY dates.dt

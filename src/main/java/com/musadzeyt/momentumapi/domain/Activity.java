@@ -14,7 +14,6 @@ import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -53,23 +52,23 @@ public class Activity {
     private Institution institution;
     @ManyToMany
     @JoinTable(
-            name = "activity_tags",
+            name = "activities_tags",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tags;
     @ManyToMany
     @JoinTable(
-            name = "activity_contacts",
+            name = "activities_contacts",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
     private Set<Contact> contacts;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name = "activity_external_participants",
+            name = "activities_external_participants",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "external_participant_id")
     )
-    private Set<ExternalParticipant> externalParticipants = new HashSet<>();
+    private Set<ExternalParticipant> externalParticipants;
 }

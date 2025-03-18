@@ -52,11 +52,13 @@ public class UserService {
         return user.getEmail();
     }
 
+    @Transactional
     public User create(UserDto userDto) {
         User user = userMapper.dtoToEntity(userDto);
         return userRepository.save(user);
     }
 
+    @Transactional
     public User update(UUID id, UserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
@@ -64,6 +66,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public void delete(UUID id) {
         userRepository.deleteById(id);
     }

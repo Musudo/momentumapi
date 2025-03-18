@@ -10,5 +10,6 @@ public class TaskDto {
     private String description;
     private boolean completed;
     private UUID activityId;
+    private UUID userId;
     private String createdAt;
 }

@@ -27,6 +27,11 @@ public class ContactController {
         return new ResponseEntity<>(contactMapper.entityListToDtoList(contactService.findAll()), HttpStatus.OK);
     }
 
+    @GetMapping("/by-institution-name/{name}")
+    public ResponseEntity<List<ContactDto>> findContactsByInstitutionName(@PathVariable String name) {
+        return new ResponseEntity<>(contactMapper.entityListToDtoList(contactService.findAllByInstitutionName(name)), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ContactDto> findContact(@PathVariable UUID id) {
         return new ResponseEntity<>(contactMapper.entityToDto(contactService.findById(id)), HttpStatus.OK);

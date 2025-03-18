@@ -37,9 +37,9 @@ public class Review {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @OneToMany
-    private List<Attachment> attachments;
+    private List<ReviewAttachment> reviewAttachments;
     @OneToMany
-    private List<Email> emails;
+    private List<ReviewEmail> reviewEmails;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(updatable = false)
     private Activity activity;
