@@ -1,6 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.dto.ActivityDto;
+import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.ActivityService;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -73,6 +75,18 @@ public class ActivityController {
         return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
     }
 
+    @PatchMapping(value = "/{activityId}/add-participant", produces = "application/json")
+    public ResponseEntity<ActivityDto> addParticipant(@PathVariable UUID activityId, @RequestBody Map<String, UUID> data) {
+        var activity = activityService.addParticipant(activityId, data);
+        return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/{activityId}/add-external-participant", produces = "application/json")
+    public ResponseEntity<ActivityDto> addExternalParticipant(@PathVariable UUID activityId, @RequestBody ExternalParticipantDto externalParticipantDto) {
+        var activity = activityService.addExternalParticipant(activityId, externalParticipantDto);
+        return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
     @PatchMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<ActivityDto> updateActivity(@PathVariable UUID id, @NotNull @Valid @RequestBody ActivityDto activityDto) {
         var activity = activityService.update(id, activityDto);
@@ -97,13 +111,13 @@ public class ActivityController {
         return new ResponseEntity<>("Activity deleted", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{activityId}/contact/{contactId}")
+    @DeleteMapping(value = "/{activityId}/delete-participant/{contactId}")
     public ResponseEntity<String> deleteParticipant(@PathVariable UUID activityId, @PathVariable UUID contactId) {
         activityService.deleteContact(activityId, contactId);
         return new ResponseEntity<>("Participant deleted", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{activityId}/external-participant/{externalParticipantId}")
+    @DeleteMapping(value = "/{activityId}/delete-external-participant/{externalParticipantId}")
     public ResponseEntity<String> deleteExternalParticipant(@PathVariable UUID activityId, @PathVariable UUID externalParticipantId) {
         activityService.deleteExternalParticipant(activityId, externalParticipantId);
         return new ResponseEntity<>("External participant deleted", HttpStatus.OK);

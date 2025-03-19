@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.*;
 import com.musadzeyt.momentumapi.dto.ActivityDto;
+import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.ActivityNotFoundException;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
@@ -187,6 +188,26 @@ public class ActivityService {
         if (activityDto.getEmailSentAt() != null) {
             
         }
+
+        return activityRepository.save(activity);
+    }
+
+    @Transactional
+    public Activity addParticipant(UUID activityId, Map<String, UUID> data) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(ActivityNotFoundException::new);
+        Contact contact = contactService.findById(data.get("contactId"));
+        activity.getContacts().add(contact);
+
+        return activityRepository.save(activity);
+    }
+
+    @Transactional
+    public Activity addExternalParticipant(UUID activityId, ExternalParticipantDto externalParticipantDto) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(ActivityNotFoundException::new);
+        ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
+        activity.getExternalParticipants().add(externalParticipant);
 
         return activityRepository.save(activity);
     }
