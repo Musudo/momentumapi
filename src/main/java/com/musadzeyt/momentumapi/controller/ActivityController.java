@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -113,7 +112,7 @@ public class ActivityController {
 
     @DeleteMapping(value = "/{activityId}/delete-participant/{contactId}")
     public ResponseEntity<String> deleteParticipant(@PathVariable UUID activityId, @PathVariable UUID contactId) {
-        activityService.deleteContact(activityId, contactId);
+        activityService.deleteParticipant(activityId, contactId);
         return new ResponseEntity<>("Participant deleted", HttpStatus.OK);
     }
 

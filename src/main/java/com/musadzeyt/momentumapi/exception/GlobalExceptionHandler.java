@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
             rootCause = rootCause.getCause();
         }
         log.error("An unexpected error occurred: {}", rootCause.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + rootCause.getCause());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + rootCause.getMessage());
     }
 
     @ExceptionHandler(ActivityNotFoundException.class)

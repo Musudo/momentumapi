@@ -32,6 +32,11 @@ public class ContactController {
         return new ResponseEntity<>(contactMapper.entityListToDtoList(contactService.findAllByInstitutionName(name)), HttpStatus.OK);
     }
 
+    @GetMapping("/search-contacts/{searchParam}")
+    public ResponseEntity<List<ContactDto>> searchContacts(@PathVariable String searchParam) {
+        return new ResponseEntity<>(contactMapper.entityListToDtoList(contactService.searchContacts(searchParam)), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ContactDto> findContact(@PathVariable UUID id) {
         return new ResponseEntity<>(contactMapper.entityToDto(contactService.findById(id)), HttpStatus.OK);

@@ -44,6 +44,27 @@ public class ContactService {
         return contactRepository.findAll(getUsernameSpec().and(new ContactSpecification(institutionNameCriteria)));
     }
 
+    public List<Contact> searchContacts(String searchParam) {
+        SearchCriteria firstNameCriteria = new SearchCriteria("firstName", ":", searchParam);
+        SearchCriteria lastNameCriteria = new SearchCriteria("lastName", ":", searchParam);
+        SearchCriteria email1Criteria = new SearchCriteria("email1", ":", searchParam);
+        SearchCriteria email2Criteria = new SearchCriteria("email2", ":", searchParam);
+        SearchCriteria phone1Criteria = new SearchCriteria("phone1", ":", searchParam);
+        SearchCriteria phone2Criteria = new SearchCriteria("phone2", ":", searchParam);
+        SearchCriteria jobTitleCriteria = new SearchCriteria("jobTitle", ":", searchParam);
+
+        Specification<Contact> orSpec = Specification
+                .where(new ContactSpecification(firstNameCriteria))
+                .or(new ContactSpecification(lastNameCriteria))
+                .or(new ContactSpecification(email1Criteria))
+                .or(new ContactSpecification(email2Criteria))
+                .or(new ContactSpecification(phone1Criteria))
+                .or(new ContactSpecification(phone2Criteria))
+                .or(new ContactSpecification(jobTitleCriteria));
+
+        return contactRepository.findAll(getUsernameSpec().and(orSpec));
+    }
+
     public Contact findById(UUID id) {
         return contactRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

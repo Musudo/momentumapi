@@ -10,12 +10,9 @@ import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.repository.IContactRepository;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
-import com.musadzeyt.momentumapi.specification.InstitutionSpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
-import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -26,12 +23,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class ActivityService {
     private final IExternalParticipantRepository iExternalParticipantRepository;
-    private final IContactRepository iContactRepository;
     private final IActivityRepository activityRepository;
     private final IActivityMapper activityMapper;
     private final TagService tagService;
@@ -40,7 +35,6 @@ public class ActivityService {
     private final ContactService contactService;
     private final ExternalParticipantService externalParticipantService;
     private final CustomUserDetailsService customUserDetailsService;
-    private final EntityManager entityManager;
 
     private String getUsername() {
         return customUserDetailsService.getCurrentUsername();
@@ -138,12 +132,6 @@ public class ActivityService {
                 .and(new ActivitySpecification(upperBoundCriteria))
                 .and(new ActivitySpecification(lowerBoundCriteria)), sort);
     }
-
-//    public List<Activity> findByInstitutionName(String institutionName) {
-//        SearchCriteria institutionNameCriteria = new SearchCriteria("institution.name", ":", institutionName);
-//
-//        return activityRepository.findAll(getUsernameSpec().and(new ActivitySpecification(institutionNameCriteria)));
-//    }
 
     public Activity findById(UUID id) {
         return activityRepository.findById(id)
@@ -248,11 +236,14 @@ public class ActivityService {
 
     @Transactional
     public void delete(UUID id) {
+        Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
+        activity.getContacts().clear();
+
         activityRepository.deleteById(id);
     }
 
     @Transactional
-    public void deleteContact(UUID activityId, UUID contactId) {
+    public void deleteParticipant(UUID activityId, UUID contactId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(ActivityNotFoundException::new);
         activity.getContacts().removeIf(contact -> contact.getId().equals(contactId));

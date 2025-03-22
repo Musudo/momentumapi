@@ -23,7 +23,7 @@ public class ContactFactory {
         return Contact.builder()
                 .firstName(faker.name().firstName())
                 .lastName(faker.name().lastName())
-                .jobTitle(faker.job().title())
+                .jobTitle(faker.options().option("Director", "Coordinator", "Mentor"))
                 .email1(faker.internet().emailAddress())
                 .phone1(faker.phoneNumber().phoneNumber())
                 .user(userRepository.findByEmail("musa@email.com").orElse(null))
