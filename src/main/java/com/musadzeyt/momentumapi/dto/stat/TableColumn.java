@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ContactTableColumn {
+public class TableColumn {
     private String field;
     private ColumnNameEnum headerName;
     private int minWidth;

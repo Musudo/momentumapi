@@ -1,6 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Contact;
+import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.dto.stat.*;
 import com.musadzeyt.momentumapi.util.StatUtil;
 import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
@@ -21,6 +22,7 @@ public class StatService {
     private final VoiceMemoService voiceMemoService;
     private final ReviewAttachmentService reviewAttachmentService;
     private final ContactService contactService;
+    private final InstitutionService institutionService;
 
     public StatCard createActivitiesStatCard() {
         var data = activityService.findAmountsPerDayForLastMonth();
@@ -277,5 +279,26 @@ public class StatService {
         });
 
         return contactTableData;
+    }
+
+    public List<InstitutionTableData> createInstitutionTableData() {
+        List<InstitutionTableData> institutionTableData = new ArrayList<>();
+        List<Institution> institutions = institutionService.findAll();
+
+        institutions.forEach(institution -> {
+            InstitutionTableData institutionTableDataDto = InstitutionTableData.builder()
+                    .id(institution.getId())
+                    .name(institution.getName())
+                    .countryCode(institution.getCountryCode())
+                    .city(institution.getCity())
+                    .postalCode(institution.getPostalCode())
+                    .city(institution.getCity())
+                    .street(institution.getStreet())
+                    .buildingNumber(institution.getBuildingNumber())
+                    .build();
+            institutionTableData.add(institutionTableDataDto);
+        });
+
+        return institutionTableData;
     }
 }

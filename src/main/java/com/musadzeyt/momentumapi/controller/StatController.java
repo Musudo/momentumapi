@@ -1,9 +1,6 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.stat.BarChart;
-import com.musadzeyt.momentumapi.dto.stat.ContactTableData;
-import com.musadzeyt.momentumapi.dto.stat.LineChart;
-import com.musadzeyt.momentumapi.dto.stat.StatCard;
+import com.musadzeyt.momentumapi.dto.stat.*;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.service.StatService;
 import lombok.AllArgsConstructor;
@@ -58,5 +55,11 @@ public class StatController {
     public ResponseEntity<List<ContactTableData>> createContactTableData() {
         var contactTableData = statService.createContactTableData();
         return new ResponseEntity<>(contactTableData, HttpStatus.OK);
+    }
+
+    @GetMapping("/institutions-table-data")
+    public ResponseEntity<List<InstitutionTableData>> createInstitutionTableData() {
+        var institutionTableData = statService.createInstitutionTableData();
+        return new ResponseEntity<>(institutionTableData, HttpStatus.OK);
     }
 }
