@@ -2,7 +2,6 @@ package com.musadzeyt.momentumapi.dto;
 
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,11 +11,6 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private Set<String> roles;
-    private List<UUID> institutionIds;
-    private List<UUID> activityIds;
-    private List<UUID> reviewIds;
-    private List<UUID> contactIds;
-    private List<UUID> voiceMemoIds;
+    private String createdAt;
 }

@@ -1,10 +1,12 @@
 package com.musadzeyt.momentumapi.controller;
 
+import com.musadzeyt.momentumapi.dto.UserDto;
 import com.musadzeyt.momentumapi.record.UserLoginRequestRecord;
 import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.service.UserService;
 import com.musadzeyt.momentumapi.util.JwtTokenUtil;
+import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +37,8 @@ public class AuthenticationController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
         String token = jwtTokenUtil.generateToken(userDetails);
         Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
-        return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString(), "user", userService.findByEmail(userDetails.getUsername())));
+        UserDto userDto = IUserMapper.INSTANCE.entityToDto(userService.findByEmail(userDetails.getUsername()));
+        return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString(), "user", userDto));
     }
 
     @PostMapping("/register")
