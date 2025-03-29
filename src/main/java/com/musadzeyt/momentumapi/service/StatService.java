@@ -220,47 +220,6 @@ public class StatService {
         return lineChart;
     }
 
-//    public List<ContactTableColumnDto> createContactTableColumnDto() {
-//        List<ContactTableColumnDto> columnDtos = new ArrayList<>();
-//
-//        ContactTableColumnDto firstNameColumn = ContactTableColumnDto.builder()
-//                .field(StringUtil.toCamelCase(ColumnNameEnum.FIRST_NAME.getColumnName()))
-//                .headerName(ColumnNameEnum.FIRST_NAME)
-//                .minWidth(80)
-//                .build();
-//        columnDtos.add(firstNameColumn);
-//
-//        ContactTableColumnDto lastNameColumn = ContactTableColumnDto.builder()
-//                .field(StringUtil.toCamelCase(ColumnNameEnum.LAST_NAME.getColumnName()))
-//                .headerName(ColumnNameEnum.LAST_NAME)
-//                .minWidth(80)
-//                .build();
-//        columnDtos.add(lastNameColumn);
-//
-//        ContactTableColumnDto emailColumnDto = ContactTableColumnDto.builder()
-//                .field(StringUtil.toCamelCase(ColumnNameEnum.EMAIL.getColumnName()))
-//                .headerName(ColumnNameEnum.EMAIL)
-//                .minWidth(80)
-//                .build();
-//        columnDtos.add(emailColumnDto);
-//
-//        ContactTableColumnDto phoneColumnDto = ContactTableColumnDto.builder()
-//                .field(StringUtil.toCamelCase(ColumnNameEnum.PHONE.getColumnName()))
-//                .headerName(ColumnNameEnum.PHONE)
-//                .minWidth(80)
-//                .build();
-//        columnDtos.add(phoneColumnDto);
-//
-//        ContactTableColumnDto jobTitleColumnDto = ContactTableColumnDto.builder()
-//                .field(StringUtil.toCamelCase(ColumnNameEnum.JOB_TITLE.getColumnName()))
-//                .headerName(ColumnNameEnum.JOB_TITLE)
-//                .minWidth(80)
-//                .build();
-//        columnDtos.add(jobTitleColumnDto);
-//
-//        return columnDtos;
-//    }
-
     public List<ContactTableData> createContactTableData() {
         List<ContactTableData> contactTableData = new ArrayList<>();
         List<Contact> contacts = contactService.findAll();

@@ -11,6 +11,7 @@ import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ActivityService {
@@ -138,13 +140,19 @@ public class ActivityService {
 
     @Transactional
     public Activity create(ActivityDto activityDto) {
+        if (activityDto.getEmailSentAt() == "") {
+            activityDto.setEmailSentAt(null);
+        }
+
         Activity activity = activityMapper.dtoToEntity(activityDto);
 
         User user = userService.findByEmail(getUsername());
         activity.setUser(user);
 
-        Institution institution = institutionService.findByName(activityDto.getInstitutionName());
-        activity.setInstitution(institution);
+        if (activityDto.getInstitutionName() != "") {
+            Institution institution = institutionService.findByName(activityDto.getInstitutionName());
+            activity.setInstitution(institution);
+        }
 
         List<Tag> tags = new ArrayList<>();
         activityDto.getTagIds().forEach(id -> {
@@ -153,7 +161,7 @@ public class ActivityService {
         });
         activity.setTags(tags);
 
-        if (activityDto.getContactIds() != null) {
+        if (activityDto.getContactIds() != null && !activityDto.getContactIds().isEmpty()) {
             List<Contact> contacts = new ArrayList<>();
             activityDto.getContactIds().forEach(id -> {
                 Contact contact = contactService.findById(id);
@@ -169,10 +177,6 @@ public class ActivityService {
                 externalParticipants.add(externalParticipant);
             });
             activity.setExternalParticipants(externalParticipants);
-        }
-
-        if (activityDto.getEmailSentAt() != null) {
-
         }
 
         return activityRepository.save(activity);

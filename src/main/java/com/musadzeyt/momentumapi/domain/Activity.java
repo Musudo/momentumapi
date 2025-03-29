@@ -48,7 +48,8 @@ public class Activity {
     @ManyToOne
     @JoinColumn(updatable = false)
     private User user;
-    @ManyToOne()
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "institution_id", nullable = true)
     private Institution institution;
     @ManyToMany
     @JoinTable(

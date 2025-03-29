@@ -28,8 +28,8 @@ public class DataSeeder {
     private final ITaskRepository taskRepository;
     private final IReviewRepository reviewRepository;
     private final IVoiceMemoRepository voiceMemoRepository;
-    private final IReviewEmailRepository emailRepository;
-    private final IReviewAttachmentRepository attachmentRepository;
+    private final IReviewEmailRepository reviewEmailRepository;
+    private final IReviewAttachmentRepository reviewAttachmentRepository;
     private final IUserRepository userRepository;
 
     public void seed() {
@@ -62,11 +62,11 @@ public class DataSeeder {
         List<Review> reviews = reviewGenerator.createReviews(30);
         reviewRepository.saveAll(reviews);
 
-        List<ReviewEmail> emails = reviewEmailGenerator.createEmails(30);
-        emailRepository.saveAll(emails);
+        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(30);
+        reviewEmailRepository.saveAll(reviewEmails);
 
-        List<ReviewAttachment> attachments = reviewAttachmentGenerator.createAttachments(30);
-        attachmentRepository.saveAll(attachments);
+        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(30);
+        reviewAttachmentRepository.saveAll(reviewAttachments);
 
         List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(30);
         voiceMemoRepository.saveAll(voiceMemos);
@@ -75,8 +75,8 @@ public class DataSeeder {
     public void eraseData() {
         // Order deletions to handle potential foreign key constraints
         voiceMemoRepository.deleteAll();
-        attachmentRepository.deleteAll();
-        emailRepository.deleteAll();
+        reviewAttachmentRepository.deleteAll();
+        reviewEmailRepository.deleteAll();
         reviewRepository.deleteAll();
         taskRepository.deleteAll();
         contactRepository.deleteAll();
