@@ -7,11 +7,9 @@ import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.ActivityNotFoundException;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
-import com.musadzeyt.momentumapi.repository.IContactRepository;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -148,7 +146,7 @@ public class ActivityService {
         Institution institution = institutionService.findByName(activityDto.getInstitutionName());
         activity.setInstitution(institution);
 
-        Set<Tag> tags = new HashSet<>();
+        List<Tag> tags = new ArrayList<>();
         activityDto.getTagIds().forEach(id -> {
             Tag tag = tagService.findById(id);
             tags.add(tag);
@@ -156,7 +154,7 @@ public class ActivityService {
         activity.setTags(tags);
 
         if (activityDto.getContactIds() != null) {
-            Set<Contact> contacts = new HashSet<>();
+            List<Contact> contacts = new ArrayList<>();
             activityDto.getContactIds().forEach(id -> {
                 Contact contact = contactService.findById(id);
                 contacts.add(contact);
@@ -165,7 +163,7 @@ public class ActivityService {
         }
 
         if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
-            Set<ExternalParticipant> externalParticipants = new HashSet<>();
+            List<ExternalParticipant> externalParticipants = new ArrayList<>();
             activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
                 ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
                 externalParticipants.add(externalParticipant);
@@ -174,7 +172,7 @@ public class ActivityService {
         }
 
         if (activityDto.getEmailSentAt() != null) {
-            
+
         }
 
         return activityRepository.save(activity);
@@ -207,7 +205,7 @@ public class ActivityService {
 
         activityMapper.update(activityDto, activity);
 
-        Set<Tag> currentTags = activity.getTags();
+        List<Tag> currentTags = activity.getTags();
         Set<Tag> newTags = new HashSet<>(tagService.findAllById(activityDto.getTagIds()));
 
         currentTags.clear();

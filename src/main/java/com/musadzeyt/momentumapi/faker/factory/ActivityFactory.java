@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -27,27 +27,27 @@ public class ActivityFactory {
      *
      * @return a new Activity instance with default values.
      */
-    public Activity create(ActivityTypeEnum activityType) {
+    public Activity create(ActivityTypeEnum activityType, int atMost, int minimum) {
+        LocalDateTime startTime = LocalDateTime.parse(
+                faker.date().future(atMost, minimum, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        );
+        Random random = new Random();
+
         return Activity.builder()
                 .subject(faker.name().title())
-                .startTime(
-                        LocalDateTime.parse(
-                                faker.date().future(30,0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                        )
-                )
-                .endTime(
-                        LocalDateTime.parse(
-                                faker.date().future(30,0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
-                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                        )
-                )
+                .startTime(startTime)
+                .endTime(startTime.plusHours(1))
                 .externalNote(faker.lorem().paragraph(2))
                 .internalNote(faker.lorem().paragraph(2))
                 .type(activityType)
-                .tags(Set.of(tagRepository.findAll().getFirst()))
-                .user(userRepository.findByEmail("musa@email.com").orElse(null))
-                .institution(institutionRepository.findAll().getFirst())
+                .tags(
+                        faker.options().option(tagRepository.findAll().subList(0, 3))
+                )
+                .user(userRepository.findByEmail("guest@email.com").orElse(null))
+                .institution(
+                        faker.options().option(institutionRepository.findAll()).get(random.nextInt(5))
+                )
                 .build();
     }
 

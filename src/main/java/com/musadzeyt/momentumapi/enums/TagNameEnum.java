@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TagNameEnum {
-    WORKSHOP("workshop"),
-    TRAINING("training"),
+    PERSONAL("personal"),
+    WORK("work"),
     FINANCE("finance"),
-    SALE("sale"),
-    NETWORKING("networking"),
-    STAKEHOLDER("stakeholder");
+    TRAINING("training"),
+    FAMILY("family"),
+    EDUCATION("education");
 
     private final String name;
 }

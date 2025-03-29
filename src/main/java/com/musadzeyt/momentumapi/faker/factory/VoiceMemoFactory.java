@@ -18,7 +18,7 @@ public class VoiceMemoFactory {
     public VoiceMemo create() {
         return VoiceMemo.builder()
                 .path("/test/path")
-                .user(userRepository.findByEmail("musa@email.com").orElse(null))
+                .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .build();
     }
 

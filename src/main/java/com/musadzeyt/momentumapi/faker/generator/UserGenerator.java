@@ -25,4 +25,12 @@ public class UserGenerator {
                 .mapToObj(i -> userFactory.create())
                 .collect(Collectors.toList());
     }
+
+    public User createUser() {
+        return userFactory.create();
+    }
+
+    public User createAdmin() {
+        return userFactory.createAdmin();
+    }
 }

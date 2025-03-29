@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 @Component
 @AllArgsConstructor
 public class ReviewFactory {
@@ -20,11 +22,13 @@ public class ReviewFactory {
      * @return a new Review instance with default values.
      */
     public Review create() {
+        Random random = new Random();
+
         return Review.builder()
                 .title(faker.book().title())
                 .content(faker.lorem().sentence())
-                .activity(activityRepository.findAll().getFirst())
-                .user(userRepository.findByEmail("musa@email.com").orElse(null))
+                .activity(activityRepository.findAll().get(random.nextInt(5)))
+                .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .build();
     }
 

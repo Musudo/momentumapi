@@ -16,13 +16,19 @@ public class TagGenerator {
 
     public List<Tag> createTags() {
         List<Tag> tags = new ArrayList<>();
-        Tag workshopTag = tagFactory.create(TagNameEnum.WORKSHOP);
-        Tag networkingTag = tagFactory.create(TagNameEnum.NETWORKING);
+        Tag personalTag = tagFactory.create(TagNameEnum.PERSONAL);
+        Tag workTag = tagFactory.create(TagNameEnum.WORK);
         Tag financeTag = tagFactory.create(TagNameEnum.FINANCE);
+        Tag educationTag = tagFactory.create(TagNameEnum.EDUCATION);
+        Tag familyTag = tagFactory.create(TagNameEnum.FAMILY);
+        Tag trainingTag = tagFactory.create(TagNameEnum.TRAINING);
 
-        tags.add(workshopTag);
-        tags.add(networkingTag);
+        tags.add(personalTag);
+        tags.add(workTag);
         tags.add(financeTag);
+        tags.add(educationTag);
+        tags.add(familyTag);
+        tags.add(trainingTag);
 
         return tags;
     }

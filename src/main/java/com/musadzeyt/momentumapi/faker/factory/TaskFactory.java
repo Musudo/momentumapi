@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 @Component
 @AllArgsConstructor
 public class TaskFactory {
@@ -20,11 +22,13 @@ public class TaskFactory {
      * @return a new Task instance with default values.
      */
     public Task create() {
+        Random random = new Random();
+
         return Task.builder()
-                .description(faker.options().option("testTask1", "testTask2", "testTask3", "testTask4"))
+                .description(faker.options().option("testTask1", "testTask2", "testTask3"))
                 .completed(faker.bool().bool())
-                .activity(activityRepository.findAll().getFirst())
-                .user(userRepository.findByEmail("musa@email.com").orElse(null))
+                .activity(activityRepository.findAll().get(random.nextInt(5)))
+                .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .build();
     }
 

@@ -8,7 +8,6 @@ import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -19,14 +18,38 @@ public class ActivityGenerator {
     private final Faker faker;
 
     /**
-     * Creates a list of activities using the ActivityFactory.
+     * Creates a list of activities for today using the ActivityFactory.
      *
      * @param count the number of activities to generate.
-     * @return a List of generated Activity objects.
+     * @return a List of generated Activity objects for today.
      */
-    public List<Activity> createActivities(int count) {
+    public List<Activity> createActivitiesToday(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values())))
+                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 1, 0))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a list of activities for next seven days using the ActivityFactory.
+     *
+     * @param count the number of activities to generate.
+     * @return a List of generated Activity objects for next seven days.
+     */
+    public List<Activity> createActivitiesNextSevenDays(int count) {
+        return IntStream.range(0, count)
+                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 8, 1))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a list of activities for next thirty days using the ActivityFactory.
+     *
+     * @param count the number of activities to generate.
+     * @return a List of generated Activity objects for next thirty days.
+     */
+    public List<Activity> createActivitiesNextThirtyDays(int count) {
+        return IntStream.range(0, count)
+                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 38, 8))
                 .collect(Collectors.toList());
     }
 }

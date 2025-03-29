@@ -17,10 +17,20 @@ public class UserFactory {
      */
     public User create() {
         return User.builder()
-                .firstName(faker.name().firstName())
-                .lastName(faker.name().lastName())
-                .email(faker.internet().emailAddress())
+                .firstName("Guest")
+                .lastName("User")
+                .email("guest@email.com")
                 .roles(Set.of("ROLE_USER"))
+                .password("1Password")
+                .build();
+    }
+
+    public User createAdmin() {
+        return User.builder()
+                .firstName("Musa")
+                .lastName("Tashtamirov")
+                .email("musa@gmail.com")
+                .roles(Set.of("ROLE_USER","ROLE_ADMIN"))
                 .password("1Password")
                 .build();
     }
