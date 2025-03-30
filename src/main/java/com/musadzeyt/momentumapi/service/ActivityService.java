@@ -240,8 +240,20 @@ public class ActivityService {
     public void delete(UUID id) {
         Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
         activity.getContacts().clear();
+        activity.getExternalParticipants().clear();
+        activity.getTags().clear();
+        activity.setInstitution(null);
+        activity.setUser(null);
 
         activityRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAll() {
+        List<Activity> activities = activityRepository.findAll();
+        for (Activity activity : activities) {
+            delete(activity.getId());
+        }
     }
 
     @Transactional

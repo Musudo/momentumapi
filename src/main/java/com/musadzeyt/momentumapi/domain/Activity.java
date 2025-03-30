@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -41,35 +40,41 @@ public class Activity {
     private String internalNote;
     private String externalNote;
     private LocalDateTime emailSentAt;
-    @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @ManyToOne
     @JoinColumn(updatable = false)
     private User user;
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "institution_id", nullable = true)
+    @ManyToOne
+    @JoinColumn
     private Institution institution;
     @ManyToMany
     @JoinTable(
-            name = "activities_tags",
+            name = "activity_tag",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name = "activities_contacts",
+            name = "activity_contact",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_id")
     )
     private List<Contact> contacts;
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name = "activities_external_participants",
+            name = "activity_external_participant",
             joinColumns = @JoinColumn(name = "activity_id"),
             inverseJoinColumns = @JoinColumn(name = "external_participant_id")
     )
     private List<ExternalParticipant> externalParticipants;
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 }

@@ -4,6 +4,10 @@ import com.musadzeyt.momentumapi.domain.Institution;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class InstitutionFactory {
     private final Faker faker = new Faker();
@@ -22,6 +26,10 @@ public class InstitutionFactory {
                 .street(faker.address().streetName())
                 .buildingNumber(faker.address().buildingNumber())
                 .postbox(faker.address().mailBox())
+                .createdAt(
+                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
                 .build();
     }
 

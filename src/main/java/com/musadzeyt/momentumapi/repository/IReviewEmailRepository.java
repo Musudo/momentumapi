@@ -16,8 +16,8 @@ public interface IReviewEmailRepository extends JpaRepository<ReviewEmail, UUID>
     List<ReviewEmail> findAllForIntervalOfDays(@Param("days") int days);
 
     @Query(value = """
+            -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
             WITH RECURSIVE dates AS (
-              -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
               SELECT CURDATE() - INTERVAL :days DAY AS dt
               UNION ALL
               SELECT dt + INTERVAL 1 DAY
@@ -30,8 +30,7 @@ public interface IReviewEmailRepository extends JpaRepository<ReviewEmail, UUID>
             FROM dates
             LEFT JOIN review_email e ON DATE(e.created_at) = dates.dt
             LEFT JOIN review r ON e.review_id = r.id
-            LEFT JOIN user u ON r.user_id = u.id
-            WHERE u.email = :email
+            LEFT JOIN user u ON r.user_id = u.id AND u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)

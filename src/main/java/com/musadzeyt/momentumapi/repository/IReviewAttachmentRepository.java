@@ -13,8 +13,8 @@ import java.util.UUID;
 @Repository
 public interface IReviewAttachmentRepository extends JpaRepository<ReviewAttachment, UUID> {
     @Query(value = """
+            -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
             WITH RECURSIVE dates AS (
-              -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
               SELECT CURDATE() - INTERVAL :days DAY AS dt
               UNION ALL
               SELECT dt + INTERVAL 1 DAY
@@ -27,8 +27,7 @@ public interface IReviewAttachmentRepository extends JpaRepository<ReviewAttachm
             FROM dates
             LEFT JOIN review_attachment a ON DATE(a.created_at) = dates.dt
             LEFT JOIN review r ON a.review_id = r.id
-            LEFT JOIN user u ON r.user_id = u.id
-            WHERE u.email = :email
+            LEFT JOIN user u ON r.user_id = u.id AND u.email = :email
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)

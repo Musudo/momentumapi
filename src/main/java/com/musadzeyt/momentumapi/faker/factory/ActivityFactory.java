@@ -48,6 +48,10 @@ public class ActivityFactory {
                 .institution(
                         faker.options().option(institutionRepository.findAll()).get(random.nextInt(5))
                 )
+                .createdAt(
+                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
                 .build();
     }
 

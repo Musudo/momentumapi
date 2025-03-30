@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
+
 @Component
 @AllArgsConstructor
 public class TagFactory {
@@ -19,6 +23,10 @@ public class TagFactory {
     public Tag create(TagNameEnum tagName) {
         return Tag.builder()
                 .name(tagName)
+                .createdAt(
+                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
                 .build();
     }
 

@@ -7,7 +7,10 @@ import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @AllArgsConstructor
@@ -32,6 +35,10 @@ public class ContactFactory {
                 .phone1(faker.phoneNumber().phoneNumber())
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .institution(institutionRepository.findAll().get(random.nextInt(5)))
+                .createdAt(
+                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                )
                 .build();
     }
 

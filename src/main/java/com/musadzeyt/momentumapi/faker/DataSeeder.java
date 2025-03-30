@@ -3,6 +3,8 @@ package com.musadzeyt.momentumapi.faker;
 import com.musadzeyt.momentumapi.domain.*;
 import com.musadzeyt.momentumapi.faker.generator.*;
 import com.musadzeyt.momentumapi.repository.*;
+import com.musadzeyt.momentumapi.service.ActivityService;
+import com.musadzeyt.momentumapi.service.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,9 @@ public class DataSeeder {
     private final IReviewAttachmentRepository reviewAttachmentRepository;
     private final IUserRepository userRepository;
 
+    private final ActivityService activityService;
+    private final ReviewService reviewService;
+
     public void seed() {
         // Order creations to handle potential foreign key constraints
 
@@ -59,13 +64,13 @@ public class DataSeeder {
         List<Task> tasks = taskGenerator.createTasks(30);
         taskRepository.saveAll(tasks);
 
-        List<Review> reviews = reviewGenerator.createReviews(30);
+        List<Review> reviews = reviewGenerator.createReviews(60);
         reviewRepository.saveAll(reviews);
 
-        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(30);
+        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(60);
         reviewEmailRepository.saveAll(reviewEmails);
 
-        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(30);
+        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(60);
         reviewAttachmentRepository.saveAll(reviewAttachments);
 
         List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(30);
@@ -73,15 +78,15 @@ public class DataSeeder {
     }
 
     public void eraseData() {
-        // Order deletions to handle potential foreign key constraints
-        voiceMemoRepository.deleteAll();
-        reviewAttachmentRepository.deleteAll();
-        reviewEmailRepository.deleteAll();
-        reviewRepository.deleteAll();
+        // Order deletions correctly to handle potential foreign key constraints
         taskRepository.deleteAll();
-        contactRepository.deleteAll();
-        activityRepository.deleteAll();
+        voiceMemoRepository.deleteAll();
+        reviewEmailRepository.deleteAll();
+        reviewAttachmentRepository.deleteAll();
+        reviewService.deleteAll();
+        activityService.deleteAll();
         tagRepository.deleteAll();
+        contactRepository.deleteAll();
         institutionRepository.deleteAll();
         userRepository.deleteAll();
     }

@@ -14,8 +14,8 @@ import java.util.UUID;
 @Repository
 public interface IReviewRepository extends JpaRepository<Review, UUID>, JpaSpecificationExecutor<Review> {
     @Query(value = """
+            -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
             WITH RECURSIVE dates AS (
-              -- e.g. if you go for 30 days start at 29 days ago (so including today it gives 30 days)
               SELECT CURDATE() - INTERVAL :days DAY AS dt
               UNION ALL
               SELECT dt + INTERVAL 1 DAY
@@ -27,8 +27,7 @@ public interface IReviewRepository extends JpaRepository<Review, UUID>, JpaSpeci
               COUNT(r.id) AS amount
             FROM dates
             LEFT JOIN review r ON DATE(r.created_at) = dates.dt
-            LEFT JOIN user u ON r.user_id = u.id
-            WHERE u.email = :email OR u.email IS NULL
+            LEFT JOIN user u ON r.user_id = u.id AND u.email = :email OR u.email IS NULL
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)
