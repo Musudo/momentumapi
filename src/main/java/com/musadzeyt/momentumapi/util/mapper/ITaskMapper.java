@@ -9,17 +9,19 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {IActivityMapper.class, IUserMapper.class})
 public interface ITaskMapper {
     ITaskMapper INSTANCE = Mappers.getMapper(ITaskMapper.class);
 
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "activityId", source = "activity.id")
+    @Mapping(target = "userId", source = "user.id")
     TaskDto entityToDto(Task task);
 
-    @Mapping(target = "id", ignore = true) // This should be generated, so ignore
-    @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
-    @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "activity.id", source = "activityId")
+    @Mapping(target = "user.id", source = "userId")
     Task dtoToEntity(TaskDto taskDto);
 
     List<TaskDto> entityListToDtoList(List<Task> list);
@@ -29,5 +31,7 @@ public interface ITaskMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "activity.id", source = "activityId")
+    @Mapping(target = "user.id", source = "userId")
     Task update(TaskDto taskDto, @MappingTarget Task tag);
 }

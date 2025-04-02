@@ -38,6 +38,7 @@ public class User {
     @Email
     @Column(unique = true, nullable = false)
     private String email;
+    @Builder.Default
     @Column(name = "roles", columnDefinition = "TEXT")
     @Convert(converter = RolesConverter.class)
     private Set<String> roles = new HashSet<>(Set.of("ROLE_USER"));

@@ -20,6 +20,7 @@ public interface IReviewAttachmentMapper {
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
+    @Mapping(target = "review", ignore = true)
     ReviewAttachment dtoToEntity(ReviewAttachmentDto attachmentDto);
 
     List<ReviewAttachmentDto> entityListToDtoList(List<ReviewAttachment> list);
@@ -29,5 +30,6 @@ public interface IReviewAttachmentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "review", ignore = true)
     ReviewAttachment update(ReviewAttachmentDto reviewAttachmentDto, @MappingTarget ReviewAttachment reviewAttachment);
 }

@@ -9,18 +9,19 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {IUserMapper.class, IInstitutionMapper.class})
 public interface IContactMapper {
     IContactMapper INSTANCE = Mappers.getMapper(IContactMapper.class);
 
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "institutionId", source = "institution.id")
     ContactDto entityToDto(Contact contact);
 
-    @Mapping(target = "id", ignore = true) // This should be generated, so ignore
-    @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
-    @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "institution.id", source = "institutionId")
     Contact dtoToEntity(ContactDto contactDto);
 
     List<ContactDto> entityListToDtoList(List<Contact> list);
@@ -30,5 +31,7 @@ public interface IContactMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "institution.id", source = "institutionId")
     Contact update(ContactDto contactDto, @MappingTarget Contact contact);
 }

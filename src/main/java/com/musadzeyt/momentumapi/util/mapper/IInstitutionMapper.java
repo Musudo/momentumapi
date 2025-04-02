@@ -14,6 +14,7 @@ public interface IInstitutionMapper {
     IInstitutionMapper INSTANCE = Mappers.getMapper(IInstitutionMapper.class);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "user", ignore = true)
     InstitutionDto entityToDto(Institution institution);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore

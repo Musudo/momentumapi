@@ -19,6 +19,7 @@ public interface IUserMapper {
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
+    @Mapping(target = "password", ignore = true) // This should be generated, so ignore
     User dtoToEntity(UserDto userDto);
 
     List<UserDto> entityListToDtoList(List<User> list);
@@ -28,5 +29,6 @@ public interface IUserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "password", ignore = true)
     User update(UserDto userDto, @MappingTarget User user);
 }
