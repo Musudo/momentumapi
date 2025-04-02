@@ -13,26 +13,26 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ConfigurationProperties(prefix = "messaging")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+//@Configuration
+//@ConfigurationProperties(prefix = "messaging")
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@Getter
+//@Setter
 public class CloudAmqpConfig {
-    @Autowired
-    private ConnectionFactory connectionFactory;
-    private String queueName;
-
-    @Bean
-    public RabbitTemplate rabbitTemplate() {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(new Jackson2JsonMessageConverter());
-        return template;
-    }
-
-    @Bean
-    public Queue myQueue() {
-        return new Queue(queueName, true);
-    }
+//    @Autowired
+//    private ConnectionFactory connectionFactory;
+//    private String queueName;
+//
+//    @Bean
+//    public RabbitTemplate rabbitTemplate() {
+//        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+//        template.setMessageConverter(new Jackson2JsonMessageConverter());
+//        return template;
+//    }
+//
+//    @Bean
+//    public Queue myQueue() {
+//        return new Queue(queueName, true);
+//    }
 }
