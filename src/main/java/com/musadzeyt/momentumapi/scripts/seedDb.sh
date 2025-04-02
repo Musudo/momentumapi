@@ -11,17 +11,12 @@ echo "3. Repopulate DB"
 read -p "Enter choice [1-3]: " choice
 
 case $choice in
-  1)
-    docker-compose run --rm app --populate-db
-    ;;
-  2)
-    docker-compose run --rm app --depopulate-db
-    ;;
-  3)
-    docker-compose run --rm app --repopulate-db
-    ;;
-  *)
-    echo "Invalid choice. You had one job."
-    exit 1
-    ;;
+  1) docker-compose run --rm app --populate-db ;;
+  2) docker-compose run --rm app --depopulate-db ;;
+  3) docker-compose run --rm app --repopulate-db ;;
+# to run commands directly via java
+#  1) java -jar app.jar --server.port=9000 --populate-db ;;
+#  2) java -jar app.jar --server.port=9000 --depopulate-db ;;
+#  3) java -jar app.jar --server.port=9000 --repopulate-db ;;
+  *) echo "Invalid choice. You had one job." exit 1 ;;
 esac

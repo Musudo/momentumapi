@@ -51,29 +51,29 @@ public class DataSeeder {
         List<Tag> tags = tagGenerator.createTags();
         tagRepository.saveAll(tags);
 
-        List<Activity> activitiesToday = activityGenerator.createActivitiesToday(3);
+        List<Activity> activitiesToday = activityGenerator.createActivitiesToday(2);
         activityRepository.saveAll(activitiesToday);
-        List<Activity> activitiesNextSevenDays = activityGenerator.createActivitiesNextSevenDays(5);
+        List<Activity> activitiesNextSevenDays = activityGenerator.createActivitiesNextSevenDays(4);
         activityRepository.saveAll(activitiesNextSevenDays);
-        List<Activity> activitiesNextThirtyDays = activityGenerator.createActivitiesNextThirtyDays(15);
+        List<Activity> activitiesNextThirtyDays = activityGenerator.createActivitiesNextThirtyDays(5);
         activityRepository.saveAll(activitiesNextThirtyDays);
 
-        List<Contact> contacts = contactGenerator.createContacts(30);
+        List<Contact> contacts = contactGenerator.createContacts(15);
         contactRepository.saveAll(contacts);
 
-        List<Task> tasks = taskGenerator.createTasks(30);
+        List<Task> tasks = taskGenerator.createTasks(5);
         taskRepository.saveAll(tasks);
 
-        List<Review> reviews = reviewGenerator.createReviews(60);
+        List<Review> reviews = reviewGenerator.createReviews(30);
         reviewRepository.saveAll(reviews);
 
-        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(60);
+        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(30);
         reviewEmailRepository.saveAll(reviewEmails);
 
-        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(60);
+        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(30);
         reviewAttachmentRepository.saveAll(reviewAttachments);
 
-        List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(30);
+        List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(15);
         voiceMemoRepository.saveAll(voiceMemos);
     }
 

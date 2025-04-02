@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @AllArgsConstructor
 public class EmailController {
-//    private final EmailService emailService;
-//    private final CloudAmqpService cloudAmqpService;
+    private final EmailService emailService;
+    private final CloudAmqpService cloudAmqpService;
 
-//    @PostMapping("")
-//    public ResponseEntity<String> sendActivityConfirmationEmail() {
-//        EmailDto emailDto = new EmailDto();
-//        emailDto.setSubject("TEST123");
-//        cloudAmqpService.sendEmailMessage(emailDto);
-//        return new ResponseEntity<>("", HttpStatus.OK);
-//    }
+    @PostMapping("")
+    public ResponseEntity<String> sendActivityConfirmationEmail() {
+        EmailDto emailDto = new EmailDto();
+        emailDto.setSubject("TEST123");
+        cloudAmqpService.sendEmailMessage(emailDto);
+        return new ResponseEntity<>("", HttpStatus.OK);
+    }
 
 }
