@@ -1,0 +1,54 @@
+# === Base Project Files ===
+HELP.md
+
+# === IDE and Editor Files ===
+
+## IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+## Eclipse / Spring Tool Suite (STS)
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+## NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+## VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# === Environment Files ===
+.env
+.env.*
+!.env.template
+
+# === Gradle Stuff ===
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# === Build Artifacts ===
+# Ignore everything in build EXCEPT the JAR we need for Docker
+build/
+!build/libs/
+!build/libs/*SNAPSHOT.jar
+!build/libs/momentumapi.jar
+
+# === Other Junk ===
+bin/
+out/
