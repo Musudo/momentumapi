@@ -1,6 +1,8 @@
 package com.musadzeyt.momentumapi.faker.factory;
 
 import com.musadzeyt.momentumapi.domain.Activity;
+import com.musadzeyt.momentumapi.domain.Institution;
+import com.musadzeyt.momentumapi.domain.Tag;
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
 import com.musadzeyt.momentumapi.repository.ITagRepository;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -32,7 +34,8 @@ public class ActivityFactory {
                 faker.date().future(atMost, minimum, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         );
-        Random random = new Random();
+        List<Institution> institutions = institutionRepository.findAll();
+        List<Tag> tags = tagRepository.findAll();
 
         return Activity.builder()
                 .subject(faker.name().title())
@@ -41,13 +44,9 @@ public class ActivityFactory {
                 .externalNote(faker.lorem().paragraph(2))
                 .internalNote(faker.lorem().paragraph(2))
                 .type(activityType)
-                .tags(
-                        faker.options().option(tagRepository.findAll().subList(0, 3))
-                )
+                .tags(faker.options().option(tags.subList(0, tags.size() - 1)))
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
-                .institution(
-                        faker.options().option(institutionRepository.findAll()).get(random.nextInt(5))
-                )
+                .institution(faker.options().option(institutions).getFirst())
                 .createdAt(
                         LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -25,12 +24,10 @@ public class ReviewFactory {
      * @return a new Review instance with default values.
      */
     public Review create() {
-        Random random = new Random();
-
         return Review.builder()
                 .title(faker.book().title())
                 .content(faker.lorem().sentence())
-                .activity(activityRepository.findAll().get(random.nextInt(5)))
+                .activity(activityRepository.findAll().getFirst())
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .createdAt(
                         LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),

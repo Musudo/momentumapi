@@ -34,7 +34,6 @@ public interface IActivityMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "institution.id", source = "institutionId")
-        // You might need custom mapping for tag/contact/participant collections
     Activity dtoToEntity(ActivityDto activityDto);
 
     List<ActivityDto> entityListToDtoList(List<Activity> list);

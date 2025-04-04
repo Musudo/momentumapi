@@ -140,7 +140,7 @@ public class ActivityService {
 
     @Transactional
     public Activity create(ActivityDto activityDto) {
-        if (activityDto.getEmailSentAt() == "") {
+        if (!activityDto.getEmailSentAt().isEmpty()) {
             activityDto.setEmailSentAt(null);
         }
 
@@ -149,7 +149,7 @@ public class ActivityService {
         User user = userService.findByEmail(getUsername());
         activity.setUser(user);
 
-        if (activityDto.getInstitutionName() != "") {
+        if (!activityDto.getInstitutionName().isEmpty()) {
             Institution institution = institutionService.findByName(activityDto.getInstitutionName());
             activity.setInstitution(institution);
         }
@@ -161,7 +161,7 @@ public class ActivityService {
         });
         activity.setTags(tags);
 
-        if (activityDto.getContactIds() != null && !activityDto.getContactIds().isEmpty()) {
+        if (!activityDto.getContactIds().isEmpty()) {
             List<Contact> contacts = new ArrayList<>();
             activityDto.getContactIds().forEach(id -> {
                 Contact contact = contactService.findById(id);
@@ -170,7 +170,7 @@ public class ActivityService {
             activity.setContacts(contacts);
         }
 
-        if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
+        if (!activityDto.getExternalParticipants().isEmpty()) {
             List<ExternalParticipant> externalParticipants = new ArrayList<>();
             activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
                 ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
@@ -209,11 +209,12 @@ public class ActivityService {
 
         activityMapper.update(activityDto, activity);
 
-        List<Tag> currentTags = activity.getTags();
-        Set<Tag> newTags = new HashSet<>(tagService.findAllById(activityDto.getTagIds()));
-
-        currentTags.clear();
-        currentTags.addAll(newTags);
+        List<Tag> tags = new ArrayList<>();
+        activityDto.getTagIds().forEach(tagId -> {
+            Tag tag = tagService.findById(tagId);
+            tags.add(tag);
+        });
+        activity.setTags(tags);
 
         return activityRepository.save(activity);
     }

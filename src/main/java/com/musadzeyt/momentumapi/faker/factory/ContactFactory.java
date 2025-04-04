@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -25,8 +24,6 @@ public class ContactFactory {
      * @return a new Contact instance with default values.
      */
     public Contact create() {
-        Random random = new Random();
-
         return Contact.builder()
                 .firstName(faker.name().firstName())
                 .lastName(faker.name().lastName())
@@ -34,7 +31,7 @@ public class ContactFactory {
                 .email1(faker.internet().emailAddress())
                 .phone1(faker.phoneNumber().phoneNumber())
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
-                .institution(institutionRepository.findAll().get(random.nextInt(5)))
+                .institution(faker.options().option(institutionRepository.findAll()).getFirst())
                 .createdAt(
                         LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

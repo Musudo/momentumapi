@@ -45,35 +45,35 @@ public class DataSeeder {
         User admin = userGenerator.createAdmin();
         userRepository.save(admin);
 
-        List<Institution> institutions = institutionGenerator.createInstitutions(2);
+        List<Institution> institutions = institutionGenerator.createInstitutions(3);
         institutionRepository.saveAll(institutions);
 
         List<Tag> tags = tagGenerator.createTags();
         tagRepository.saveAll(tags);
 
-        List<Activity> activitiesToday = activityGenerator.createActivitiesToday(1);
+        List<Activity> activitiesToday = activityGenerator.createActivitiesToday(3);
         activityRepository.saveAll(activitiesToday);
-        List<Activity> activitiesNextSevenDays = activityGenerator.createActivitiesNextSevenDays(3);
+        List<Activity> activitiesNextSevenDays = activityGenerator.createActivitiesNextSevenDays(5);
         activityRepository.saveAll(activitiesNextSevenDays);
-        List<Activity> activitiesNextThirtyDays = activityGenerator.createActivitiesNextThirtyDays(3);
+        List<Activity> activitiesNextThirtyDays = activityGenerator.createActivitiesNextThirtyDays(10);
         activityRepository.saveAll(activitiesNextThirtyDays);
 
-        List<Contact> contacts = contactGenerator.createContacts(5);
+        List<Contact> contacts = contactGenerator.createContacts(30);
         contactRepository.saveAll(contacts);
 
 //        List<Task> tasks = taskGenerator.createTasks(4);
 //        taskRepository.saveAll(tasks);
 
-        List<Review> reviews = reviewGenerator.createReviews(10);
+        List<Review> reviews = reviewGenerator.createReviews(60);
         reviewRepository.saveAll(reviews);
 
-        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(10);
+        List<ReviewEmail> reviewEmails = reviewEmailGenerator.createEmails(60);
         reviewEmailRepository.saveAll(reviewEmails);
 
-        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(10);
+        List<ReviewAttachment> reviewAttachments = reviewAttachmentGenerator.createAttachments(60);
         reviewAttachmentRepository.saveAll(reviewAttachments);
 
-        List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(10);
+        List<VoiceMemo> voiceMemos = voiceMemoGenerator.createVoiceMemos(30);
         voiceMemoRepository.saveAll(voiceMemos);
     }
 
