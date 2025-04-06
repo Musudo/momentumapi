@@ -3,7 +3,7 @@ package com.musadzeyt.momentumapi.service;
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.dto.ContactDto;
+import com.musadzeyt.momentumapi.dto.entity.ContactDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IContactRepository;
@@ -36,6 +36,10 @@ public class ContactService {
 
     public List<Contact> findAll() {
         return contactRepository.findAll(getUsernameSpec());
+    }
+
+    public List<Contact> findAllById(Iterable<UUID> ids) {
+        return contactRepository.findAllById(ids);
     }
 
     public List<Contact> findAllByInstitutionName(String name) {

@@ -3,7 +3,7 @@ package com.musadzeyt.momentumapi.util.mapper;
 import com.musadzeyt.momentumapi.domain.Review;
 import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.dto.ReviewDto;
+import com.musadzeyt.momentumapi.dto.entity.ReviewDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.dto.UserDto;
+import com.musadzeyt.momentumapi.dto.entity.UserDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.repository.IUserRepository;

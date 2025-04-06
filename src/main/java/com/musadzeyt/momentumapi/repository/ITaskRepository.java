@@ -33,4 +33,6 @@ public interface ITaskRepository extends JpaRepository<Task, UUID>, JpaSpecifica
             ORDER BY dates.dt;
             """, nativeQuery = true)
     List<Map<String, Integer>> findAmountsPerDayForIntervalOfDays(@Param("days") int days, @Param("email") String email);
+
+    void deleteAllByActivityId(UUID activityId);
 }

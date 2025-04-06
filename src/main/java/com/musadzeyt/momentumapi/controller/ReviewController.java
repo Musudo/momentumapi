@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.Review;
-import com.musadzeyt.momentumapi.dto.ReviewDto;
+import com.musadzeyt.momentumapi.dto.entity.ReviewDto;
 import com.musadzeyt.momentumapi.service.ReviewService;
 import com.musadzeyt.momentumapi.util.mapper.IReviewMapper;
 import lombok.AllArgsConstructor;

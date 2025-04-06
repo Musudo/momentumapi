@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.dto.ReviewEmailDto;
+import com.musadzeyt.momentumapi.dto.entity.ReviewEmailDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IReviewEmailRepository;
 import com.musadzeyt.momentumapi.util.mapper.IReviewEmailMapper;

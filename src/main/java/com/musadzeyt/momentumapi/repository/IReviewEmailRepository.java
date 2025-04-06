@@ -28,9 +28,13 @@ public interface IReviewEmailRepository extends JpaRepository<ReviewEmail, UUID>
               DATE_FORMAT(dates.dt, '%b %e') AS month,
               COUNT(e.id) AS amount
             FROM dates
-            LEFT JOIN review_email e ON DATE(e.created_at) = dates.dt
-            LEFT JOIN review r ON e.review_id = r.id
-            LEFT JOIN user u ON r.user_id = u.id AND u.email = :email
+            LEFT JOIN (
+              SELECT e.id, e.created_at
+              FROM review_email e
+              INNER JOIN review r ON e.review_id = r.id
+              INNER JOIN user u ON r.user_id = u.id
+              WHERE u.email = :email
+            ) e ON DATE(e.created_at) = dates.dt
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)

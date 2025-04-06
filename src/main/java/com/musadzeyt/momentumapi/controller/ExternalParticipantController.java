@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.ExternalParticipantService;
 import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/external-participants")

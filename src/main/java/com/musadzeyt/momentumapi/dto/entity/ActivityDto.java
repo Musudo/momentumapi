@@ -1,9 +1,8 @@
-package com.musadzeyt.momentumapi.dto;
+package com.musadzeyt.momentumapi.dto.entity;
 
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

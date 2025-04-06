@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.dto;
+package com.musadzeyt.momentumapi.dto.entity;
 
 import lombok.Data;
 

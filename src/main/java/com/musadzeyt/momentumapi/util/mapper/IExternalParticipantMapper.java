@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

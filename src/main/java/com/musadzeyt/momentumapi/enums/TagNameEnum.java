@@ -11,7 +11,6 @@ public enum TagNameEnum {
     FINANCE("finance"),
     TRAINING("training"),
     FAMILY("family"),
-    SPORT("sport"),
     EDUCATION("education");
 
     private final String name;

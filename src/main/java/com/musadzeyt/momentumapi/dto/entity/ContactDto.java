@@ -1,6 +1,5 @@
-package com.musadzeyt.momentumapi.dto;
+package com.musadzeyt.momentumapi.dto.entity;
 
-import com.musadzeyt.momentumapi.domain.Institution;
 import lombok.Data;
 
 import java.util.UUID;

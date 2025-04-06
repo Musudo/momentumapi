@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.UserDto;
+import com.musadzeyt.momentumapi.dto.entity.UserDto;
 import com.musadzeyt.momentumapi.record.UserLoginRequestRecord;
 import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;

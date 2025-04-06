@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.dto.TagDto;
+import com.musadzeyt.momentumapi.dto.entity.TagDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.ITagRepository;
 import com.musadzeyt.momentumapi.util.mapper.ITagMapper;

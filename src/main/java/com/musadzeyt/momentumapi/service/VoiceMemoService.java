@@ -3,7 +3,7 @@ package com.musadzeyt.momentumapi.service;
 import com.musadzeyt.momentumapi.domain.User;
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import com.musadzeyt.momentumapi.dto.VoiceMemoDto;
+import com.musadzeyt.momentumapi.dto.entity.VoiceMemoDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IVoiceMemoRepository;
 import com.musadzeyt.momentumapi.specification.VoiceMemoSpecification;

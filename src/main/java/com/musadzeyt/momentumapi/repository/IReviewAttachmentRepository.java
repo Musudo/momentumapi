@@ -25,9 +25,13 @@ public interface IReviewAttachmentRepository extends JpaRepository<ReviewAttachm
               DATE_FORMAT(dates.dt, '%b %e') AS month,
               COUNT(a.id) AS amount
             FROM dates
-            LEFT JOIN review_attachment a ON DATE(a.created_at) = dates.dt
-            LEFT JOIN review r ON a.review_id = r.id
-            LEFT JOIN user u ON r.user_id = u.id AND u.email = :email
+            LEFT JOIN (
+              SELECT a.id, a.created_at
+              FROM review_attachment a
+              INNER JOIN review r ON a.review_id = r.id
+              INNER JOIN user u ON r.user_id = u.id
+              WHERE u.email = :email
+            ) a ON DATE(a.created_at) = dates.dt
             GROUP BY dates.dt
             ORDER BY dates.dt;
             """, nativeQuery = true)

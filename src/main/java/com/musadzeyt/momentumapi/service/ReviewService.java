@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Review;
-import com.musadzeyt.momentumapi.dto.ReviewDto;
+import com.musadzeyt.momentumapi.dto.entity.ReviewDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IReviewRepository;

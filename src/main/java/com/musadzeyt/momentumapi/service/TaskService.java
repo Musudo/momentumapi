@@ -4,7 +4,7 @@ import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Task;
 import com.musadzeyt.momentumapi.domain.User;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import com.musadzeyt.momentumapi.dto.TaskDto;
+import com.musadzeyt.momentumapi.dto.entity.TaskDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.ITaskRepository;
 import com.musadzeyt.momentumapi.specification.TaskSpecification;
@@ -84,6 +84,11 @@ public class TaskService {
                 .orElseThrow(EntityNotFoundException::new);
         taskMapper.update(taskDto, task);
         return taskRepository.save(task);
+    }
+
+    @Transactional
+    public void deleteAllByActivityId(UUID activityId) {
+        taskRepository.deleteAllByActivityId(activityId);
     }
 
     @Transactional

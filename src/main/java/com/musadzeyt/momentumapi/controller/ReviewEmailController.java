@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.dto.ReviewEmailDto;
+import com.musadzeyt.momentumapi.dto.entity.ReviewEmailDto;
 import com.musadzeyt.momentumapi.service.ReviewEmailService;
 import com.musadzeyt.momentumapi.util.mapper.IReviewEmailMapper;
 import lombok.AllArgsConstructor;

@@ -1,13 +1,12 @@
-package com.musadzeyt.momentumapi.dto;
+package com.musadzeyt.momentumapi.dto.entity;
 
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-public class ExternalParticipantDto {
+public class TagDto {
     private UUID id;
     private String name;
-    private String email;
     private String createdAt;
 }

@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.Activity;
-import com.musadzeyt.momentumapi.dto.ActivityDto;
+import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

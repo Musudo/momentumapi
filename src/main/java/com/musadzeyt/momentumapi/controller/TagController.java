@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.dto.TagDto;
+import com.musadzeyt.momentumapi.dto.entity.TagDto;
 import com.musadzeyt.momentumapi.service.TagService;
 import com.musadzeyt.momentumapi.util.mapper.ITagMapper;
 import lombok.AllArgsConstructor;

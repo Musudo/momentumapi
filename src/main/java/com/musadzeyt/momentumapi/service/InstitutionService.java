@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Institution;
-import com.musadzeyt.momentumapi.dto.InstitutionDto;
+import com.musadzeyt.momentumapi.dto.entity.InstitutionDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
 import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;

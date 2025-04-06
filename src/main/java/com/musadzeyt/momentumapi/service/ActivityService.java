@@ -1,13 +1,14 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.*;
-import com.musadzeyt.momentumapi.dto.ActivityDto;
-import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
+import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.ActivityNotFoundException;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
+import com.musadzeyt.momentumapi.repository.ITaskRepository;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,7 @@ public class ActivityService {
     private final UserService userService;
     private final ContactService contactService;
     private final ExternalParticipantService externalParticipantService;
+    private final ITaskRepository taskRepository;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {
@@ -140,42 +142,35 @@ public class ActivityService {
 
     @Transactional
     public Activity create(ActivityDto activityDto) {
-        if (!activityDto.getEmailSentAt().isEmpty()) {
-            activityDto.setEmailSentAt(null);
-        }
-
         Activity activity = activityMapper.dtoToEntity(activityDto);
 
         User user = userService.findByEmail(getUsername());
         activity.setUser(user);
 
-        if (!activityDto.getInstitutionName().isEmpty()) {
+        if (activityDto.getInstitutionName() != null && !activityDto.getInstitutionName().isBlank()) {
             Institution institution = institutionService.findByName(activityDto.getInstitutionName());
             activity.setInstitution(institution);
         }
 
-        List<Tag> tags = new ArrayList<>();
-        activityDto.getTagIds().forEach(id -> {
-            Tag tag = tagService.findById(id);
-            tags.add(tag);
-        });
+        List<Tag> tags = tagService.findAllById(activityDto.getTagIds());
+        if (tags.size() != activityDto.getTagIds().size()) {
+            throw new IllegalArgumentException("One or more Tag IDs are invalid.");
+        }
         activity.setTags(tags);
 
-        if (!activityDto.getContactIds().isEmpty()) {
-            List<Contact> contacts = new ArrayList<>();
-            activityDto.getContactIds().forEach(id -> {
-                Contact contact = contactService.findById(id);
-                contacts.add(contact);
-            });
+        if (activityDto.getContactIds() != null && !activityDto.getContactIds().isEmpty()) {
+            List<Contact> contacts = contactService.findAllById(activityDto.getContactIds());
+            if (contacts.size() != activityDto.getContactIds().size()) {
+                throw new IllegalArgumentException("One or more Contact IDs are invalid.");
+            }
             activity.setContacts(contacts);
         }
 
-        if (!activityDto.getExternalParticipants().isEmpty()) {
-            List<ExternalParticipant> externalParticipants = new ArrayList<>();
-            activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
-                ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
-                externalParticipants.add(externalParticipant);
-            });
+        if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
+            List<ExternalParticipant> externalParticipants = externalParticipantService.findAllById(activityDto.getExternalParticipantIds());
+            if (externalParticipants.size() != activityDto.getExternalParticipantIds().size()) {
+                throw new IllegalArgumentException("One or more External Participant IDs are invalid.");
+            }
             activity.setExternalParticipants(externalParticipants);
         }
 
@@ -207,14 +202,16 @@ public class ActivityService {
         Activity activity = activityRepository.findById(id)
                 .orElseThrow(ActivityNotFoundException::new);
 
-        activityMapper.update(activityDto, activity);
+        activity.setType(activityDto.getType());
+        activity.setSubject(activityDto.getSubject());
+        activity.setStartTime(LocalDateTime.parse(activityDto.getStartTime()));
+        activity.setEndTime(LocalDateTime.parse(activityDto.getEndTime()));
+        activity.setExternalNote(activityDto.getExternalNote());
+        activity.setInternalNote(activityDto.getInternalNote());
 
-        List<Tag> tags = new ArrayList<>();
-        activityDto.getTagIds().forEach(tagId -> {
-            Tag tag = tagService.findById(tagId);
-            tags.add(tag);
-        });
-        activity.setTags(tags);
+        if (activityDto.getTagIds() != null && !activityDto.getTagIds().isEmpty()) {
+            activity.setTags(tagService.findAllById(activityDto.getTagIds()));
+        }
 
         return activityRepository.save(activity);
     }
@@ -245,6 +242,8 @@ public class ActivityService {
         activity.getTags().clear();
         activity.setInstitution(null);
         activity.setUser(null);
+
+        taskRepository.deleteAllByActivityId(activity.getId());
 
         activityRepository.deleteById(id);
     }

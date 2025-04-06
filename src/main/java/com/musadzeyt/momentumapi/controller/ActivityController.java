@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.ActivityDto;
-import com.musadzeyt.momentumapi.dto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
+import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.ActivityService;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import jakarta.validation.Valid;
