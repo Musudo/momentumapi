@@ -1,103 +1,102 @@
 version: 2.1
 
-orbs:
-  openjdk: circleci/openjdk@3.1
-
 executors:
-  java21:
+  java-executor:
     docker:
-      - image: cimg/openjdk:21.0
+      - image: circleci/python:3.8
+      - image: circleci/openjdk:21-jdk
+        environment:
+          MYSQL_DATABASE: momentum_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+          SPRING_PROFILES_ACTIVE: dev
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/momentum_db
+          SPRING_DATASOURCE_USERNAME: user
+          SPRING_DATASOURCE_PASSWORD: password
+          SPRING_MAIL_USERNAME: mail@example.com
+          SPRING_MAIL_PASSWORD: password
+          SPRING_MAIL_PORT: 587
+          SPRING_RABBITMQ_HOST: localhost
+          SPRING_RABBITMQ_USERNAME: rabbituser
+          SPRING_RABBITMQ_PASSWORD: rabbitpass
+          SPRING_RABBITMQ_PORT: 5672
+          JWT_SECRET: jwtsecret
+          JWT_EXPIRATION_TIME: 3600
     working_directory: ~/repo
 
 jobs:
   build:
-    executor: java21
+    executor: java-executor
     steps:
       - checkout
-      # Cache Gradle dependencies for faster builds
-      - restore_cache:
-          keys:
-            - gradle-{{ checksum "build.gradle" }}
-            - gradle-
+
+      # Docker setup
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+          service:
+            - name: mysql:8.0
+              alias: mysql
+
+      # Install dependencies and build the application
       - run:
-          name: Pre-download Gradle dependencies
-          command: ./gradlew dependencies --no-daemon || true
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: gradle-{{ checksum "build.gradle" }}
-      # Run unit tests
+          name: Install Gradle
+          command: |
+            curl -s https://get.sdkman.io | bash
+            source ~/.sdkman/bin/sdkman-init.sh
+            sdk install gradle 8.5
+      - run:
+          name: Build app
+          command: ./gradlew clean build -x test
+
+      # Run tests
       - run:
           name: Run unit tests
-          command: ./gradlew test --no-daemon
-      # Build the application JAR
-      - run:
-          name: Build Spring Boot JAR
-          command: ./gradlew bootJar -x test --no-daemon
-      # Persist artifacts for downstream jobs
-      - persist_to_workspace:
-          root: .
-          paths:
-            - build/libs
-            - .
+          command: ./gradlew test
 
-  integration-test:
-    docker:
-      - image: cimg/openjdk:21.0
-      - image: mysql:8.0
-        environment:
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: test
-          MYSQL_PASSWORD: testpw
-          MYSQL_ROOT_PASSWORD: rootpw
-    working_directory: ~/repo
-    steps:
-      - checkout
-      # Wait for MySQL to be ready
-      - run:
-          name: Wait for MySQL
-          command: |
-            for i in {1..30}; do \
-              mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD} &>/dev/null && break; \
-              echo "Waiting for MySQL..."; \
-              sleep 2; \
-            done
-      # Run integration tests against MySQL
-      - run:
-          name: Run integration tests
-          command: ./gradlew test --tests "*IntegrationTest" --no-daemon
-
-  docker-build:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      # Attach workspace to get JAR and sources
-      - attach_workspace:
-          at: .
-      - setup_remote_docker:
-          version: 20.10.16
-      # Build Docker image
+      # Build Docker image for the app
       - run:
           name: Build Docker image
-          command: |
-            docker build -t momentum-api:${CIRCLE_SHA1} .
-      # Optional: push to registry if credentials are configured
+          command: docker build -t momentumapi .
+
+      # Push Docker image (Optional, uncomment if pushing to DockerHub or private registry)
+      # - run:
+      #     name: Push Docker image
+      #     command: docker push momentumapi
+
+  deploy:
+    executor: java-executor
+    steps:
+      - checkout
+
+      # Docker setup
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+          service:
+            - name: mysql:8.0
+              alias: mysql
+
+      # Deploy application (customize with your deployment process)
       - run:
-          name: Push Docker image
-          when: on_success
+          name: Deploy to production
           command: |
-            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-            docker tag momentum-api:${CIRCLE_SHA1} $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1}
-            docker push $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1}
+            docker run -d --name momentumapi -p 8080:8080 momentumapi
 
 workflows:
-  build-and-deploy:
+  version: 2
+  build_and_deploy:
     jobs:
-      - build
-      - integration-test:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
+      - deploy:
           requires:
             - build
-      - docker-build:
-          requires:
-            - integration-test
+          filters:
+            branches:
+              only:
+                - main
