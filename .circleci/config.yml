@@ -1,42 +1,95 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:java:.,tool:gradle:
 version: 2.1
+
+orbs:
+  gradle: circleci/gradle@2.2.0
+  docker: circleci/docker@2.1.1
+
 jobs:
-  test-java:
+  build:
     docker:
+      # primary container for running Gradle
       - image: cimg/openjdk:21.0
+        auth: {}
+      # sidecar MySQL for integration tests
+      - image: circleci/mysql:8.0
+        environment:
+          MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+          MYSQL_DATABASE:       $MYSQL_DATABASE
+          MYSQL_USER:           $MYSQL_USER
+          MYSQL_PASSWORD:       $MYSQL_PASSWORD
+
+    environment:
+      # override Spring props for the test profile
+      SPRING_PROFILES_ACTIVE: test
+      SPRING_DATASOURCE_URL:  jdbc:mysql://127.0.0.1:3306/$MYSQL_DATABASE
+      SPRING_DATASOURCE_USERNAME: $MYSQL_USER
+      SPRING_DATASOURCE_PASSWORD: $MYSQL_PASSWORD
+
     steps:
       - checkout
+
+      # restore Gradle dependencies cache
+      - gradle/cache
+
+      # run tests (unit + integration against the MySQL sidecar)
       - run:
-          name: Calculate cache key
-          command: |-
-            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
-                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
-      - restore_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          name: Wait for MySQL to be healthy
+          command: |
+            for i in `seq 1 30`; do
+              mysqladmin ping -h 127.0.0.1 -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" && break
+              echo "Waiting for MySQL…"
+              sleep 2
+            done
       - run:
-          command: ./gradlew check
-      - store_test_results:
-          path: build/test-results
-      - save_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-          paths:
-            - ~/.gradle/caches
+          name: Run all Gradle tests
+          command: ./gradlew test --no-daemon
+
+      # build the Spring Boot fat jar (skipping tests)
+      - run:
+          name: Build bootJar
+          command: ./gradlew bootJar -x test --no-daemon
+
+      # save the built jar as an artifact
+      - run:
+          name: Collect JAR artifact
+          command: |
+            mkdir -p artifacts
+            cp build/libs/*.jar artifacts/
       - store_artifacts:
-          path: build/reports
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
+          path: artifacts
+
+      # update cache key (based on build.gradle checksum)
+      - gradle/cache:
+          key: dependency-cache-{{ checksum "build.gradle" }}
+
+  docker_build:
+    # machine executor is required for Docker‐in‐Docker
+    machine: true
+
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
+
+      # enable Docker commands
+      - setup_remote_docker
+
+      # build your multi-stage image
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Build Docker image
+          command: |
+            docker build -t $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1} .
+
+      # log in & push (Docker Hub)
+      - run:
+          name: Push to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USER" --password-stdin
+            docker push $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1}
+
 workflows:
-  build-and-test:
+  version: 2
+  build_and_deploy:
     jobs:
-      - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      - build
+      - docker_build:
+          requires:
+            - build
