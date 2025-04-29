@@ -11,8 +11,7 @@ COPY build.gradle settings.gradle gradlew ./
 COPY gradle ./gradle
 
 # Pre-download dependencies
-RUN ./gradlew --version
-RUN ./gradlew dependencies --no-daemon || true
+RUN ./gradlew dependencies --no-daemon
 
 # Copy the rest of the project
 COPY . .
@@ -26,7 +25,7 @@ RUN ./gradlew bootJar -x test --no-daemon
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Create a non-root user
+# Running as root inside containers can be a security concern, so create a non-root user
 RUN addgroup --system app && adduser --system --ingroup app app
 USER app
 
@@ -36,8 +35,9 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 # Expose default port (optional)
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=5s \
-  CMD curl --fail http://localhost:8080/actuator/health || exit 1
+# Healthcheck for orchestration platforms
+#HEALTHCHECK --interval=30s --timeout=5s \
+#  CMD curl --fail http://localhost:8080/actuator/health || exit 1
 
 # Run the Spring Boot app
 #CMD ["java", "-jar", "app.jar"]
