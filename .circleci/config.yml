@@ -1,42 +1,103 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:java:.,tool:gradle:
 version: 2.1
-jobs:
-  test-java:
+
+orbs:
+  openjdk: circleci/openjdk@3.1
+
+executors:
+  java21:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:21.0
+    working_directory: ~/repo
+
+jobs:
+  build:
+    executor: java21
     steps:
       - checkout
-      - run:
-          name: Calculate cache key
-          command: |-
-            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
-                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+      # Cache Gradle dependencies for faster builds
       - restore_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          keys:
+            - gradle-{{ checksum "build.gradle" }}
+            - gradle-
       - run:
-          command: ./gradlew check
-      - store_test_results:
-          path: build/test-results
+          name: Pre-download Gradle dependencies
+          command: ./gradlew dependencies --no-daemon || true
       - save_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
-            - ~/.gradle/caches
-      - store_artifacts:
-          path: build/reports
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
+            - ~/.gradle
+          key: gradle-{{ checksum "build.gradle" }}
+      # Run unit tests
+      - run:
+          name: Run unit tests
+          command: ./gradlew test --no-daemon
+      # Build the application JAR
+      - run:
+          name: Build Spring Boot JAR
+          command: ./gradlew bootJar -x test --no-daemon
+      # Persist artifacts for downstream jobs
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build/libs
+            - .
+
+  integration-test:
+    docker:
+      - image: cimg/openjdk:21.0
+      - image: mysql:8.0
+        environment:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test
+          MYSQL_PASSWORD: testpw
+          MYSQL_ROOT_PASSWORD: rootpw
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Wait for MySQL to be ready
+      - run:
+          name: Wait for MySQL
+          command: |
+            for i in {1..30}; do \
+              mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD} &>/dev/null && break; \
+              echo "Waiting for MySQL..."; \
+              sleep 2; \
+            done
+      # Run integration tests against MySQL
+      - run:
+          name: Run integration tests
+          command: ./gradlew test --tests "*IntegrationTest" --no-daemon
+
+  docker-build:
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
+      # Attach workspace to get JAR and sources
+      - attach_workspace:
+          at: .
+      - setup_remote_docker:
+          version: 20.10.16
+      # Build Docker image
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Build Docker image
+          command: |
+            docker build -t momentum-api:${CIRCLE_SHA1} .
+      # Optional: push to registry if credentials are configured
+      - run:
+          name: Push Docker image
+          when: on_success
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+            docker tag momentum-api:${CIRCLE_SHA1} $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1}
+            docker push $DOCKERHUB_USER/momentum-api:${CIRCLE_SHA1}
+
 workflows:
-  build-and-test:
+  build-and-deploy:
     jobs:
-      - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      - build
+      - integration-test:
+          requires:
+            - build
+      - docker-build:
+          requires:
+            - integration-test
