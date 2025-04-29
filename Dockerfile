@@ -1,7 +1,7 @@
 # -----------------------------
 # 🌱 BUILD STAGE
 # -----------------------------
-FROM gradle:8.5-jdk21 AS builder
+FROM gradle:8.10-jdk21 AS builder
 
 # Set working directory
 WORKDIR /app
