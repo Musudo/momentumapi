@@ -1,8 +1,10 @@
 package com.musadzeyt.momentumapi.controller;
 
+import com.musadzeyt.momentumapi.dto.EmailDto;
 import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
 import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.ActivityService;
+import com.musadzeyt.momentumapi.service.CloudAmqpService;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,6 +27,7 @@ import java.util.UUID;
 public class ActivityController {
     private final ActivityService activityService;
     private final IActivityMapper activityMapper;
+    private final CloudAmqpService cloudAmqpService;
 
     @GetMapping("")
     public ResponseEntity<List<ActivityDto>> findActivities() {
@@ -102,6 +108,39 @@ public class ActivityController {
     public ResponseEntity<ActivityDto> updateInternalNote(@PathVariable UUID id, @NotNull @Valid @RequestBody Map<String, String> data) {
         var activity = activityService.updateInternalNote(id, data.get("internalNote"));
         return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/send-confirmation-email", produces = "application/json")
+    public ResponseEntity<String> sendConfirmationEmail(@NotNull @Valid @RequestBody ActivityDto activityDto) {
+        // TODO: make utility from this
+        String iso = activityDto.getStartTime();
+        LocalDateTime dateTime = LocalDateTime.parse(iso);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("d MMMM uuuu HH:mm", Locale.ENGLISH);
+        String startTimeFormatted = dateTime.format(fmt).toLowerCase(Locale.ENGLISH);
+
+        activityDto.getContacts().forEach(contactDto -> {
+            EmailDto emailDto = new EmailDto(
+                    contactDto.getEmail1(),
+                    contactDto.getFirstName(),
+                    "Activity confirmation",
+                    activityDto.getSubject(),
+                    startTimeFormatted
+            );
+            cloudAmqpService.sendMessageToEmailQueue(emailDto);
+        });
+
+        activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
+            EmailDto emailDto = new EmailDto(
+                    externalParticipantDto.getEmail(),
+                    externalParticipantDto.getName(),
+                    "Activity confirmation",
+                    activityDto.getSubject(),
+                    startTimeFormatted
+            );
+            cloudAmqpService.sendMessageToEmailQueue(emailDto);
+        });
+
+        return new ResponseEntity<>("Email is being processed", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

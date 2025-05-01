@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Activity confirmation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    Hallo <span th:text="${recipientName}"></span>,
+</p>
+<p>
+    This is your confirmation for <b><span th:text="${activityName}"></span></b> on <b><span
+        th:text="${startTime}"></span></b>.
+</p>
+<p>Kind regards,</p>
+<p><em>Momentum</em></p>
+</body>
+</html>

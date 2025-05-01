@@ -1,7 +1,12 @@
 package com.musadzeyt.momentumapi.exception;
 
 import com.musadzeyt.momentumapi.dto.ApiError;
+import com.musadzeyt.momentumapi.dto.entity.ErrorLogDto;
+import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
+import com.musadzeyt.momentumapi.service.ErrorLogService;
+import com.musadzeyt.momentumapi.util.mapper.IErrorLogMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -14,16 +19,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
 @Slf4j
+@ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    private final ErrorLogService errorLogService;
+    private final CustomUserDetailsService customUserDetailsService;
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
         Throwable rootCause = ex;
         while (rootCause.getCause() != null) {
             rootCause = rootCause.getCause();
         }
+
+        ErrorLogDto errorLogDto = new ErrorLogDto();
+        errorLogDto.setMessage(rootCause.getMessage());
+        errorLogDto.setEntity(this.getClass().getName() + " - " + this.getClass().getEnclosingMethod());
+        errorLogDto.setUserId(customUserDetailsService.getCurrentUser().getId());
+
+        errorLogService.create(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
+
         log.error("An unexpected error occurred: ", ex);
+
         return new ResponseEntity<>(
                 ApiError.builder()
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -37,7 +55,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiError> handleRuntimeException(RuntimeException ex) {
+        ErrorLogDto errorLogDto = new ErrorLogDto();
+        errorLogDto.setMessage(ex.getMessage());
+        errorLogDto.setEntity(this.getClass().getName() + " - " + this.getClass().getEnclosingMethod());
+        errorLogDto.setUserId(customUserDetailsService.getCurrentUser().getId());
+
+        errorLogService.create(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
+
         log.error("Runtime exception occurred: ", ex);
+
         return new ResponseEntity<>(
                 ApiError.builder()
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())

@@ -14,10 +14,8 @@ public class EmailDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private String recipientEmail;
-    private String subject;
-    private String attachment;
-    private String activityName;
-    private String activityStartTime;
     private String recipientName;
-    private String reservationNumber;
+    private String subject;
+    private String activityName;
+    private String startTime;
 }

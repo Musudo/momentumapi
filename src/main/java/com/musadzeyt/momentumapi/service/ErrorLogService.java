@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.ErrorLog;
 import com.musadzeyt.momentumapi.repository.IErrorLogRepository;
-import com.musadzeyt.momentumapi.util.mapper.ITagMapper;
+import com.musadzeyt.momentumapi.util.mapper.IErrorLogMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,19 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ErrorLogService {
     private final IErrorLogRepository errorLogRepository;
-    private final ITagMapper tagMapper;
+    private final IErrorLogMapper errorLogMapper;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private String getUsername() {
+        return customUserDetailsService.getCurrentUsername();
+    }
 
     public List<ErrorLog> findAll() {
         return errorLogRepository.findAll();
+    }
+
+    public List<ErrorLog> findAllByUser() {
+        return errorLogRepository.findAllByUser(getUsername());
     }
 
     public ErrorLog create(ErrorLog errorLog) {

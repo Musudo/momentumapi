@@ -13,8 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestConfiguration
 public class TestUserProvider {
 
+    private static final String TEST_EMAIL = "testuser@example.com";
+    private static final String TEST_PASSWORD = "1Password";
+
     @Bean
-    public TestAuthClient testAuthClient(MockMvc mockMvc) {
+    public TestAuthClient testAuthClient(MockMvc mockMvc) throws Exception {
         return new TestAuthClient(mockMvc);
     }
 
@@ -24,29 +27,24 @@ public class TestUserProvider {
         private final ObjectMapper mapper = new ObjectMapper();
         private String token;
 
-        public TestAuthClient(MockMvc mockMvc) {
+        public TestAuthClient(MockMvc mockMvc) throws Exception {
             this.mockMvc = mockMvc;
-        }
-
-        public String getJwtToken() throws Exception {
-            if (token == null) {
-                registerAndLogin();
-            }
-            return token;
+            registerAndLogin();
         }
 
         private void registerAndLogin() throws Exception {
             try {
-                var register = new UserRegistrationRequestRecord("testuser", "testuser", "testuser@example.com", "1Password");
+                var register = new UserRegistrationRequestRecord("testuser", "testuser", TEST_EMAIL, TEST_PASSWORD);
 
                 mockMvc.perform(post("/api/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(register)))
                         .andReturn();
+                // If user already exists, we can ignore errors here.
             } catch (Exception ignored) {
             }
 
-            var login = new UserLoginRequestRecord("testuser@example.com", "1Password");
+            var login = new UserLoginRequestRecord(TEST_EMAIL, TEST_PASSWORD);
             String loginJson = mockMvc.perform(post("/api/auth/login")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(mapper.writeValueAsString(login)))
@@ -56,6 +54,9 @@ public class TestUserProvider {
 
             this.token = mapper.readTree(loginJson).get("token").asText();
         }
+
+        public String getJwtToken() {
+            return token;
+        }
     }
 }
-

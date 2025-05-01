@@ -27,11 +27,13 @@ public class ErrorLog {
     private UUID id;
     @NotNull
     private String message;
+    @NotNull
+    private String entity;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(updatable = false)
     private User user;
 }
