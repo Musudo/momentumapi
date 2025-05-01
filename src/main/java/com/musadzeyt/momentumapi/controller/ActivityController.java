@@ -124,7 +124,9 @@ public class ActivityController {
                     contactDto.getFirstName(),
                     "Activity confirmation",
                     activityDto.getSubject(),
-                    startTimeFormatted
+                    startTimeFormatted,
+                    activityDto.getId(),
+                    LocalDateTime.now()
             );
             cloudAmqpService.sendMessageToEmailQueue(emailDto);
         });
@@ -135,7 +137,9 @@ public class ActivityController {
                     externalParticipantDto.getName(),
                     "Activity confirmation",
                     activityDto.getSubject(),
-                    startTimeFormatted
+                    startTimeFormatted,
+                    activityDto.getId(),
+                    LocalDateTime.now()
             );
             cloudAmqpService.sendMessageToEmailQueue(emailDto);
         });

@@ -235,6 +235,15 @@ public class ActivityService {
     }
 
     @Transactional
+    public void updateEmailSentAt(UUID id, LocalDateTime emailSentAt) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(ActivityNotFoundException::new);
+        activity.setEmailSentAt(emailSentAt);
+
+        activityRepository.save(activity);
+    }
+
+    @Transactional
     public void delete(UUID id) {
         Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
         activity.getContacts().clear();

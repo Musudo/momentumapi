@@ -20,10 +20,11 @@ public class CloudAmqpService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ErrorLogService errorLogService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final ActivityService activityService;
 
-    public void sendMessageToEmailQueue(EmailDto emailDto) {
+    public void sendMessageToEmailQueue(EmailDto message) {
         try {
-            rabbitTemplate.convertAndSend(properties.getEmailQueue(), emailDto);
+            rabbitTemplate.convertAndSend(properties.getEmailQueue(), message);
         } catch (Exception e) {
             ErrorLogDto errorLogDto = new ErrorLogDto();
             errorLogDto.setMessage(e.getMessage());
@@ -40,6 +41,8 @@ public class CloudAmqpService {
             // Convert the message body to a Map object using Jackson JSON deserializer
             EmailDto emailDto = objectMapper.readValue(message.getBody(), EmailDto.class);
             emailService.sendConfirmationEmail(emailDto);
+
+            activityService.updateEmailSentAt(emailDto.getActivityId(), emailDto.getEmailSentAt());
         } catch (Exception e) {
             ErrorLogDto errorLogDto = new ErrorLogDto();
             errorLogDto.setMessage(e.getMessage());

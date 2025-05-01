@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,4 +20,6 @@ public class EmailDto implements Serializable {
     private String subject;
     private String activityName;
     private String startTime;
+    private UUID activityId;
+    private LocalDateTime emailSentAt;
 }
