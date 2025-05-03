@@ -13,7 +13,6 @@ import java.util.List;
 public interface IErrorLogMapper {
     IErrorLogMapper INSTANCE = Mappers.getMapper(IErrorLogMapper.class);
 
-    @Mapping(target = "id", source = "id")
     @Mapping(target = "userId", source = "user.id")
     ErrorLogDto entityToDto(ErrorLog errorLog);
 

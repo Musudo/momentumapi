@@ -21,5 +21,4 @@ public class EmailDto implements Serializable {
     private String activityName;
     private String startTime;
     private UUID activityId;
-    private LocalDateTime emailSentAt;
 }

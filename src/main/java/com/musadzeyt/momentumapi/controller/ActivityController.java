@@ -5,6 +5,7 @@ import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
 import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.ActivityService;
 import com.musadzeyt.momentumapi.service.CloudAmqpService;
+import com.musadzeyt.momentumapi.service.ErrorLogService;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class ActivityController {
     private final ActivityService activityService;
     private final IActivityMapper activityMapper;
     private final CloudAmqpService cloudAmqpService;
+    private final ErrorLogService errorLogService;
 
     @GetMapping("")
     public ResponseEntity<List<ActivityDto>> findActivities() {
@@ -125,8 +127,7 @@ public class ActivityController {
                     "Activity confirmation",
                     activityDto.getSubject(),
                     startTimeFormatted,
-                    activityDto.getId(),
-                    LocalDateTime.now()
+                    activityDto.getId()
             );
             cloudAmqpService.sendMessageToEmailQueue(emailDto);
         });
@@ -138,8 +139,7 @@ public class ActivityController {
                     "Activity confirmation",
                     activityDto.getSubject(),
                     startTimeFormatted,
-                    activityDto.getId(),
-                    LocalDateTime.now()
+                    activityDto.getId()
             );
             cloudAmqpService.sendMessageToEmailQueue(emailDto);
         });

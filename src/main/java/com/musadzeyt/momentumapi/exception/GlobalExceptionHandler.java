@@ -1,10 +1,7 @@
 package com.musadzeyt.momentumapi.exception;
 
 import com.musadzeyt.momentumapi.dto.ApiError;
-import com.musadzeyt.momentumapi.dto.entity.ErrorLogDto;
-import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.service.ErrorLogService;
-import com.musadzeyt.momentumapi.util.mapper.IErrorLogMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,23 +21,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
     private final ErrorLogService errorLogService;
-    private final CustomUserDetailsService customUserDetailsService;
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) {
-        Throwable rootCause = ex;
+    public ResponseEntity<ApiError> handleGenericException(Exception e, HttpServletRequest request) {
+        Throwable rootCause = e;
         while (rootCause.getCause() != null) {
             rootCause = rootCause.getCause();
         }
 
-        ErrorLogDto errorLogDto = new ErrorLogDto();
-        errorLogDto.setMessage(rootCause.getMessage());
-        errorLogDto.setEntity(this.getClass().getName() + " - " + this.getClass().getEnclosingMethod());
-        errorLogDto.setUserId(customUserDetailsService.getCurrentUser().getId());
+        errorLogService.createErrorLog(rootCause.getMessage(), this.getClass().getSimpleName() + ":" + this.getClass().getEnclosingMethod());
 
-        errorLogService.create(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
-
-        log.error("An unexpected error occurred: ", ex);
+        log.error("An unexpected error occurred: ", e);
 
         return new ResponseEntity<>(
                 ApiError.builder()
@@ -54,20 +45,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiError> handleRuntimeException(RuntimeException ex) {
-        ErrorLogDto errorLogDto = new ErrorLogDto();
-        errorLogDto.setMessage(ex.getMessage());
-        errorLogDto.setEntity(this.getClass().getName() + " - " + this.getClass().getEnclosingMethod());
-        errorLogDto.setUserId(customUserDetailsService.getCurrentUser().getId());
+    public ResponseEntity<ApiError> handleRuntimeException(RuntimeException e) {
+        errorLogService.createErrorLog(e.getMessage(), this.getClass().getSimpleName() + ":" + this.getClass().getEnclosingMethod());
 
-        errorLogService.create(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
-
-        log.error("Runtime exception occurred: ", ex);
+        log.error("Runtime exception occurred: ", e);
 
         return new ResponseEntity<>(
                 ApiError.builder()
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message("A runtime error occurred: " + ex.getMessage())
+                        .message("A runtime error occurred: " + e.getMessage())
                         .timestamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
@@ -75,8 +61,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationError(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult()
+    public ResponseEntity<ApiError> handleValidationError(MethodArgumentNotValidException e) {
+        String errorMessage = e.getBindingResult()
                 .getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -93,11 +79,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ApiError> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
+    public ResponseEntity<ApiError> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
         return new ResponseEntity<>(
                 ApiError.builder()
                         .status(HttpStatus.METHOD_NOT_ALLOWED.value())
-                        .message(ex.getMessage())
+                        .message(e.getMessage())
                         .timestamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.METHOD_NOT_ALLOWED
@@ -105,11 +91,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiError> handleEntityNotFound(EntityNotFoundException ex) {
+    public ResponseEntity<ApiError> handleEntityNotFound(EntityNotFoundException e) {
         return new ResponseEntity<>(
                 ApiError.builder()
                         .status(HttpStatus.NOT_FOUND.value())
-                        .message(ex.getMessage())
+                        .message(e.getMessage())
                         .timestamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.NOT_FOUND

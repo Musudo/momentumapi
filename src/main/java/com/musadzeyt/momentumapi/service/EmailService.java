@@ -1,8 +1,6 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.dto.EmailDto;
-import com.musadzeyt.momentumapi.dto.entity.ErrorLogDto;
-import com.musadzeyt.momentumapi.util.mapper.IErrorLogMapper;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +21,6 @@ public class EmailService {
     private String sender;
     private final SpringTemplateEngine templateEngine;
     private final ErrorLogService errorLogService;
-    private final CustomUserDetailsService customUserDetailsService;
 
     public void sendConfirmationEmail(EmailDto email) {
         try {
@@ -46,12 +43,7 @@ public class EmailService {
             // send email
             javaMailSender.send(message);
         } catch (MessagingException e) {
-            ErrorLogDto errorLogDto = new ErrorLogDto();
-            errorLogDto.setMessage(e.getMessage());
-            errorLogDto.setEntity(this.getClass().getName());
-            errorLogDto.setUserId(customUserDetailsService.getCurrentUser().getId());
-
-            errorLogService.create(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
+            errorLogService.createErrorLog(e.getMessage(), this.getClass().getSimpleName());
         }
     }
 }
