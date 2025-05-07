@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.entity.UserDto;
-import com.musadzeyt.momentumapi.service.UserService;
+import com.musadzeyt.momentumapi.dto.entityDto.UserDto;
+import com.musadzeyt.momentumapi.service.entityService.UserService;
 import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

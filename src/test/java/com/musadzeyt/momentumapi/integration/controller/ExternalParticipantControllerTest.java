@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.integration.AbstractIntegrationTestContainer;
 import com.musadzeyt.momentumapi.integration.TestUserProvider;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;

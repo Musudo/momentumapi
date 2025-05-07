@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
-import com.musadzeyt.momentumapi.dto.entity.VoiceMemoDto;
+import com.musadzeyt.momentumapi.dto.entityDto.VoiceMemoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

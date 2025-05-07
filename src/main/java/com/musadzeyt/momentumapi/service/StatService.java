@@ -2,7 +2,8 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
-import com.musadzeyt.momentumapi.dto.stat.*;
+import com.musadzeyt.momentumapi.dto.statDto.*;
+import com.musadzeyt.momentumapi.service.entityService.*;
 import com.musadzeyt.momentumapi.util.StatUtil;
 import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
 import lombok.AllArgsConstructor;

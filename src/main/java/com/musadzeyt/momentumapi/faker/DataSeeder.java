@@ -3,8 +3,8 @@ package com.musadzeyt.momentumapi.faker;
 import com.musadzeyt.momentumapi.domain.*;
 import com.musadzeyt.momentumapi.faker.generator.*;
 import com.musadzeyt.momentumapi.repository.*;
-import com.musadzeyt.momentumapi.service.ActivityService;
-import com.musadzeyt.momentumapi.service.ReviewService;
+import com.musadzeyt.momentumapi.service.entityService.ActivityService;
+import com.musadzeyt.momentumapi.service.entityService.ReviewService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

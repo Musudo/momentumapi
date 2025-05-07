@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.ReviewAttachment;
-import com.musadzeyt.momentumapi.dto.entity.ReviewAttachmentDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ReviewAttachmentDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

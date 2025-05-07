@@ -1,12 +1,15 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.Activity;
-import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ActivityDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
@@ -34,6 +37,7 @@ public interface IActivityMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "institution.id", source = "institutionId")
+    @Mapping(target = "emailSentAt", source = "emailSentAt", qualifiedByName = "mapStringToLocalDateTime")
     Activity dtoToEntity(ActivityDto activityDto);
 
     List<ActivityDto> entityListToDtoList(List<Activity> list);
@@ -45,5 +49,17 @@ public interface IActivityMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "institution.id", source = "institutionId")
+    @Mapping(target = "emailSentAt", source = "emailSentAt", qualifiedByName = "mapStringToLocalDateTime")
     Activity update(ActivityDto activityDto, @MappingTarget Activity activity);
+
+    @Named("mapStringToLocalDateTime")
+    default LocalDateTime mapStringToLocalDateTime(String value) {
+        if (value == null || value.trim().isEmpty()) return null;
+        return LocalDateTime.parse(value, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    @Named("mapLocalDateTimeToString")
+    default String mapLocalDateTimeToString(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : null;
+    }
 }

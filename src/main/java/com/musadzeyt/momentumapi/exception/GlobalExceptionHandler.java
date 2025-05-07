@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.exception;
 
 import com.musadzeyt.momentumapi.dto.ApiError;
-import com.musadzeyt.momentumapi.service.ErrorLogService;
+import com.musadzeyt.momentumapi.service.entityService.ErrorLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +29,9 @@ public class GlobalExceptionHandler {
             rootCause = rootCause.getCause();
         }
 
-        errorLogService.createErrorLog(rootCause.getMessage(), this.getClass().getSimpleName() + ":" + this.getClass().getEnclosingMethod());
+        errorLogService.createErrorLog(rootCause.getMessage(), rootCause.getStackTrace());
 
-        log.error("An unexpected error occurred: ", e);
+        log.error("An unexpected error occurred", e);
 
         return new ResponseEntity<>(
                 ApiError.builder()
@@ -46,9 +46,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiError> handleRuntimeException(RuntimeException e) {
-        errorLogService.createErrorLog(e.getMessage(), this.getClass().getSimpleName() + ":" + this.getClass().getEnclosingMethod());
+        errorLogService.createErrorLog(e.getMessage(), e.getStackTrace());
 
-        log.error("Runtime exception occurred: ", e);
+        log.error("Runtime exception occurred", e);
 
         return new ResponseEntity<>(
                 ApiError.builder()

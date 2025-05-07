@@ -1,6 +1,7 @@
 package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.dto.EmailDto;
+import com.musadzeyt.momentumapi.service.entityService.ErrorLogService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,28 +23,24 @@ public class EmailService {
     private final SpringTemplateEngine templateEngine;
     private final ErrorLogService errorLogService;
 
-    public void sendConfirmationEmail(EmailDto email) {
-        try {
-            // create email context and template
-            Context context = new Context();
-            context.setVariable("recipientName", email.getRecipientName());
-            context.setVariable("activityName", email.getActivityName());
-            context.setVariable("startTime", email.getStartTime());
-            String template = templateEngine.process("activity_confirmation_template", context);
+    public void sendConfirmationEmail(EmailDto email) throws MessagingException {
+        // 1. create email context and template
+        Context context = new Context();
+        context.setVariable("recipientName", email.getRecipientName());
+        context.setVariable("activityName", email.getActivityName());
+        context.setVariable("startTime", email.getStartTime());
+        String template = templateEngine.process("activity_confirmation_template", context);
 
-            // prepare email
-            MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-            messageHelper.setFrom(sender);
-            messageHelper.setReplyTo("noreplay@momentum.com");
-            messageHelper.setTo(email.getRecipientEmail());
-            messageHelper.setSubject(email.getSubject());
-            messageHelper.setText(template, true);
+        // 2. prepare email
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+        messageHelper.setFrom(sender);
+        messageHelper.setReplyTo("noreplay@momentum.com");
+        messageHelper.setTo(email.getRecipientEmail());
+        messageHelper.setSubject(email.getSubject());
+        messageHelper.setText(template, true);
 
-            // send email
-            javaMailSender.send(message);
-        } catch (MessagingException e) {
-            errorLogService.createErrorLog(e.getMessage(), this.getClass().getSimpleName());
-        }
+        // 3. send email
+        javaMailSender.send(message);
     }
 }

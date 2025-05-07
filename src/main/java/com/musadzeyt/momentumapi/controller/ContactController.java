@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.Contact;
-import com.musadzeyt.momentumapi.dto.entity.ContactDto;
-import com.musadzeyt.momentumapi.service.ContactService;
+import com.musadzeyt.momentumapi.dto.entityDto.ContactDto;
+import com.musadzeyt.momentumapi.service.entityService.ContactService;
 import com.musadzeyt.momentumapi.util.mapper.IContactMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

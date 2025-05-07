@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 // TODO: work out documentation more. In other classes as well
+
 /**
  * Converts a {@code Set<String>} of roles into a JSON string.
  */

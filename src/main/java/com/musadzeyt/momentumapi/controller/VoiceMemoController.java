@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
-import com.musadzeyt.momentumapi.dto.entity.VoiceMemoDto;
-import com.musadzeyt.momentumapi.service.VoiceMemoService;
+import com.musadzeyt.momentumapi.dto.entityDto.VoiceMemoDto;
+import com.musadzeyt.momentumapi.service.entityService.VoiceMemoService;
 import com.musadzeyt.momentumapi.util.mapper.IVoiceMemoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

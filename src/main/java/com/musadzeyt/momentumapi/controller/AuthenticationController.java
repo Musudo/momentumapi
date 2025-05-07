@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.entity.UserDto;
+import com.musadzeyt.momentumapi.dto.entityDto.UserDto;
 import com.musadzeyt.momentumapi.record.UserLoginRequestRecord;
 import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
-import com.musadzeyt.momentumapi.service.UserService;
+import com.musadzeyt.momentumapi.service.entityService.UserService;
 import com.musadzeyt.momentumapi.util.JwtTokenUtil;
 import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
 import jakarta.validation.Valid;

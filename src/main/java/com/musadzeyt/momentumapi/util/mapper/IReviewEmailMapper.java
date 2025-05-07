@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.dto.entity.ReviewEmailDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ReviewEmailDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
