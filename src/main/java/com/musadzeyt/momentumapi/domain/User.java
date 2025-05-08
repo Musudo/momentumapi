@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table
+@Table(name = "app_user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

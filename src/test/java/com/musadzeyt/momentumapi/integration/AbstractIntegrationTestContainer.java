@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -19,7 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Tag("integration")
 public abstract class AbstractIntegrationTestContainer {
 
-    static final MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
+    static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15.4")
             .withDatabaseName("momentum_db")
             .withUsername("musa")
             .withPassword("userpass");
@@ -29,16 +29,14 @@ public abstract class AbstractIntegrationTestContainer {
 
     @BeforeAll
     static void startContainer() {
-        mysql.start();
+        postgres.start();
     }
 
     @DynamicPropertySource
     static void overrideProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mysql::getJdbcUrl);
-        registry.add("spring.datasource.username", mysql::getUsername);
-        registry.add("spring.datasource.password", mysql::getPassword);
-        registry.add("spring.datasource.driver-class-name", mysql::getDriverClassName);
-        // optional: disable DDL-auto to use Flyway/Liquibase
-//        registry.add("spring.jpa.hibernate.ddl-auto", () -> "update");
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
     }
 }

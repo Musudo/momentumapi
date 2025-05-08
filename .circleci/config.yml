@@ -4,24 +4,23 @@ executors:
   docker-executor:
     docker:
       - image: cimg/openjdk:21.0
-      - image: mysql:8.0
+      - image: postgres:17
         environment:
-          MYSQL_DATABASE: momentum
-          MYSQL_USER: musa
-          MYSQL_PASSWORD: userpass
-          MYSQL_ROOT_PASSWORD: rootpass
+          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     working_directory: ~/project
 
 jobs:
   build:
     executor: docker-executor
     environment:
-      SPRING_PROFILES_ACTIVE: test
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/momentum
-      SPRING_DATASOURCE_USERNAME: musa
-      SPRING_DATASOURCE_PASSWORD: userpass
-      JWT_SECRET: dummysecret
-      JWT_EXPIRATION_TIME: 3600000
+      SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE
+      POSTGRES_URL: $POSTGRES_URL
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
+      JWT_SECRET: $JWT_SECRET
+      JWT_EXPIRATION_TIME: $JWT_EXPIRATION_TIME
     steps:
       - checkout
 
@@ -40,7 +39,7 @@ jobs:
           key: gradle-cache-{{ checksum "build.gradle" }}
 
       - run:
-          # TODO: fix failing tests
+          # TODO: fix failing tests and then remove -x
           name: Run Tests
           command: ./gradlew test -x test --no-daemon
 
