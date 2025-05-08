@@ -1,7 +1,7 @@
-package com.musadzeyt.momentumapi.faker.generator;
+package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.faker.factory.UserFactory;
+import com.musadzeyt.momentumapi.dataFaker.factory.UserFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +26,12 @@ public class UserGenerator {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates a single user using the UserFactory.
+     *
+     * @return a User object.
+     */
     public User createUser() {
         return userFactory.create();
-    }
-
-    public User createAdmin() {
-        return userFactory.createAdmin();
     }
 }

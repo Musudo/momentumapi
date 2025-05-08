@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.faker.factory;
+package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -25,24 +25,5 @@ public class UserFactory {
                 .roles(Set.of("ROLE_USER"))
                 .password(passwordEncoder.encode("1Password"))
                 .build();
-    }
-
-    public User createAdmin() {
-        return User.builder()
-                .firstName("Musa")
-                .lastName("Tashtamirov")
-                .email("musa@gmail.com")
-                .roles(Set.of("ROLE_USER","ROLE_ADMIN"))
-                .password(passwordEncoder.encode("1PasswordAdmin"))
-                .build();
-    }
-
-    /**
-     * Optional: Customize the user after instantiation.
-     * This method is analogous to the `afterInstantiate` hook in Zenstruck Foundry.
-     */
-    public User initialize(User user) {
-        // Perform any post-processing if needed
-        return user;
     }
 }

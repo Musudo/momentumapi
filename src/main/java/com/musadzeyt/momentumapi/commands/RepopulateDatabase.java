@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.commands;
 
-import com.musadzeyt.momentumapi.faker.DataSeeder;
+import com.musadzeyt.momentumapi.dataFaker.DataSeeder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;

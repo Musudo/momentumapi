@@ -1,7 +1,7 @@
-package com.musadzeyt.momentumapi.faker.generator;
+package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.Review;
-import com.musadzeyt.momentumapi.faker.factory.ReviewFactory;
+import com.musadzeyt.momentumapi.dataFaker.factory.ReviewFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

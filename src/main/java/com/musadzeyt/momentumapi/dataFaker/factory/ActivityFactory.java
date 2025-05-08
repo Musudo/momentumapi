@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.faker.factory;
+package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Institution;
@@ -31,7 +31,7 @@ public class ActivityFactory {
      */
     public Activity create(ActivityTypeEnum activityType, int atMost, int minimum) {
         LocalDateTime startTime = LocalDateTime.parse(
-                faker.date().future(atMost, minimum, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                faker.timeAndDate().future(atMost, minimum, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         );
         List<Institution> institutions = institutionRepository.findAll();
@@ -48,7 +48,7 @@ public class ActivityFactory {
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .institution(faker.options().option(institutions).getFirst())
                 .createdAt(
-                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                        LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
                 .build();

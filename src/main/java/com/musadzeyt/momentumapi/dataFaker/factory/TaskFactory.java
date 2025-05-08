@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.faker.factory;
+package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Task;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
@@ -33,18 +33,9 @@ public class TaskFactory {
                 .activity(activityRepository.findAll().get(random.nextInt(5)))
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .createdAt(
-                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                        LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
                 .build();
-    }
-
-    /**
-     * Optional: Customize the task after instantiation.
-     * This method is analogous to the `afterInstantiate` hook in Zenstruck Foundry.
-     */
-    public Task initialize(Task task) {
-        // Perform any post-processing if needed
-        return task;
     }
 }

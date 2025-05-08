@@ -1,8 +1,8 @@
-package com.musadzeyt.momentumapi.faker.generator;
+package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
-import com.musadzeyt.momentumapi.faker.factory.ActivityFactory;
+import com.musadzeyt.momentumapi.dataFaker.factory.ActivityFactory;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;

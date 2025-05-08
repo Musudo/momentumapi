@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.faker.factory;
+package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Tag;
 import com.musadzeyt.momentumapi.enums.TagNameEnum;
@@ -24,18 +24,9 @@ public class TagFactory {
         return Tag.builder()
                 .name(tagName)
                 .createdAt(
-                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                        LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
                 .build();
-    }
-
-    /**
-     * Optional: Customize the tag after instantiation.
-     * This method is analogous to the `afterInstantiate` hook in Zenstruck Foundry.
-     */
-    public Tag initialize(Tag tag) {
-        // Perform any post-processing if needed
-        return tag;
     }
 }

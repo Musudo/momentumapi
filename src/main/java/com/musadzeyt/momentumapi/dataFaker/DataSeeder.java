@@ -1,7 +1,7 @@
-package com.musadzeyt.momentumapi.faker;
+package com.musadzeyt.momentumapi.dataFaker;
 
 import com.musadzeyt.momentumapi.domain.*;
-import com.musadzeyt.momentumapi.faker.generator.*;
+import com.musadzeyt.momentumapi.dataFaker.generator.*;
 import com.musadzeyt.momentumapi.repository.*;
 import com.musadzeyt.momentumapi.service.entityService.ActivityService;
 import com.musadzeyt.momentumapi.service.entityService.ReviewService;
@@ -17,7 +17,6 @@ public class DataSeeder {
     private final ContactGenerator contactGenerator;
     private final ActivityGenerator activityGenerator;
     private final TagGenerator tagGenerator;
-    private final TaskGenerator taskGenerator;
     private final ReviewGenerator reviewGenerator;
     private final VoiceMemoGenerator voiceMemoGenerator;
     private final ReviewEmailGenerator reviewEmailGenerator;
@@ -38,12 +37,10 @@ public class DataSeeder {
     private final ReviewService reviewService;
 
     public void seed() {
-        // Order creations to handle potential foreign key constraints
+        // Order creations correctly to handle potential foreign key constraints
 
         User user = userGenerator.createUser();
         userRepository.save(user);
-        User admin = userGenerator.createAdmin();
-        userRepository.save(admin);
 
         List<Institution> institutions = institutionGenerator.createInstitutions(3);
         institutionRepository.saveAll(institutions);
@@ -61,9 +58,6 @@ public class DataSeeder {
         List<Contact> contacts = contactGenerator.createContacts(30);
         contactRepository.saveAll(contacts);
 
-//        List<Task> tasks = taskGenerator.createTasks(4);
-//        taskRepository.saveAll(tasks);
-
         List<Review> reviews = reviewGenerator.createReviews(60);
         reviewRepository.saveAll(reviews);
 
@@ -79,6 +73,7 @@ public class DataSeeder {
 
     public void eraseData() {
         // Order deletions correctly to handle potential foreign key constraints
+
         taskRepository.deleteAll();
         voiceMemoRepository.deleteAll();
         reviewEmailRepository.deleteAll();

@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.faker.factory;
+package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
@@ -33,18 +33,9 @@ public class ContactFactory {
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .institution(faker.options().option(institutionRepository.findAll()).getFirst())
                 .createdAt(
-                        LocalDateTime.parse(faker.date().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
+                        LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 )
                 .build();
-    }
-
-    /**
-     * Optional: Customize the contact after instantiation.
-     * This method is analogous to the `afterInstantiate` hook in Zenstruck Foundry.
-     */
-    public Contact initialize(Contact contact) {
-        // Perform any post-processing if needed
-        return contact;
     }
 }
