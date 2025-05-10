@@ -4,7 +4,6 @@ import com.musadzeyt.momentumapi.domain.*;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.dto.entityDto.ActivityDto;
 import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
-import com.musadzeyt.momentumapi.exception.ActivityNotFoundException;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
@@ -141,7 +140,7 @@ public class ActivityService {
 
     public Activity findById(UUID id) {
         return activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
@@ -185,7 +184,7 @@ public class ActivityService {
     @Transactional
     public Activity addParticipant(UUID activityId, Map<String, UUID> data) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         Contact contact = contactService.findById(data.get("contactId"));
         activity.getContacts().add(contact);
 
@@ -195,7 +194,7 @@ public class ActivityService {
     @Transactional
     public Activity addExternalParticipant(UUID activityId, ExternalParticipantDto externalParticipantDto) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         ExternalParticipant externalParticipant = externalParticipantService.create(externalParticipantDto);
         activity.getExternalParticipants().add(externalParticipant);
 
@@ -205,7 +204,7 @@ public class ActivityService {
     @Transactional
     public Activity update(UUID id, ActivityDto activityDto) {
         Activity activity = activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
 
         activity.setType(activityDto.getType());
         activity.setSubject(activityDto.getSubject());
@@ -224,7 +223,7 @@ public class ActivityService {
     @Transactional
     public Activity updateExternalNote(UUID id, String externalNote) {
         Activity activity = activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         activity.setExternalNote(externalNote);
 
         return activityRepository.save(activity);
@@ -233,7 +232,7 @@ public class ActivityService {
     @Transactional
     public Activity updateInternalNote(UUID id, String internalNote) {
         Activity activity = activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         activity.setInternalNote(internalNote);
 
         return activityRepository.save(activity);
@@ -242,7 +241,7 @@ public class ActivityService {
     @Transactional
     public void updateEmailSentAt(UUID id, LocalDateTime emailSentAt) {
         Activity activity = activityRepository.findById(id)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         activity.setEmailSentAt(emailSentAt);
 
         activityRepository.save(activity);
@@ -250,7 +249,7 @@ public class ActivityService {
 
     @Transactional
     public void delete(UUID id) {
-        Activity activity = activityRepository.findById(id).orElseThrow(ActivityNotFoundException::new);
+        Activity activity = activityRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         activity.getContacts().clear();
         activity.getExternalParticipants().clear();
         activity.getTags().clear();
@@ -273,14 +272,14 @@ public class ActivityService {
     @Transactional
     public void deleteParticipant(UUID activityId, UUID contactId) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
         activity.getContacts().removeIf(contact -> contact.getId().equals(contactId));
     }
 
     @Transactional
     public void deleteExternalParticipant(UUID activityId, UUID externalParticipantId) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(ActivityNotFoundException::new);
+                .orElseThrow(EntityNotFoundException::new);
 
         // Find the specific contact from the activity's collection
         ExternalParticipant externalParticipant = activity.getExternalParticipants()

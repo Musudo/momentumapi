@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.util;
+package com.musadzeyt.momentumapi.util.customSerializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
