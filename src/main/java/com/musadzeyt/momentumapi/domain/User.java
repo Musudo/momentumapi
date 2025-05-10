@@ -24,7 +24,6 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User {
