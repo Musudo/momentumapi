@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.integration.controller;
 
 import com.musadzeyt.momentumapi.domain.Tag;
 import com.musadzeyt.momentumapi.enums.TagNameEnum;
-import com.musadzeyt.momentumapi.faker.factory.TagFactory;
+import com.musadzeyt.momentumapi.dataFaker.factory.TagFactory;
 import com.musadzeyt.momentumapi.integration.AbstractIntegrationTestContainer;
 import com.musadzeyt.momentumapi.integration.TestUserProvider;
 import com.musadzeyt.momentumapi.repository.ITagRepository;

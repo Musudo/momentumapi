@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.entity.InstitutionDto;
-import com.musadzeyt.momentumapi.service.InstitutionService;
+import com.musadzeyt.momentumapi.dto.entityDto.InstitutionDto;
+import com.musadzeyt.momentumapi.service.entityService.InstitutionService;
 import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

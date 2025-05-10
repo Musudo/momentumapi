@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
-import com.musadzeyt.momentumapi.service.ExternalParticipantService;
+import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.service.entityService.ExternalParticipantService;
 import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

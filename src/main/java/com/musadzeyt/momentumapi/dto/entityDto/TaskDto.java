@@ -1,0 +1,15 @@
+package com.musadzeyt.momentumapi.dto.entityDto;
+
+import lombok.Data;
+
+import java.util.UUID;
+
+@Data
+public class TaskDto {
+    private UUID id;
+    private String description;
+    private boolean completed;
+    private UUID activityId;
+    private UUID userId;
+    private String createdAt;
+}

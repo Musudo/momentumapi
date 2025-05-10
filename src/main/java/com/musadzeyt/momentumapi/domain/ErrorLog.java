@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
@@ -27,11 +26,12 @@ public class ErrorLog {
     private UUID id;
     @NotNull
     private String message;
+    private String originalClass;
+    private String originalMethod;
+    private int originalLineNumber;
     @CreationTimestamp
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-    @ManyToOne()
+    private LocalDateTime timestamp;
+    @ManyToOne
     @JoinColumn(updatable = false)
     private User user;
 }

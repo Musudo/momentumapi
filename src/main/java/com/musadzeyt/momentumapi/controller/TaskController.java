@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.controller;
 
 import com.musadzeyt.momentumapi.domain.Task;
-import com.musadzeyt.momentumapi.dto.entity.TaskDto;
-import com.musadzeyt.momentumapi.service.TaskService;
+import com.musadzeyt.momentumapi.dto.entityDto.TaskDto;
+import com.musadzeyt.momentumapi.service.entityService.TaskService;
 import com.musadzeyt.momentumapi.util.mapper.ITaskMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

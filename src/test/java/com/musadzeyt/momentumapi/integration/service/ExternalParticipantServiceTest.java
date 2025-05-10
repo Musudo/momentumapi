@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.integration.service;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
-import com.musadzeyt.momentumapi.service.ExternalParticipantService;
+import com.musadzeyt.momentumapi.service.entityService.ExternalParticipantService;
 import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

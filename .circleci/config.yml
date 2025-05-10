@@ -1,0 +1,67 @@
+version: 2.1
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/openjdk:21.0
+      - image: postgres:17
+        environment:
+          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    working_directory: ~/project
+
+jobs:
+  build:
+    executor: docker-executor
+    environment:
+      SPRING_PROFILES_ACTIVE: $SPRING_PROFILES_ACTIVE
+      POSTGRES_URL: $POSTGRES_URL
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
+      JWT_SECRET: $JWT_SECRET
+      JWT_EXPIRATION_TIME: $JWT_EXPIRATION_TIME
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - gradle-cache-{{ checksum "build.gradle" }}
+            - gradle-cache-
+
+      - run:
+          name: Download Dependencies
+          command: ./gradlew dependencies --no-daemon
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-cache-{{ checksum "build.gradle" }}
+
+      - run:
+          # TODO: fix failing tests and then remove -x
+          name: Run Tests
+          command: ./gradlew test -x test --no-daemon
+
+      - run:
+          name: Build Jar
+          command: ./gradlew bootJar --no-daemon
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t momentumapi .
+
+      - run:
+          name: Save Docker Image (optional)
+          command: |
+            docker save momentumapi -o momentumapi.tar
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build

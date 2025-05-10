@@ -7,7 +7,7 @@ import com.musadzeyt.momentumapi.enums.TagNameEnum;
 import com.musadzeyt.momentumapi.enums.stat.ColumnNameEnum;
 import com.musadzeyt.momentumapi.enums.stat.StackOrderEnum;
 import com.musadzeyt.momentumapi.enums.stat.TrendEnum;
-import com.musadzeyt.momentumapi.util.*;
+import com.musadzeyt.momentumapi.util.customSerializer.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

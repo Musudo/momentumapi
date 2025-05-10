@@ -1,8 +1,11 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.entity.ActivityDto;
-import com.musadzeyt.momentumapi.dto.entity.ExternalParticipantDto;
-import com.musadzeyt.momentumapi.service.ActivityService;
+import com.musadzeyt.momentumapi.dto.EmailDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ActivityDto;
+import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.service.CloudAmqpService;
+import com.musadzeyt.momentumapi.service.entityService.ActivityService;
+import com.musadzeyt.momentumapi.util.DateUtil;
 import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,6 +26,7 @@ import java.util.UUID;
 public class ActivityController {
     private final ActivityService activityService;
     private final IActivityMapper activityMapper;
+    private final CloudAmqpService cloudAmqpService;
 
     @GetMapping("")
     public ResponseEntity<List<ActivityDto>> findActivities() {
@@ -70,6 +75,34 @@ public class ActivityController {
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto) {
+        if (activityDto.getEmailSentAt() != null && !activityDto.getEmailSentAt().isBlank()) {
+            if (activityDto.getContacts() != null && !activityDto.getContacts().isEmpty()) {
+                activityDto.getContacts().forEach(dto -> {
+                    EmailDto emailDto = new EmailDto(
+                            dto.getEmail1(),
+                            dto.getFirstName(),
+                            "Activity confirmation",
+                            activityDto.getSubject(),
+                            DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                    );
+                    cloudAmqpService.sendMessageToEmailQueue(emailDto);
+                });
+            }
+
+            if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
+                activityDto.getExternalParticipants().forEach(dto -> {
+                    EmailDto emailDto = new EmailDto(
+                            dto.getEmail(),
+                            dto.getName(),
+                            "Activity confirmation",
+                            activityDto.getSubject(),
+                            DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                    );
+                    cloudAmqpService.sendMessageToEmailQueue(emailDto);
+                });
+            }
+        }
+
         var activity = activityService.create(activityDto);
         return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
     }
@@ -102,6 +135,41 @@ public class ActivityController {
     public ResponseEntity<ActivityDto> updateInternalNote(@PathVariable UUID id, @NotNull @Valid @RequestBody Map<String, String> data) {
         var activity = activityService.updateInternalNote(id, data.get("internalNote"));
         return new ResponseEntity<>(activityMapper.entityToDto(activity), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/send-confirmation-email", produces = "application/json")
+    public ResponseEntity<String> sendConfirmationEmail(@NotNull @Valid @RequestBody ActivityDto activityDto) {
+        if (activityDto.getContacts() != null && !activityDto.getContacts().isEmpty()) {
+            activityDto.getContacts().forEach(contactDto -> {
+                EmailDto emailDto = new EmailDto(
+                        contactDto.getEmail1(),
+                        contactDto.getFirstName(),
+                        "Activity confirmation",
+                        activityDto.getSubject(),
+                        DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                );
+                cloudAmqpService.sendMessageToEmailQueue(emailDto);
+
+                activityService.updateEmailSentAt(activityDto.getId(), LocalDateTime.now());
+            });
+        }
+
+        if (activityDto.getExternalParticipants() != null && !activityDto.getExternalParticipants().isEmpty()) {
+            activityDto.getExternalParticipants().forEach(externalParticipantDto -> {
+                EmailDto emailDto = new EmailDto(
+                        externalParticipantDto.getEmail(),
+                        externalParticipantDto.getName(),
+                        "Activity confirmation",
+                        activityDto.getSubject(),
+                        DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                );
+                cloudAmqpService.sendMessageToEmailQueue(emailDto);
+
+                activityService.updateEmailSentAt(activityDto.getId(), LocalDateTime.now());
+            });
+        }
+
+        return new ResponseEntity<>("Email is being processed", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

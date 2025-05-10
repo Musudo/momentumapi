@@ -1,89 +1,121 @@
 package com.musadzeyt.momentumapi.util;
 
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import java.time.LocalDateTime;
 
+/**
+ * Utility class for constructing JPA Criteria API predicates and navigating entity paths
+ * based on dynamic search criteria.
+ * <p>
+ * Provides methods to build a {@link Predicate} from a given {@link SearchCriteria} and
+ * to resolve nested property paths from a {@link Root}.
+ */
 public class FilterUtil {
+
     /**
-     * Builds a Predicate based on the provided SearchCriteria.
+     * Builds a JPA {@link Predicate} for the provided expression and criteria.
+     * <p>
+     * Supported operations:
+     * <ul>
+     *   <li>":" – String "like" match or equality for non-String types</li>
+     *   <li>">", "<" – greater-than and less-than for {@link Comparable} types</li>
+     *   <li>"=" – equality for {@link LocalDateTime} fields</li>
+     *   <li>">=", "<=" – inclusive comparisons for {@link LocalDateTime}</li>
+     * </ul>
      *
-     * @param builder    The CriteriaBuilder used to create the Predicate.
-     * @param expression The Expression corresponding to the entity attribute (or nested attribute).
-     * @param criteria   The SearchCriteria containing the operation and value.
-     * @return A Predicate representing the filtering condition.
+     * @param builder    the {@link CriteriaBuilder} used to construct predicates
+     * @param expression the field expression to compare
+     * @param criteria   the {@link SearchCriteria} containing operation and value
+     * @return a {@link Predicate} representing the criteria
+     * @throws UnsupportedOperationException if the operation is not recognized or not supported for the expression type
      */
-    public static Predicate buildPredicate(CriteriaBuilder builder, Expression<?> expression, SearchCriteria criteria) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static Predicate buildPredicate(
+            CriteriaBuilder builder,
+            Expression<?> expression,
+            SearchCriteria criteria) {
         String operation = criteria.getOperation();
 
-        // Handle String comparison (like or equal)
         if (operation.equalsIgnoreCase(":")) {
             if (expression.getJavaType().equals(String.class)) {
-                return builder.like(expression.as(String.class), "%" + criteria.getValue() + "%");
+                // Partial match for strings
+                return builder.like(
+                        expression.as(String.class),
+                        "%" + criteria.getValue() + "%"
+                );
             } else {
+                // Exact match for other types
                 return builder.equal(expression, criteria.getValue());
             }
-        }
-        // Handle 'greater than' operation for Comparable types
-        else if (operation.equalsIgnoreCase(">")) {
-            return builder.greaterThan(expression.as(Comparable.class), (Comparable) criteria.getValue());
-        }
-        // Handle 'less than' operation for Comparable types
-        else if (operation.equalsIgnoreCase("<")) {
-            return builder.lessThan(expression.as(Comparable.class), (Comparable) criteria.getValue());
-        }
-        // Handle LocalDateTime comparison for equality
-        else if (operation.equalsIgnoreCase("=")) {
+        } else if (operation.equalsIgnoreCase(">")) {
+            // Greater-than for comparable types
+            return builder.greaterThan(
+                    (Expression<? extends Comparable>) expression,
+                    (Comparable) criteria.getValue()
+            );
+        } else if (operation.equalsIgnoreCase("<")) {
+            // Less-than for comparable types
+            return builder.lessThan(
+                    (Expression<? extends Comparable>) expression,
+                    (Comparable) criteria.getValue()
+            );
+        } else if (operation.equalsIgnoreCase("=")) {
             if (expression.getJavaType().equals(LocalDateTime.class)) {
-                return builder.equal(expression.as(LocalDateTime.class), criteria.getValue());
+                // Exact match for LocalDateTime
+                return builder.equal(
+                        expression.as(LocalDateTime.class),
+                        criteria.getValue()
+                );
             }
-        }
-        // Handle 'greater than' operation specifically for LocalDateTime
-        else if (operation.equalsIgnoreCase(">=")) {
+        } else if (operation.equalsIgnoreCase(">=")) {
             if (expression.getJavaType().equals(LocalDateTime.class)) {
-                return builder.greaterThanOrEqualTo(expression.as(LocalDateTime.class), (LocalDateTime) criteria.getValue());
+                // Inclusive greater-than for LocalDateTime
+                return builder.greaterThanOrEqualTo(
+                        expression.as(LocalDateTime.class),
+                        (LocalDateTime) criteria.getValue()
+                );
             }
-        }
-        // Handle 'less than' operation specifically for LocalDateTime
-        else if (operation.equalsIgnoreCase("<=")) {
+        } else if (operation.equalsIgnoreCase("<=")) {
             if (expression.getJavaType().equals(LocalDateTime.class)) {
-                return builder.lessThanOrEqualTo(expression.as(LocalDateTime.class), (LocalDateTime) criteria.getValue());
+                // Inclusive less-than for LocalDateTime
+                return builder.lessThanOrEqualTo(
+                        expression.as(LocalDateTime.class),
+                        (LocalDateTime) criteria.getValue()
+                );
             }
         }
 
-        throw new UnsupportedOperationException("Operation " + operation + " is not supported.");
+        throw new UnsupportedOperationException(
+                "Operation " + operation + " is not supported."
+        );
     }
 
     /**
-     * Resolves a nested property path from the given root entity based on a dot-separated key.
+     * Resolves a nested property path from the given {@link Root} based on a dot-separated key.
+     * <p>
+     * For example, key "address.city" will navigate root.get("address").get("city").
      *
-     * <p>This utility method extracts the {@link Path} corresponding to a given key.
-     * If the key contains nested properties (indicated by the '.' character), it splits the key and iteratively
-     * navigates through the nested attributes starting from the root. If the key does not contain any dots,
-     * it returns the direct path to the property.
-     *
-     * <p>Example:
-     * <pre>
-     * // Given a key "user.email" and a Root<Activity> root, this method returns:
-     * // root.get("user").get("email")
-     * </pre>
-     *
-     * @param root the root from which to derive the path; represents the starting point of the entity graph.
-     * @param key  the dot-separated string representing the property path (e.g., "user.email").
-     * @return the {@link Path} corresponding to the property defined by the key.
+     * @param root the root entity in the criteria query
+     * @param key  the dot-separated property path
+     * @return a {@link Path} representing the nested attribute
      */
     public static Path<?> getPath(Root<?> root, String key) {
-        Path<?> expression;
+        Path<?> path;
         if (key.contains(".")) {
-            String[] keys = key.split("\\.");
-            expression = root.get(keys[0]);
-            for (int i = 1; i < keys.length; i++) {
-                expression = expression.get(keys[i]);
+            String[] parts = key.split("\\.");
+            path = root.get(parts[0]);
+            for (int i = 1; i < parts.length; i++) {
+                path = path.get(parts[i]);
             }
         } else {
-            expression = root.get(key);
+            path = root.get(key);
         }
-        return expression;
+        return path;
     }
 }

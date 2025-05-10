@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.integration.service;
 
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.dto.entity.TagDto;
+import com.musadzeyt.momentumapi.dto.entityDto.TagDto;
 import com.musadzeyt.momentumapi.enums.TagNameEnum;
 import com.musadzeyt.momentumapi.repository.ITagRepository;
-import com.musadzeyt.momentumapi.service.TagService;
+import com.musadzeyt.momentumapi.service.entityService.TagService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.stat.*;
+import com.musadzeyt.momentumapi.dto.statDto.*;
 import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import com.musadzeyt.momentumapi.service.StatService;
 import lombok.AllArgsConstructor;
