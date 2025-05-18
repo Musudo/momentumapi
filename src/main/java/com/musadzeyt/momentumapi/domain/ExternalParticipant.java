@@ -3,6 +3,7 @@ package com.musadzeyt.momentumapi.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,9 +27,11 @@ public class ExternalParticipant {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
+    @Size(min = 2, max = 50, message = "Name should be 2 to 50 characters long")
     private String name;
     @NotNull
-    @Email
+    @Email(message = "Email is invalid")
+    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters")
     private String email;
     private LocalDateTime createdAt;
     @UpdateTimestamp

@@ -1,12 +1,12 @@
 package com.musadzeyt.momentumapi.controller;
 
-import com.musadzeyt.momentumapi.dto.entityDto.UserDto;
+import com.musadzeyt.momentumapi.dto.entityDto.AppUserDto;
 import com.musadzeyt.momentumapi.record.UserLoginRequestRecord;
 import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
-import com.musadzeyt.momentumapi.service.entityService.UserService;
+import com.musadzeyt.momentumapi.service.entityService.AppUserService;
 import com.musadzeyt.momentumapi.util.JwtTokenUtil;
-import com.musadzeyt.momentumapi.util.mapper.IUserMapper;
+import com.musadzeyt.momentumapi.util.mapper.IAppUserMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
-    private final UserService userService;
+    private final AppUserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody UserLoginRequestRecord request) {
@@ -37,7 +37,7 @@ public class AuthenticationController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
         String token = jwtTokenUtil.generateToken(userDetails);
         Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
-        UserDto userDto = IUserMapper.INSTANCE.entityToDto(userService.findByEmail(userDetails.getUsername()));
+        AppUserDto userDto = IAppUserMapper.INSTANCE.entityToDto(userService.findByEmail(userDetails.getUsername()));
         return ResponseEntity.ok(Map.of("token", token, "expirationDate", expirationDate.toString(), "user", userDto));
     }
 

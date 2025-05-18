@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
-import com.musadzeyt.momentumapi.repository.IUserRepository;
+import com.musadzeyt.momentumapi.repository.IAppUserRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class VoiceMemoFactory {
     private final Faker faker;
-    private final IUserRepository userRepository;
+    private final IAppUserRepository userRepository;
 
     /**
      * Creates a VoiceMemo with fake data.

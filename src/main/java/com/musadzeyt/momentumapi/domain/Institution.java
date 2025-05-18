@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,18 +28,25 @@ public class Institution {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
+    @Size(min = 2, max = 100, message = "Name should be 2 to 100 characters")
     @Column(unique = true, nullable = false)
     private String name;
     @NotNull
+    @Size(min = 2, max = 100, message = "Street should be 2 to 100 characters")
     private String street;
     @NotNull
+    @Size(min = 1, max = 10, message = "Building number should be 1 to 10 characters")
     private String buildingNumber;
+    @Size(min = 1, max = 10, message = "Postbox should be 1 to 10 characters")
     private String postbox;
     @NotNull
+    @Size(min = 2, max = 100, message = "City should be 2 to 100 characters")
     private String city;
     @NotNull
+    @Size(min = 2, max = 10, message = "Postal code should be 2 to 10 characters")
     private String postalCode;
     @NotNull
+    @Size(min = 2, max = 10, message = "Country code should be 2 to 10 characters")
     private String countryCode;
     private LocalDateTime createdAt;
     @UpdateTimestamp

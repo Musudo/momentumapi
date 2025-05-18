@@ -31,7 +31,7 @@ public class ReviewService {
     }
 
     private Specification<Review> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
         return new ReviewSpecification(criteria);
     }
 

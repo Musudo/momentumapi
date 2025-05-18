@@ -29,7 +29,7 @@ public interface IReviewAttachmentRepository extends JpaRepository<ReviewAttachm
               SELECT a.id, a.created_at
               FROM review_attachment a
               INNER JOIN review r ON a.review_id = r.id
-              INNER JOIN user u ON r.user_id = u.id
+              INNER JOIN app_user u ON r.user_id = u.id
               WHERE u.email = :email
             ) a ON DATE(a.created_at) = dates.dt
             GROUP BY dates.dt

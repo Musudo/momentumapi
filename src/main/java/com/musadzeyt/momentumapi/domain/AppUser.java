@@ -19,31 +19,32 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "app_user")
+@Table
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    @Size(min = 2, max = 16, message = "First name should be 2 to 16 characters")
+    @Size(min = 2, max = 25, message = "First name should be 2 to 25 characters")
     private String firstName;
     @NotNull
-    @Size(min = 2, max = 16, message = "Last name should be 2 to 16 characters")
+    @Size(min = 2, max = 25, message = "Last name should be 2 to 25 characters")
     private String lastName;
     @NotNull
     @Email(message = "Email is invalid")
+    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters")
     @Column(unique = true, nullable = false)
     private String email;
     @Builder.Default
-    @Column(name = "roles", columnDefinition = "TEXT")
+    @Column(name = "roles" , columnDefinition = "TEXT")
     @Convert(converter = RolesConverter.class)
     private Set<String> roles = new HashSet<>(Set.of("ROLE_USER"));
     private String password;
@@ -65,7 +66,7 @@ public class User {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        User user = (User) o;
+        AppUser user = (AppUser) o;
         return getId() != null && Objects.equals(getId(), user.getId());
     }
 

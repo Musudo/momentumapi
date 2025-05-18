@@ -29,7 +29,7 @@ public interface IVoiceMemoRepository extends JpaRepository<VoiceMemo, UUID>, Jp
             LEFT JOIN (
               SELECT vm.id, vm.created_at
               FROM voice_memo vm
-              INNER JOIN user u ON vm.user_id = u.id
+              INNER JOIN app_user u ON vm.user_id = u.id
               WHERE u.email = :email
             ) vm ON DATE(vm.created_at) = dates.dt
             GROUP BY dates.dt

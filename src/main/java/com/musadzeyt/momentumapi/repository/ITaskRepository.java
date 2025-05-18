@@ -27,7 +27,7 @@ public interface ITaskRepository extends JpaRepository<Task, UUID>, JpaSpecifica
               COUNT(t.id) AS amount
             FROM dates
             LEFT JOIN task t ON DATE(t.created_at) = dates.dt
-            LEFT JOIN user u ON t.user_id = u.id
+            LEFT JOIN app_user u ON t.user_id = u.id
             WHERE u.email = :email OR u.email IS NULL
             GROUP BY dates.dt
             ORDER BY dates.dt;

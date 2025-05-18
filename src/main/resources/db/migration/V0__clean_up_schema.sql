@@ -1,0 +1,21 @@
+---------------------
+-- Clean up schema
+---------------------
+
+DROP TABLE IF EXISTS review_review_email CASCADE;
+DROP TABLE IF EXISTS review_review_attachment CASCADE;
+DROP TABLE IF EXISTS review_email CASCADE;
+DROP TABLE IF EXISTS review_attachment CASCADE;
+DROP TABLE IF EXISTS review CASCADE;
+DROP TABLE IF EXISTS voice_memo CASCADE;
+DROP TABLE IF EXISTS task CASCADE;
+DROP TABLE IF EXISTS tag CASCADE;
+DROP TABLE IF EXISTS institution CASCADE;
+DROP TABLE IF EXISTS error_log CASCADE;
+DROP TABLE IF EXISTS external_participant CASCADE;
+DROP TABLE IF EXISTS contact CASCADE;
+DROP TABLE IF EXISTS activity_tag CASCADE;
+DROP TABLE IF EXISTS activity_external_participant CASCADE;
+DROP TABLE IF EXISTS activity_contact CASCADE;
+DROP TABLE IF EXISTS activity CASCADE;
+DROP TABLE IF EXISTS app_user CASCADE;

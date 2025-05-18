@@ -35,7 +35,7 @@ public class ActivityService {
     private final IActivityMapper activityMapper;
     private final TagService tagService;
     private final InstitutionService institutionService;
-    private final UserService userService;
+    private final AppUserService userService;
     private final ContactService contactService;
     private final ExternalParticipantService externalParticipantService;
     private final ITaskRepository taskRepository;
@@ -46,7 +46,7 @@ public class ActivityService {
     }
 
     private Specification<Activity> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
         return new ActivitySpecification(criteria);
     }
 
@@ -147,7 +147,7 @@ public class ActivityService {
     public Activity create(ActivityDto activityDto) {
         Activity activity = activityMapper.dtoToEntity(activityDto);
 
-        User user = userService.findByEmail(getUsername());
+        AppUser user = userService.findByEmail(getUsername());
         activity.setUser(user);
 
         if (activityDto.getInstitutionName() != null && !activityDto.getInstitutionName().isBlank()) {

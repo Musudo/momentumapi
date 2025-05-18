@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
-import com.musadzeyt.momentumapi.repository.IUserRepository;
+import com.musadzeyt.momentumapi.repository.IAppUserRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class ContactFactory {
     private final Faker faker;
-    private final IUserRepository userRepository;
+    private final IAppUserRepository userRepository;
     private final IInstitutionRepository institutionRepository;
 
     /**

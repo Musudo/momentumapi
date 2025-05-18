@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.dataFaker.generator;
 
-import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.dataFaker.factory.UserFactory;
+import com.musadzeyt.momentumapi.domain.AppUser;
+import com.musadzeyt.momentumapi.dataFaker.factory.AppUserFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,8 @@ import java.util.stream.IntStream;
 
 @Component
 @AllArgsConstructor
-public class UserGenerator {
-    private final UserFactory userFactory;
+public class AppUserGenerator {
+    private final AppUserFactory userFactory;
 
     /**
      * Creates a list of users using the UserFactory.
@@ -20,7 +20,7 @@ public class UserGenerator {
      * @param count the number of users to generate.
      * @return a List of generated User objects.
      */
-    public List<User> createUsers(int count) {
+    public List<AppUser> createUsers(int count) {
         return IntStream.range(0, count)
                 .mapToObj(i -> userFactory.create())
                 .collect(Collectors.toList());
@@ -31,7 +31,7 @@ public class UserGenerator {
      *
      * @return a User object.
      */
-    public User createUser() {
+    public AppUser createUser() {
         return userFactory.create();
     }
 }

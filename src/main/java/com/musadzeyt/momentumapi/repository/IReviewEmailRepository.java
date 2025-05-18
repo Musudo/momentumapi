@@ -32,7 +32,7 @@ public interface IReviewEmailRepository extends JpaRepository<ReviewEmail, UUID>
               SELECT e.id, e.created_at
               FROM review_email e
               INNER JOIN review r ON e.review_id = r.id
-              INNER JOIN user u ON r.user_id = u.id
+              INNER JOIN app_user u ON r.user_id = u.id
               WHERE u.email = :email
             ) e ON DATE(e.created_at) = dates.dt
             GROUP BY dates.dt

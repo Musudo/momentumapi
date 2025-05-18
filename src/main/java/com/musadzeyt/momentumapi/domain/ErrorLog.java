@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,5 +34,5 @@ public class ErrorLog {
     private LocalDateTime timestamp;
     @ManyToOne
     @JoinColumn(updatable = false)
-    private User user;
+    private AppUser user;
 }

@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Task;
-import com.musadzeyt.momentumapi.domain.User;
+import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.dto.entityDto.TaskDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
@@ -25,7 +25,7 @@ public class TaskService {
     private final ITaskRepository taskRepository;
     private final ITaskMapper taskMapper;
     private final ActivityService activityService;
-    private final UserService userService;
+    private final AppUserService userService;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {
@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     private Specification<Task> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
         return new TaskSpecification(criteria);
     }
 
@@ -71,7 +71,7 @@ public class TaskService {
         Activity activity = activityService.findById(taskDto.getActivityId());
         task.setActivity(activity);
 
-        User user = userService.findByEmail(getUsername());
+        AppUser user = userService.findByEmail(getUsername());
         task.setUser(user);
 
         return taskRepository.save(task);

@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
-import com.musadzeyt.momentumapi.domain.User;
+import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.dto.entityDto.ContactDto;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
@@ -31,7 +31,7 @@ public class ContactService {
     }
 
     private Specification<Contact> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
         return new ContactSpecification(criteria);
     }
 
@@ -78,7 +78,7 @@ public class ContactService {
     @Transactional
     public Contact create(ContactDto contactDto) {
         Contact contact = contactMapper.dtoToEntity(contactDto);
-        User user = customUserDetailsService.getCurrentUser();
+        AppUser user = customUserDetailsService.getCurrentUser();
         contact.setUser(user);
         Institution institution = institutionService.findById(contactDto.getInstitutionId());
         contact.setInstitution(institution);

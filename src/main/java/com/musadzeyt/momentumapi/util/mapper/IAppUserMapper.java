@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.util.mapper;
 
-import com.musadzeyt.momentumapi.domain.User;
-import com.musadzeyt.momentumapi.dto.entityDto.UserDto;
+import com.musadzeyt.momentumapi.domain.AppUser;
+import com.musadzeyt.momentumapi.dto.entityDto.AppUserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -10,25 +10,25 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface IUserMapper {
-    IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
+public interface IAppUserMapper {
+    IAppUserMapper INSTANCE = Mappers.getMapper(IAppUserMapper.class);
 
     @Mapping(target = "id", source = "id")
-    UserDto entityToDto(User user);
+    AppUserDto entityToDto(AppUser user);
 
     @Mapping(target = "id", ignore = true) // This should be generated, so ignore
     @Mapping(target = "createdAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "updatedAt", ignore = true) // This should be generated, so ignore
     @Mapping(target = "password", ignore = true) // This should be generated, so ignore
-    User dtoToEntity(UserDto userDto);
+    AppUser dtoToEntity(AppUserDto userDto);
 
-    List<UserDto> entityListToDtoList(List<User> list);
+    List<AppUserDto> entityListToDtoList(List<AppUser> list);
 
-    List<User> dtoListToEntityList(List<UserDto> list);
+    List<AppUser> dtoListToEntityList(List<AppUserDto> list);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "password", ignore = true)
-    User update(UserDto userDto, @MappingTarget User user);
+    AppUser update(AppUserDto userDto, @MappingTarget AppUser user);
 }

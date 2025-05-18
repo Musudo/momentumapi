@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class Task {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
+    @Size(min = 1, max = 100, message = "Description should be 1 to 100 characters")
     @Column(nullable = false)
     private String description;
     private boolean completed;
@@ -38,7 +40,7 @@ public class Task {
     private Activity activity;
     @ManyToOne
     @JoinColumn(updatable = false)
-    private User user;
+    private AppUser user;
 
     @PrePersist
     public void prePersist() {

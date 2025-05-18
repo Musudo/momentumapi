@@ -18,7 +18,7 @@ import java.util.List;
                 IInstitutionMapper.class,
                 ITagMapper.class,
                 IExternalParticipantMapper.class,
-                IUserMapper.class
+                IAppUserMapper.class
         }
 )
 public interface IActivityMapper {

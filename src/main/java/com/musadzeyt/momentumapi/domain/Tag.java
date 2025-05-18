@@ -3,6 +3,7 @@ package com.musadzeyt.momentumapi.domain;
 import com.musadzeyt.momentumapi.enums.TagNameEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Tag {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull // application level constraint
+    @Size(min = 1, max = 100, message = "Tag should be 1 to 100 characters")
     @Column(unique = true, nullable = false) // database level constraint
     private TagNameEnum name;
     private LocalDateTime createdAt;

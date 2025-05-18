@@ -6,7 +6,7 @@ import com.musadzeyt.momentumapi.domain.Tag;
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
 import com.musadzeyt.momentumapi.repository.ITagRepository;
-import com.musadzeyt.momentumapi.repository.IUserRepository;
+import com.musadzeyt.momentumapi.repository.IAppUserRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class ActivityFactory {
     private final Faker faker;
-    private final IUserRepository userRepository;
+    private final IAppUserRepository userRepository;
     private final IInstitutionRepository institutionRepository;
     private final ITagRepository tagRepository;
 

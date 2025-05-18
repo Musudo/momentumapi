@@ -45,7 +45,7 @@ public class Activity {
     private LocalDateTime updatedAt;
     @ManyToOne
     @JoinColumn(updatable = false)
-    private User user;
+    private AppUser user;
     @ManyToOne
     @JoinColumn
     private Institution institution;

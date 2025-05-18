@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.service;
 
-import com.musadzeyt.momentumapi.domain.User;
+import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IUserRepository;
+import com.musadzeyt.momentumapi.repository.IAppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +19,8 @@ import java.util.ArrayList;
  * <p>
  * Responsibilities:
  * <ul>
- *   <li>Lookup a {@link User} by email and convert it to a Spring Security {@link UserDetails} object.</li>
- *   <li>Provide helper methods to retrieve the current username and {@link User} entity
+ *   <li>Lookup a {@link AppUser} by email and convert it to a Spring Security {@link UserDetails} object.</li>
+ *   <li>Provide helper methods to retrieve the current username and {@link AppUser} entity
  *       from the security context.</li>
  * </ul>
  * <p>
@@ -41,9 +41,9 @@ import java.util.ArrayList;
 public class CustomUserDetailsService implements UserDetailsService {
 
     /**
-     * Repository for accessing {@link User} entities by email.
+     * Repository for accessing {@link AppUser} entities by email.
      */
-    private final IUserRepository userRepository;
+    private final IAppUserRepository userRepository;
 
     /**
      * Loads the user details by email (used as username in authentication).
@@ -56,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
+        AppUser user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
@@ -85,15 +85,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * Retrieves the {@link User} entity of the currently authenticated user.
+     * Retrieves the {@link AppUser} entity of the currently authenticated user.
      * <p>
      * Uses {@link #getCurrentUsername()} to lookup the email and fetches the
-     * corresponding {@link User} from the repository.
+     * corresponding {@link AppUser} from the repository.
      *
-     * @return the {@link User} entity if found; {@code null} if no user is authenticated
-     * @throws EntityNotFoundException if no {@link User} is found for the current username
+     * @return the {@link AppUser} entity if found; {@code null} if no user is authenticated
+     * @throws EntityNotFoundException if no {@link AppUser} is found for the current username
      */
-    public User getCurrentUser() {
+    public AppUser getCurrentUser() {
         String username = getCurrentUsername();
         if (username != null) {
             return userRepository.findByEmail(username)

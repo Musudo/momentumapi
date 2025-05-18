@@ -29,7 +29,7 @@ public interface IReviewRepository extends JpaRepository<Review, UUID>, JpaSpeci
             LEFT JOIN (
               SELECT r.id, r.created_at
               FROM review r
-              INNER JOIN user u ON r.user_id = u.id
+              INNER JOIN app_user u ON r.user_id = u.id
               WHERE u.email = :email
             ) r ON DATE(r.created_at) = dates.dt
             GROUP BY dates.dt

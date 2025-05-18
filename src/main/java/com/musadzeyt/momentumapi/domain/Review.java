@@ -45,7 +45,7 @@ public class Review {
     private Activity activity;
     @ManyToOne
     @JoinColumn(updatable = false)
-    private User user;
+    private AppUser user;
 
     @PrePersist
     public void prePersist() {

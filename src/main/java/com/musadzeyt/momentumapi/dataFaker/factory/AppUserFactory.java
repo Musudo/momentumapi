@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.dataFaker.factory;
 
-import com.musadzeyt.momentumapi.domain.User;
+import com.musadzeyt.momentumapi.domain.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class UserFactory {
+public class AppUserFactory {
     private final PasswordEncoder passwordEncoder;
 
     /**
@@ -17,8 +17,8 @@ public class UserFactory {
      *
      * @return a new User instance with default values.
      */
-    public User create() {
-        return User.builder()
+    public AppUser create() {
+        return AppUser.builder()
                 .firstName("Guest")
                 .lastName("User")
                 .email("guest@email.com")

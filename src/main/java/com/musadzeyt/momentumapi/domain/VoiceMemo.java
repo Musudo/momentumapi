@@ -31,9 +31,9 @@ public class VoiceMemo {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(updatable = false)
-    private User user;
+    private AppUser user;
 
     @PrePersist
     public void prePersist() {

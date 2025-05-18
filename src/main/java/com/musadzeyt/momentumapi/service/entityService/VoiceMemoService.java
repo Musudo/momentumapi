@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
-import com.musadzeyt.momentumapi.domain.User;
+import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
 import com.musadzeyt.momentumapi.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.dto.entityDto.VoiceMemoDto;
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class VoiceMemoService {
     private final IVoiceMemoRepository voiceMemoRepository;
     private final IVoiceMemoMapper voiceMemoMapper;
-    private final UserService userService;
+    private final AppUserService userService;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {
@@ -30,7 +30,7 @@ public class VoiceMemoService {
     }
 
     private Specification<VoiceMemo> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
         return new VoiceMemoSpecification(criteria);
     }
 
@@ -49,7 +49,7 @@ public class VoiceMemoService {
 
     public VoiceMemo create(VoiceMemoDto voiceMemoDto) {
         VoiceMemo voiceMemo = voiceMemoMapper.dtoToEntity(voiceMemoDto);
-        User user = userService.findById(voiceMemoDto.getUserId());
+        AppUser user = userService.findById(voiceMemoDto.getUserId());
         voiceMemo.setUser(user);
         return voiceMemoRepository.save(voiceMemo);
     }

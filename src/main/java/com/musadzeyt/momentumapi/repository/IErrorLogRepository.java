@@ -14,7 +14,7 @@ public interface IErrorLogRepository extends JpaRepository<ErrorLog, UUID> {
     @Query(value = """
             SELECT el.*
             FROM error_log el
-            LEFT JOIN user u ON el.user_id = u.id
+            LEFT JOIN app_user u ON el.user_id = u.id
             WHERE u.email = :email
             """, nativeQuery = true)
     List<ErrorLog> findAllByUser(@Param("email") String email);

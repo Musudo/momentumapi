@@ -18,7 +18,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
     @Query(value = """
             SELECT a.*
             FROM activity a
-            LEFT JOIN user u ON a.user_id = u.id
+            LEFT JOIN app_user u ON a.user_id = u.id
             WHERE a.start_time >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
                 AND u.email = :email
             """, nativeQuery = true)
@@ -27,7 +27,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
     @Query(value = """
             SELECT a.*
             FROM activity a
-            LEFT JOIN user u ON a.user_id = u.id
+            LEFT JOIN app_user u ON a.user_id = u.id
             WHERE a.type = :type
                 AND u.email = :email
                 AND (:interval = false
@@ -64,7 +64,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
               COUNT(a.id) AS amount
             FROM dates
             LEFT JOIN activity a ON DATE(a.created_at) = dates.dt
-            LEFT JOIN user u ON a.user_id = u.id
+            LEFT JOIN app_user u ON a.user_id = u.id
             WHERE u.email = :email OR u.email IS NULL
             GROUP BY dates.dt
             ORDER BY dates.dt;
@@ -107,7 +107,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
                     DATE_FORMAT(a.created_at, '%Y-%m') AS month,
                     COUNT(a.id) AS activity_count
                 FROM activity a
-                LEFT JOIN user u ON a.user_id = u.id
+                LEFT JOIN app_user u ON a.user_id = u.id
                 WHERE a.type = :type
                     AND a.created_at >= DATE_SUB(CURDATE(), INTERVAL :months MONTH)
                     AND u.email = :email OR u.email IS NULL
@@ -133,7 +133,7 @@ public interface IActivityRepository extends JpaRepository<Activity, UUID>, JpaS
                 COALESCE(COUNT(a.id), 0) AS amount
             FROM dates
             LEFT JOIN activity a ON DATE(a.start_time) = dates.dt
-            LEFT JOIN user u ON a.user_id = u.id
+            LEFT JOIN app_user u ON a.user_id = u.id
             WHERE (u.email = :email OR u.email IS NULL)
               AND (a.type = :type OR a.type IS NULL)
             GROUP BY dates.dt

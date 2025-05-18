@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +28,8 @@ public class ReviewEmail {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    @jakarta.validation.constraints.Email
+    @jakarta.validation.constraints.Email(message = "Email is invalid")
+    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters long")
     @Column(nullable = false)
     private String email;
     private LocalDateTime createdAt;

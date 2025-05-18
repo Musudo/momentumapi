@@ -57,6 +57,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.testcontainers:testcontainers:1.19.3'
     testImplementation 'org.testcontainers:postgresql:1.20.6'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
@@ -65,9 +66,9 @@ dependencies {
 }
 
 flyway {
-    url = System.getenv("POSTGRES_URL") ?: "jdbc:postgresql://postgresql:5432/momentum_db"
-    user = System.getenv("POSTGRES_USER") ?: "musa"
-    password = System.getenv("POSTGRES_PASSWORD") ?: "userpass"
+    url = System.getenv("POSTGRES_URL")
+    user = System.getenv("POSTGRES_USER")
+    password = System.getenv("POSTGRES_PASSWORD")
     locations = ["filesystem:src/main/resources/db/migration"]
 }
 
