@@ -37,7 +37,7 @@ public @interface ValidPassword {
      * @return the message template
      */
     String message() default
-            "Password must be at least 6 characters, contain at least one digit and one uppercase letter";
+            "Password must be at least 6 characters long, contain at least one digit and one uppercase letter";
 
     /**
      * Allows the specification of validation groups, to selectively apply this constraint

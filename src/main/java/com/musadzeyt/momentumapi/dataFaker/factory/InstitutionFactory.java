@@ -13,7 +13,7 @@ public class InstitutionFactory {
     private final Faker faker = new Faker();
 
     /**
-     * Creates a Institution with fake data.
+     * Creates an Institution with fake data.
      *
      * @return a new Institution instance with default values.
      */
@@ -25,7 +25,7 @@ public class InstitutionFactory {
                 .postalCode(faker.address().postcode())
                 .street(faker.address().streetName())
                 .buildingNumber(faker.address().buildingNumber())
-                .postbox(faker.address().mailBox())
+                .postbox("12")
                 .createdAt(
                         LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

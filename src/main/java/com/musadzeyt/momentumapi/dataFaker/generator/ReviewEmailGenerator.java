@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
 import com.musadzeyt.momentumapi.dataFaker.factory.ReviewEmailFactory;
+import com.musadzeyt.momentumapi.repository.IReviewEmailRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ReviewEmailGenerator {
     private final ReviewEmailFactory reviewEmailFactory;
+    private final IReviewEmailRepository reviewEmailRepository;
 
     /**
      * Creates a list of emails using the EmailFactory.
@@ -22,7 +24,7 @@ public class ReviewEmailGenerator {
      */
     public List<ReviewEmail> createEmails(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> reviewEmailFactory.create())
+                .mapToObj(i -> reviewEmailRepository.save(reviewEmailFactory.create()))
                 .collect(Collectors.toList());
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * This class checks for the presence of the {@code --repopulate-db} command-line argument when
  * the Spring Boot application starts. If the argument is provided, it triggers database erasing and reseeding
- * process by invoking {@link DataSeeder#eraseData()} and {@link DataSeeder#seed()}.
+ * process by invoking {@link DataSeeder#eraseData()} and {@link DataSeeder#seedData()}.
  * </p>
  *
  * <p>
@@ -58,7 +58,7 @@ public class RepopulateDatabase implements CommandLineRunner {
         // Check if the --repopulate-db flag is present
         if (appArgs.containsOption("repopulate-db")) {
             dataSeeder.eraseData();
-            dataSeeder.seed();
+            dataSeeder.seedData();
             log.info("Database repopulated.");
         }
     }

@@ -31,7 +31,7 @@ public class ExternalParticipant {
     private String name;
     @NotNull
     @Email(message = "Email is invalid")
-    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters")
+    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters long")
     private String email;
     private LocalDateTime createdAt;
     @UpdateTimestamp

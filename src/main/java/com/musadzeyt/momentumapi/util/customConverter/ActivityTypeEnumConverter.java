@@ -1,4 +1,4 @@
-package com.musadzeyt.momentumapi.util;
+package com.musadzeyt.momentumapi.util.customConverter;
 
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import jakarta.persistence.AttributeConverter;

@@ -3,7 +3,7 @@ package com.musadzeyt.momentumapi.integration.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
 import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
-import com.musadzeyt.momentumapi.integration.AbstractIntegrationTestContainer;
+import com.musadzeyt.momentumapi.integration.AbstractTestContainer;
 import com.musadzeyt.momentumapi.integration.TestUserProvider;
 import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
-public class ExternalParticipantControllerTest extends AbstractIntegrationTestContainer {
+public class ExternalParticipantControllerTest extends AbstractTestContainer {
     @Autowired
     protected TestUserProvider.TestAuthClient authClient;
     @Autowired

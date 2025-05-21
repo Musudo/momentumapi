@@ -1,34 +1,36 @@
 package com.musadzeyt.momentumapi.dataFaker.generator;
 
+import com.musadzeyt.momentumapi.dataFaker.factory.TagFactory;
 import com.musadzeyt.momentumapi.domain.Tag;
 import com.musadzeyt.momentumapi.enums.TagNameEnum;
-import com.musadzeyt.momentumapi.dataFaker.factory.TagFactory;
+import com.musadzeyt.momentumapi.repository.ITagRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
 public class TagGenerator {
     private final TagFactory tagFactory;
+    private final ITagRepository tagRepository;
 
     public List<Tag> createTags() {
-        List<Tag> tags = new ArrayList<>();
-        Tag personalTag = tagFactory.create(TagNameEnum.PERSONAL);
-        Tag workTag = tagFactory.create(TagNameEnum.WORK);
-        Tag financeTag = tagFactory.create(TagNameEnum.FINANCE);
-        Tag educationTag = tagFactory.create(TagNameEnum.EDUCATION);
-        Tag familyTag = tagFactory.create(TagNameEnum.FAMILY);
-        Tag trainingTag = tagFactory.create(TagNameEnum.TRAINING);
+        List<TagNameEnum> tagNames = List.of(
+                TagNameEnum.PERSONAL,
+                TagNameEnum.WORK,
+                TagNameEnum.FINANCE,
+                TagNameEnum.EDUCATION,
+                TagNameEnum.FAMILY,
+                TagNameEnum.TRAINING
+        );
 
-        tags.add(personalTag);
-        tags.add(workTag);
-        tags.add(financeTag);
-        tags.add(educationTag);
-        tags.add(familyTag);
-        tags.add(trainingTag);
+        List<Tag> tags = tagNames.stream()
+                .map(tagFactory::create)
+                .collect(Collectors.toList());
+
+        tagRepository.saveAll(tags);
 
         return tags;
     }

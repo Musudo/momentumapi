@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.dataFaker.factory.ReviewAttachmentFactory;
+import com.musadzeyt.momentumapi.repository.IReviewAttachmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ReviewAttachmentGenerator {
     private final ReviewAttachmentFactory reviewAttachmentFactory;
+    private final IReviewAttachmentRepository reviewAttachmentRepository;
 
     /**
      * Creates a list of attachments using the AttachmentFactory.
@@ -22,7 +24,7 @@ public class ReviewAttachmentGenerator {
      */
     public List<ReviewAttachment> createAttachments(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> reviewAttachmentFactory.create())
+                .mapToObj(i -> reviewAttachmentRepository.save(reviewAttachmentFactory.create()))
                 .collect(Collectors.toList());
     }
 }

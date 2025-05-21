@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.domain;
 
-import com.musadzeyt.momentumapi.util.RolesConverter;
+import com.musadzeyt.momentumapi.enums.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -33,20 +33,25 @@ public class AppUser {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    @Size(min = 2, max = 25, message = "First name should be 2 to 25 characters")
+    @Size(min = 2, max = 25, message = "First name should be 2 to 25 characters long")
     private String firstName;
     @NotNull
-    @Size(min = 2, max = 25, message = "Last name should be 2 to 25 characters")
+    @Size(min = 2, max = 25, message = "Last name should be 2 to 25 characters long")
     private String lastName;
     @NotNull
     @Email(message = "Email is invalid")
-    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters")
+    @Size(min = 10, max = 100, message = "Email should be 10 to 100 characters long")
     @Column(unique = true, nullable = false)
     private String email;
     @Builder.Default
-    @Column(name = "roles" , columnDefinition = "TEXT")
-    @Convert(converter = RolesConverter.class)
-    private Set<String> roles = new HashSet<>(Set.of("ROLE_USER"));
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Column(name = "role")
+    private Set<RoleEnum> roles = new HashSet<>(Set.of(RoleEnum.ROLE_USER));
     private String password;
     private LocalDateTime createdAt;
     @UpdateTimestamp

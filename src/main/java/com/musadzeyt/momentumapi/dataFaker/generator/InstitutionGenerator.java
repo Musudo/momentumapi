@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.dataFaker.factory.InstitutionFactory;
+import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class InstitutionGenerator {
     private final InstitutionFactory institutionFactory;
+    private final IInstitutionRepository institutionRepository;
 
     /**
      * Creates a list of institutions using the InstitutionFactory.
@@ -22,7 +24,7 @@ public class InstitutionGenerator {
      */
     public List<Institution> createInstitutions(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> institutionFactory.create())
+                .mapToObj(i -> institutionRepository.save(institutionFactory.create()))
                 .collect(Collectors.toList());
     }
 }

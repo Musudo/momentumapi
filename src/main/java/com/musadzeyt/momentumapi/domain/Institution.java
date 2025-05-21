@@ -28,25 +28,25 @@ public class Institution {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    @Size(min = 2, max = 100, message = "Name should be 2 to 100 characters")
+    @Size(min = 2, max = 100, message = "Name should be 2 to 100 characters long")
     @Column(unique = true, nullable = false)
     private String name;
     @NotNull
-    @Size(min = 2, max = 100, message = "Street should be 2 to 100 characters")
+    @Size(min = 2, max = 100, message = "Street should be 2 to 100 characters long")
     private String street;
     @NotNull
-    @Size(min = 1, max = 10, message = "Building number should be 1 to 10 characters")
+    @Size(min = 1, max = 10, message = "Building number should be 1 to 10 characters long")
     private String buildingNumber;
-    @Size(min = 1, max = 10, message = "Postbox should be 1 to 10 characters")
+    @Size(min = 1, max = 10, message = "Postbox should be 1 to 10 characters long")
     private String postbox;
     @NotNull
-    @Size(min = 2, max = 100, message = "City should be 2 to 100 characters")
+    @Size(min = 2, max = 100, message = "City should be 2 to 100 characters long")
     private String city;
     @NotNull
-    @Size(min = 2, max = 10, message = "Postal code should be 2 to 10 characters")
+    @Size(min = 2, max = 10, message = "Postal code should be 2 to 10 characters long")
     private String postalCode;
     @NotNull
-    @Size(min = 2, max = 10, message = "Country code should be 2 to 10 characters")
+    @Size(min = 2, max = 10, message = "Country code should be 2 to 10 characters long")
     private String countryCode;
     private LocalDateTime createdAt;
     @UpdateTimestamp

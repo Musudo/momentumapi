@@ -2,6 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
 import com.musadzeyt.momentumapi.dataFaker.factory.VoiceMemoFactory;
+import com.musadzeyt.momentumapi.repository.IVoiceMemoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class VoiceMemoGenerator {
     private final VoiceMemoFactory voiceMemoFactory;
+    private final IVoiceMemoRepository voiceMemoRepository;
 
     /**
      * Creates a list of voiceMemos using the VoiceMemoFactory.
@@ -22,7 +24,7 @@ public class VoiceMemoGenerator {
      */
     public List<VoiceMemo> createVoiceMemos(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> voiceMemoFactory.create())
+                .mapToObj(i -> voiceMemoRepository.save(voiceMemoFactory.create()))
                 .collect(Collectors.toList());
     }
 }

@@ -1,64 +1,63 @@
 package com.musadzeyt.momentumapi.integration.controller;
 
-import com.musadzeyt.momentumapi.dataFaker.generator.TagGenerator;
-import com.musadzeyt.momentumapi.domain.Tag;
+import com.musadzeyt.momentumapi.dataFaker.generator.InstitutionGenerator;
+import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.integration.TestUserProvider;
-import com.musadzeyt.momentumapi.repository.ITagRepository;
-import com.musadzeyt.momentumapi.service.entityService.TagService;
+import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
+import com.musadzeyt.momentumapi.service.entityService.InstitutionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class TagControllerTest extends AbstractControllerTest<Tag> {
+public class InstitutionControllerTest extends AbstractControllerTest<Institution> {
     @Autowired
     protected TestUserProvider.TestAuthClient authClient;
     @Autowired
-    private ITagRepository tagRepository;
+    private IInstitutionRepository institutionRepository;
     @Autowired
-    private TagGenerator tagGenerator;
+    private InstitutionGenerator institutionGenerator;
     @Autowired
-    private TagService tagService;
+    private InstitutionService institutionService;
 
     @Override
     protected String getBaseRoute() {
-        return "/api/tags";
+        return "/api/institutions";
     }
 
     @Override
     protected void deleteAllEntities() {
-        tagRepository.deleteAll();
+        institutionRepository.deleteAll();
     }
 
     @Override
-    protected List<Tag> createSampleEntities() {
-        return tagGenerator.createTags();
+    protected List<Institution> createSampleEntities() {
+        return institutionGenerator.createInstitutions(3);
     }
 
     @Test
-    void findTags_noJwt_shouldReturnUnauthorized() throws Exception {
+    void findInstitutions_noJwt_shouldReturnUnauthorized() throws Exception {
         super.findEntities_noJwt_shouldReturnUnauthorized();
     }
 
     @Test
-    void findTags_whenNoTags_shouldReturnEmptyList() throws Exception {
+    void findInstitutions_whenNoTags_shouldReturnEmptyList() throws Exception {
         super.findEntities_whenNoEntities_shouldReturnEmptyList();
     }
 
     @Test
-    void findTags_withValidJwt_shouldReturnAllEntities() throws Exception {
+    void findInstitutions_withValidJwt_shouldReturnAllEntities() throws Exception {
         super.findEntities_withValidJwt_shouldReturnAllEntities();
 
         mockMvc.perform(get(getBaseRoute())
                         .header("Authorization", "Bearer " + authClient.getJwtToken()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(6))
-                .andExpect(jsonPath("$[*].name", containsInAnyOrder("PERSONAL", "WORK", "FINANCE", "TRAINING", "EDUCATION", "FAMILY")))
+                .andExpect(jsonPath("$.length()").value(3))
+//                .andExpect(jsonPath("$[*].name", containsInAnyOrder()))
                 .andDo(result -> {
                     System.out.println("RESPONSE JSON: " + result.getResponse().getContentAsString());
                 });

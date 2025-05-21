@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * This class checks for the presence of the {@code --populate-db} command-line argument when
  * the Spring Boot application starts. If the argument is provided, it triggers the seeding
- * process by invoking {@link DataSeeder#seed()}.
+ * process by invoking {@link DataSeeder#seedData()}.
  * </p>
  *
  * <p>
@@ -55,7 +55,7 @@ public class PopulateDatabase implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Check if the --populate-db flag is present
         if (appArgs.containsOption("populate-db")) {
-            dataSeeder.seed();
+            dataSeeder.seedData();
             log.info("Database populated.");
         }
     }

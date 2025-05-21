@@ -53,6 +53,13 @@ CREATE TABLE public.app_user (
 );
 ALTER TABLE public.app_user OWNER TO musa;
 
+-- Name: user_role; Type: TABLE; Schema: public; Owner: musa
+CREATE TABLE user_role (
+    user_id character varying(36) NOT NULL,
+    role character varying(25) NOT NULL
+);
+ALTER TABLE public.user_role OWNER TO musa;
+
 -- Name: contact; Type: TABLE; Schema: public; Owner: musa
 CREATE TABLE public.contact (
     id character varying(36) NOT NULL,
@@ -185,9 +192,9 @@ CREATE TABLE public.voice_memo (
 ALTER TABLE public.voice_memo OWNER TO musa;
 
 
----------------------
--- 2. Add constraints
----------------------
+---------------------------------
+-- 2. Add primary key constraints
+---------------------------------
 
 -- Name: activity activity_pkey; Type: CONSTRAINT; Schema: public; Owner: musa
 ALTER TABLE ONLY public.activity
@@ -196,6 +203,10 @@ ALTER TABLE ONLY public.activity
 -- Name: app_user app_user_pkey; Type: CONSTRAINT; Schema: public; Owner: musa
 ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT app_user_pkey PRIMARY KEY (id);
+
+-- Name: user_role user_role_pkey; Type: CONSTRAINT; Schema: public; Owner: musa
+ALTER TABLE ONLY public.user_role
+    ADD CONSTRAINT user_role_pkey PRIMARY KEY (user_id, role);
 
 -- Name: contact contact_pkey; Type: CONSTRAINT; Schema: public; Owner: musa
 ALTER TABLE ONLY public.contact
@@ -272,6 +283,15 @@ ALTER TABLE ONLY public.review_review_attachment
 -- Name: voice_memo voice_memo_pkey; Type: CONSTRAINT; Schema: public; Owner: musa
 ALTER TABLE ONLY public.voice_memo
     ADD CONSTRAINT voice_memo_pkey PRIMARY KEY (id);
+
+
+---------------------------------
+-- 3. Add foreign key constraints
+---------------------------------
+
+-- Name: user_role fk1po2gtpoc4fb87naka5f4xxcc; Type: FK CONSTRAINT; Schema: public; Owner: musa
+ALTER TABLE ONLY public.user_role
+    ADD CONSTRAINT fk1po2gtpoc4fb87naka5f4xxcc FOREIGN KEY (user_id) REFERENCES public.app_user(id);
 
 -- Name: review_review_attachment fk1es0gtpoc4fb59naka5f4movm; Type: FK CONSTRAINT; Schema: public; Owner: musa
 ALTER TABLE ONLY public.review_review_attachment

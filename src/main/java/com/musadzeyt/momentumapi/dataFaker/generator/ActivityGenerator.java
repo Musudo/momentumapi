@@ -3,6 +3,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
 import com.musadzeyt.momentumapi.dataFaker.factory.ActivityFactory;
+import com.musadzeyt.momentumapi.repository.IActivityRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ActivityGenerator {
     private final ActivityFactory activityFactory;
+    private final IActivityRepository activityRepository;
     private final Faker faker;
 
     /**
@@ -25,7 +27,9 @@ public class ActivityGenerator {
      */
     public List<Activity> createActivitiesToday(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 1, 0))
+                .mapToObj(i -> activityRepository.save(
+                        activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 1, 0))
+                )
                 .collect(Collectors.toList());
     }
 
@@ -37,8 +41,9 @@ public class ActivityGenerator {
      */
     public List<Activity> createActivitiesNextSevenDays(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 8, 1))
-                .collect(Collectors.toList());
+                .mapToObj(i -> activityRepository.save(
+                        activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 8, 1))
+                ).collect(Collectors.toList());
     }
 
     /**
@@ -49,7 +54,8 @@ public class ActivityGenerator {
      */
     public List<Activity> createActivitiesNextThirtyDays(int count) {
         return IntStream.range(0, count)
-                .mapToObj(i -> activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 38, 8))
-                .collect(Collectors.toList());
+                .mapToObj(i -> activityRepository.save(
+                        activityFactory.create(faker.options().option(ActivityTypeEnum.values()), 38, 8))
+                ).collect(Collectors.toList());
     }
 }
