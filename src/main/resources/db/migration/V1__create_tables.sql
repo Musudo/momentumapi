@@ -48,7 +48,6 @@ CREATE TABLE public.app_user (
     first_name character varying(25) NOT NULL,
     last_name character varying(25) NOT NULL,
     password character varying(255),
-    roles text,
     updated_at timestamp(6) without time zone
 );
 ALTER TABLE public.app_user OWNER TO musa;

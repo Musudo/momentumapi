@@ -1,10 +1,8 @@
 package com.musadzeyt.momentumapi.unit.service;
 
-import com.musadzeyt.momentumapi.dataFaker.generator.TagGenerator;
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.dto.entityDto.TagDto;
-import com.musadzeyt.momentumapi.enums.TagNameEnum;
-import com.musadzeyt.momentumapi.repository.ITagRepository;
+import com.musadzeyt.momentumapi.enums.TagName;
+import com.musadzeyt.momentumapi.repository.TagRepository;
 import com.musadzeyt.momentumapi.service.entityService.TagService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +24,7 @@ import static org.mockito.Mockito.*;
 class TagServiceTest {
 
     @Mock
-    private ITagRepository repo;
+    private TagRepository repo;
 
     @InjectMocks
     private TagService service;
@@ -37,7 +34,7 @@ class TagServiceTest {
     @BeforeEach
     void setUp() {
         entity = new Tag();
-        entity.setName(TagNameEnum.PERSONAL);
+        entity.setName(TagName.PERSONAL);
     }
 
     @Test

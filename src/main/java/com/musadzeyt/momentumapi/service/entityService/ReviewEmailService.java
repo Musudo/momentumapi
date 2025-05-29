@@ -1,11 +1,11 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.dto.entityDto.ReviewEmailDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ReviewEmailDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IReviewEmailRepository;
+import com.musadzeyt.momentumapi.repository.ReviewEmailRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
-import com.musadzeyt.momentumapi.util.mapper.IReviewEmailMapper;
+import com.musadzeyt.momentumapi.util.mapper.ReviewEmailMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ReviewEmailService {
-    private final IReviewEmailRepository emailRepository;
-    private final IReviewEmailMapper reviewEmailMapper;
+    private final ReviewEmailRepository emailRepository;
+    private final ReviewEmailMapper reviewEmailMapper;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {

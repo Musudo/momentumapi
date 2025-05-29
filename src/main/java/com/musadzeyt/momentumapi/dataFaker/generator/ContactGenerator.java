@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.dataFaker.factory.ContactFactory;
-import com.musadzeyt.momentumapi.repository.IContactRepository;
+import com.musadzeyt.momentumapi.repository.ContactRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ContactGenerator {
     private final ContactFactory contactFactory;
-    private final IContactRepository contactRepository;
+    private final ContactRepository contactRepository;
 
     /**
      * Creates a list of contacts using the ContactFactory.

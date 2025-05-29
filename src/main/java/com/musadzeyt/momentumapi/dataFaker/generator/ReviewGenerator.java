@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.Review;
 import com.musadzeyt.momentumapi.dataFaker.factory.ReviewFactory;
-import com.musadzeyt.momentumapi.repository.IReviewRepository;
+import com.musadzeyt.momentumapi.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ReviewGenerator {
     private final ReviewFactory reviewFactory;
-    private final IReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     /**
      * Creates a list of reviews using the ReviewsFactory.

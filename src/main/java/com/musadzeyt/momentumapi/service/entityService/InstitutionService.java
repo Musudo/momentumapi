@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.Institution;
-import com.musadzeyt.momentumapi.dto.entityDto.InstitutionDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.InstitutionDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
-import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
+import com.musadzeyt.momentumapi.repository.InstitutionRepository;
+import com.musadzeyt.momentumapi.util.mapper.InstitutionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +14,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class InstitutionService {
-    private final IInstitutionRepository institutionRepository;
-    private final IInstitutionMapper institutionMapper;
+    private final InstitutionRepository institutionRepository;
+    private final InstitutionMapper institutionMapper;
 
     public List<Institution> findAll() {
         return institutionRepository.findAll();

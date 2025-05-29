@@ -3,13 +3,13 @@ package com.musadzeyt.momentumapi.service.entityService;
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.domain.AppUser;
-import com.musadzeyt.momentumapi.dto.entityDto.ContactDto;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ContactDto;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IContactRepository;
+import com.musadzeyt.momentumapi.repository.ContactRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.specification.ContactSpecification;
-import com.musadzeyt.momentumapi.util.mapper.IContactMapper;
+import com.musadzeyt.momentumapi.util.mapper.ContactMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ContactService {
-    private final IContactRepository contactRepository;
-    private final IContactMapper contactMapper;
+    private final ContactRepository contactRepository;
+    private final ContactMapper contactMapper;
     private final InstitutionService institutionService;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -31,7 +31,7 @@ public class ContactService {
     }
 
     private Specification<Contact> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
         return new ContactSpecification(criteria);
     }
 

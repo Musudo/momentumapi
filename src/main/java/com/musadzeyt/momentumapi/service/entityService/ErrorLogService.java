@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.ErrorLog;
-import com.musadzeyt.momentumapi.dto.entityDto.ErrorLogDto;
-import com.musadzeyt.momentumapi.repository.IErrorLogRepository;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ErrorLogDto;
+import com.musadzeyt.momentumapi.repository.ErrorLogRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
-import com.musadzeyt.momentumapi.util.mapper.IErrorLogMapper;
+import com.musadzeyt.momentumapi.util.mapper.ErrorLogMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ErrorLogService {
-    private final IErrorLogRepository errorLogRepository;
+    private final ErrorLogRepository errorLogRepository;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {
@@ -43,7 +43,7 @@ public class ErrorLogService {
             }
         }
 
-        errorLogRepository.save(IErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
+        errorLogRepository.save(ErrorLogMapper.INSTANCE.dtoToEntity(errorLogDto));
     }
 
     public void delete(UUID id) {

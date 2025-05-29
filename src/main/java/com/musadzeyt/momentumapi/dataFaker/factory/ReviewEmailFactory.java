@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.ReviewEmail;
-import com.musadzeyt.momentumapi.repository.IReviewRepository;
+import com.musadzeyt.momentumapi.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class ReviewEmailFactory {
     private final Faker faker;
-    private final IReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
     /**
      * Creates an Email with fake data.

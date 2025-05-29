@@ -2,13 +2,13 @@ package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.domain.VoiceMemo;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import com.musadzeyt.momentumapi.dto.entityDto.VoiceMemoDto;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.VoiceMemoDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IVoiceMemoRepository;
+import com.musadzeyt.momentumapi.repository.VoiceMemoRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.specification.VoiceMemoSpecification;
-import com.musadzeyt.momentumapi.util.mapper.IVoiceMemoMapper;
+import com.musadzeyt.momentumapi.util.mapper.VoiceMemoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class VoiceMemoService {
-    private final IVoiceMemoRepository voiceMemoRepository;
-    private final IVoiceMemoMapper voiceMemoMapper;
+    private final VoiceMemoRepository voiceMemoRepository;
+    private final VoiceMemoMapper voiceMemoMapper;
     private final AppUserService userService;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -30,7 +30,7 @@ public class VoiceMemoService {
     }
 
     private Specification<VoiceMemo> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
         return new VoiceMemoSpecification(criteria);
     }
 

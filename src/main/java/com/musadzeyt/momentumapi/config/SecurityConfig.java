@@ -53,8 +53,11 @@ public class SecurityConfig {
      * Public endpoints that do not require authentication.
      */
     private static final String[] AUTH_WHITELIST = {
-            "/api/auth/login",
-            "/api/auth/register"
+            "/auth/login",
+            "/auth/register",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
     };
 
     /**

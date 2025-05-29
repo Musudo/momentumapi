@@ -1,10 +1,10 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
-import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
+import com.musadzeyt.momentumapi.repository.ExternalParticipantRepository;
+import com.musadzeyt.momentumapi.util.mapper.ExternalParticipantMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +14,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ExternalParticipantService {
-    private final IExternalParticipantRepository externalParticipantRepository;
-    private final IExternalParticipantMapper externalParticipantMapper;
+    private final ExternalParticipantRepository externalParticipantRepository;
+    private final ExternalParticipantMapper externalParticipantMapper;
 
     public List<ExternalParticipant> findAll() {
         return externalParticipantRepository.findAll();

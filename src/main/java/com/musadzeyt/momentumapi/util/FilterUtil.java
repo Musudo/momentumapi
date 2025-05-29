@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.util;
 
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;

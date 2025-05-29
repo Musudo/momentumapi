@@ -2,8 +2,8 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.dataFaker.factory.TagFactory;
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.enums.TagNameEnum;
-import com.musadzeyt.momentumapi.repository.ITagRepository;
+import com.musadzeyt.momentumapi.enums.TagName;
+import com.musadzeyt.momentumapi.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class TagGenerator {
     private final TagFactory tagFactory;
-    private final ITagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     public List<Tag> createTags() {
-        List<TagNameEnum> tagNames = List.of(
-                TagNameEnum.PERSONAL,
-                TagNameEnum.WORK,
-                TagNameEnum.FINANCE,
-                TagNameEnum.EDUCATION,
-                TagNameEnum.FAMILY,
-                TagNameEnum.TRAINING
+        List<TagName> tagNames = List.of(
+                TagName.PERSONAL,
+                TagName.WORK,
+                TagName.FINANCE,
+                TagName.EDUCATION,
+                TagName.FAMILY,
+                TagName.TRAINING
         );
 
         List<Tag> tags = tagNames.stream()

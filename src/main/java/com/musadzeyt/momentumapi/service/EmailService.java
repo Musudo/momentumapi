@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.service;
 
-import com.musadzeyt.momentumapi.dto.EmailDto;
+import com.musadzeyt.momentumapi.api.v1.dto.EmailDto;
 import com.musadzeyt.momentumapi.service.entityService.ErrorLogService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

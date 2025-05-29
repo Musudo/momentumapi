@@ -1,11 +1,11 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.AppUser;
-import com.musadzeyt.momentumapi.dto.entityDto.AppUserDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.AppUserDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
-import com.musadzeyt.momentumapi.repository.IAppUserRepository;
-import com.musadzeyt.momentumapi.util.mapper.IAppUserMapper;
+import com.musadzeyt.momentumapi.record.UserRegistrationRequest;
+import com.musadzeyt.momentumapi.repository.AppUserRepository;
+import com.musadzeyt.momentumapi.util.mapper.AppUserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class AppUserService {
-    private final IAppUserRepository userRepository;
-    private final IAppUserMapper userMapper;
+    private final AppUserRepository userRepository;
+    private final AppUserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     public List<AppUser> findAll() {
@@ -36,7 +36,7 @@ public class AppUserService {
     }
 
     @Transactional
-    public String registerUser(UserRegistrationRequestRecord request) {
+    public String registerUser(UserRegistrationRequest request) {
         if (userRepository.findByEmail(request.username()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }

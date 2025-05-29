@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.domain;
 
-import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
+import com.musadzeyt.momentumapi.enums.ActivityType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -30,7 +30,7 @@ public class Activity {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID id;
     @NotNull
-    private ActivityTypeEnum type;
+    private ActivityType type;
     @NotNull
     private LocalDateTime startTime;
     @NotNull

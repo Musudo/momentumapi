@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.exception;
 
-import com.musadzeyt.momentumapi.dto.ApiError;
+import com.musadzeyt.momentumapi.api.v1.dto.ApiError;
 import com.musadzeyt.momentumapi.service.entityService.ErrorLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

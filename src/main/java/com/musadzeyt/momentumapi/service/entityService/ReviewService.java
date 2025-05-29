@@ -2,13 +2,13 @@ package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Review;
-import com.musadzeyt.momentumapi.dto.entityDto.ReviewDto;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ReviewDto;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IReviewRepository;
+import com.musadzeyt.momentumapi.repository.ReviewRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.specification.ReviewSpecification;
-import com.musadzeyt.momentumapi.util.mapper.IReviewMapper;
+import com.musadzeyt.momentumapi.util.mapper.ReviewMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ReviewService {
-    private final IReviewRepository reviewRepository;
-    private final IReviewMapper reviewMapper;
+    private final ReviewRepository reviewRepository;
+    private final ReviewMapper reviewMapper;
     private final ActivityService activityService;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -31,7 +31,7 @@ public class ReviewService {
     }
 
     private Specification<Review> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
         return new ReviewSpecification(criteria);
     }
 

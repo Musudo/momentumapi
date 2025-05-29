@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.specification;
 
 import com.musadzeyt.momentumapi.domain.Task;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
 import com.musadzeyt.momentumapi.util.FilterUtil;
 import jakarta.persistence.criteria.*;
 import lombok.Data;

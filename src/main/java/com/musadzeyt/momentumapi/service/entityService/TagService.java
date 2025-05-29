@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.repository.ITagRepository;
+import com.musadzeyt.momentumapi.repository.TagRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class TagService {
-    private final ITagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     public List<Tag> findAll() {
         return tagRepository.findAll();

@@ -3,18 +3,18 @@ package com.musadzeyt.momentumapi.util.customSerializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.musadzeyt.momentumapi.enums.stat.ColumnNameEnum;
+import com.musadzeyt.momentumapi.enums.statEnums.ColumnName;
 
 import java.io.IOException;
 
-public class ColumnEnumSerializer extends StdSerializer<ColumnNameEnum> {
+public class ColumnEnumSerializer extends StdSerializer<ColumnName> {
 
     public ColumnEnumSerializer() {
-        super(ColumnNameEnum.class);
+        super(ColumnName.class);
     }
 
     @Override
-    public void serialize(ColumnNameEnum value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(ColumnName value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         String name = value.name();
         String[] parts = name.split("_");
         StringBuilder sb = new StringBuilder();

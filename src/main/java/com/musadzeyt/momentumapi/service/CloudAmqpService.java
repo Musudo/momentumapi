@@ -3,7 +3,7 @@ package com.musadzeyt.momentumapi.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musadzeyt.momentumapi.config.CloudAmqpConfig;
-import com.musadzeyt.momentumapi.dto.EmailDto;
+import com.musadzeyt.momentumapi.api.v1.dto.EmailDto;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

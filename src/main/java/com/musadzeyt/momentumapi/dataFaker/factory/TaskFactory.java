@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.dataFaker.factory;
 
 import com.musadzeyt.momentumapi.domain.Task;
-import com.musadzeyt.momentumapi.repository.IActivityRepository;
-import com.musadzeyt.momentumapi.repository.IAppUserRepository;
+import com.musadzeyt.momentumapi.repository.ActivityRepository;
+import com.musadzeyt.momentumapi.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class TaskFactory {
     private final Faker faker;
-    private final IActivityRepository activityRepository;
-    private final IAppUserRepository userRepository;
+    private final ActivityRepository activityRepository;
+    private final AppUserRepository userRepository;
 
     /**
      * Creates a Task with fake data.

@@ -73,13 +73,14 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ## 📮 API Overview
 
-* Base URL: `/api/v1/`
+* Base URL: `/api/v1`
 * Auth endpoints: `/auth/register`, `/auth/login`
-* Task management: `/tasks`, `/tasks/{id}`
-* Habit tracking: `/habits`, `/habits/{id}`
-* Sessions: `/sessions`, `/sessions/{id}`
+* Dashboard: `/dasboard`
+* Activities: `/activities`, `/activities/{id}`
+* Contacts: `/contacts`, `/contacts/{id}`
+* Swagger docs: `/swagger-ui/index.html`
 
-> Swagger/OpenAPI docs planned for future release.
+> Some new stuff planned to for future release.
 
 ---
 

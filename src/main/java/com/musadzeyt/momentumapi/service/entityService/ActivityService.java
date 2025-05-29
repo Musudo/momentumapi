@@ -1,16 +1,16 @@
 package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.*;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import com.musadzeyt.momentumapi.dto.entityDto.ActivityDto;
-import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ActivityDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IActivityRepository;
-import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
-import com.musadzeyt.momentumapi.repository.ITaskRepository;
+import com.musadzeyt.momentumapi.repository.ActivityRepository;
+import com.musadzeyt.momentumapi.repository.ExternalParticipantRepository;
+import com.musadzeyt.momentumapi.repository.TaskRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.specification.ActivitySpecification;
-import com.musadzeyt.momentumapi.util.mapper.IActivityMapper;
+import com.musadzeyt.momentumapi.util.mapper.ActivityMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -30,15 +30,15 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ActivityService {
-    private final IExternalParticipantRepository externalParticipantRepository;
-    private final IActivityRepository activityRepository;
-    private final IActivityMapper activityMapper;
+    private final ExternalParticipantRepository externalParticipantRepository;
+    private final ActivityRepository activityRepository;
+    private final ActivityMapper activityMapper;
     private final TagService tagService;
     private final InstitutionService institutionService;
     private final AppUserService userService;
     private final ContactService contactService;
     private final ExternalParticipantService externalParticipantService;
-    private final ITaskRepository taskRepository;
+    private final TaskRepository taskRepository;
     private final CustomUserDetailsService customUserDetailsService;
 
     private String getUsername() {
@@ -46,7 +46,7 @@ public class ActivityService {
     }
 
     private Specification<Activity> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
         return new ActivitySpecification(criteria);
     }
 

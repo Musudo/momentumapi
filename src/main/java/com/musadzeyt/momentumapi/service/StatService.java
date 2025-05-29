@@ -1,11 +1,11 @@
 package com.musadzeyt.momentumapi.service;
 
+import com.musadzeyt.momentumapi.api.v1.dto.statDto.*;
 import com.musadzeyt.momentumapi.domain.Contact;
 import com.musadzeyt.momentumapi.domain.Institution;
-import com.musadzeyt.momentumapi.dto.statDto.*;
 import com.musadzeyt.momentumapi.service.entityService.*;
 import com.musadzeyt.momentumapi.util.StatUtil;
-import com.musadzeyt.momentumapi.util.mapper.IInstitutionMapper;
+import com.musadzeyt.momentumapi.util.mapper.InstitutionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -233,7 +233,7 @@ public class StatService {
                     .email(contact.getEmail1())
                     .phone(contact.getPhone1())
                     .jobTitle(contact.getJobTitle())
-                    .institutionName(IInstitutionMapper.INSTANCE.entityToDto(contact.getInstitution()).getName())
+                    .institutionName(InstitutionMapper.INSTANCE.entityToDto(contact.getInstitution()).getName())
                     .build();
             contactTableData.add(contactTableDataDto);
         });

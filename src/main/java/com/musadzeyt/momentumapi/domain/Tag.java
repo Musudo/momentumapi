@@ -1,7 +1,7 @@
 package com.musadzeyt.momentumapi.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.musadzeyt.momentumapi.enums.TagNameEnum;
+import com.musadzeyt.momentumapi.enums.TagName;
 import com.musadzeyt.momentumapi.util.customSerializer.TagNameEnumSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -33,7 +33,7 @@ public class Tag {
     @JsonSerialize(using = TagNameEnumSerializer.class)
     @NotNull // this is application level constraint
     @Column(unique = true, nullable = false) // this is database level constraint
-    private TagNameEnum name;
+    private TagName name;
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;

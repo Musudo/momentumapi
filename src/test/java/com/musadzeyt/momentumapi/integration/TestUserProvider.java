@@ -1,8 +1,8 @@
 package com.musadzeyt.momentumapi.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.musadzeyt.momentumapi.record.UserLoginRequestRecord;
-import com.musadzeyt.momentumapi.record.UserRegistrationRequestRecord;
+import com.musadzeyt.momentumapi.record.UserLoginRequest;
+import com.musadzeyt.momentumapi.record.UserRegistrationRequest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @TestConfiguration
 public class TestUserProvider {
 
-    private static final String TEST_EMAIL = "testuser@example.com";
+    private static final String TEST_EMAIL = "guest@email.com";
     private static final String TEST_PASSWORD = "1Password";
 
     @Bean
@@ -34,9 +34,9 @@ public class TestUserProvider {
 
         private void registerAndLogin() throws Exception {
             try {
-                var register = new UserRegistrationRequestRecord("testuser", "testuser", TEST_EMAIL, TEST_PASSWORD);
+                var register = new UserRegistrationRequest("Guest", "User", TEST_EMAIL, TEST_PASSWORD);
 
-                mockMvc.perform(post("/api/auth/register")
+                mockMvc.perform(post("/auth/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(register)))
                         .andReturn();
@@ -44,8 +44,8 @@ public class TestUserProvider {
             } catch (Exception ignored) {
             }
 
-            var login = new UserLoginRequestRecord(TEST_EMAIL, TEST_PASSWORD);
-            String loginJson = mockMvc.perform(post("/api/auth/login")
+            var login = new UserLoginRequest(TEST_EMAIL, TEST_PASSWORD);
+            String loginJson = mockMvc.perform(post("/auth/login")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(mapper.writeValueAsString(login)))
                     .andReturn()

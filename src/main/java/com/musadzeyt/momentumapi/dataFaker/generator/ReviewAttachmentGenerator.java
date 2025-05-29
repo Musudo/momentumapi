@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.dataFaker.generator;
 
 import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.dataFaker.factory.ReviewAttachmentFactory;
-import com.musadzeyt.momentumapi.repository.IReviewAttachmentRepository;
+import com.musadzeyt.momentumapi.repository.ReviewAttachmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class ReviewAttachmentGenerator {
     private final ReviewAttachmentFactory reviewAttachmentFactory;
-    private final IReviewAttachmentRepository reviewAttachmentRepository;
+    private final ReviewAttachmentRepository reviewAttachmentRepository;
 
     /**
      * Creates a list of attachments using the AttachmentFactory.

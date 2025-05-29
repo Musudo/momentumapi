@@ -10,7 +10,6 @@ INSERT INTO app_user (
   first_name,
   last_name,
   updated_at,
-  roles,
   password
 ) VALUES (
   'f47ac10b-58cc-4372-a567-0e02b2c3d479',
@@ -19,7 +18,6 @@ INSERT INTO app_user (
   'Guest',
   'User',
   NOW(),
-  ARRAY['ROLE_USER'],
   '$2y$10$0gq2Xcb80yYJyFzwyAuuM.o4dhBbVYQ4qYfFH7U5LSKeQHzjDhAEK'
 );
 

@@ -1,11 +1,11 @@
 package com.musadzeyt.momentumapi.unit.service;
 
 import com.musadzeyt.momentumapi.domain.ExternalParticipant;
-import com.musadzeyt.momentumapi.dto.entityDto.ExternalParticipantDto;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IExternalParticipantRepository;
+import com.musadzeyt.momentumapi.repository.ExternalParticipantRepository;
 import com.musadzeyt.momentumapi.service.entityService.ExternalParticipantService;
-import com.musadzeyt.momentumapi.util.mapper.IExternalParticipantMapper;
+import com.musadzeyt.momentumapi.util.mapper.ExternalParticipantMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,10 +26,10 @@ import static org.mockito.Mockito.*;
 class ExternalParticipantServiceTest {
 
     @Mock
-    private IExternalParticipantRepository repo;
+    private ExternalParticipantRepository repo;
 
     @Mock
-    private IExternalParticipantMapper mapper;
+    private ExternalParticipantMapper mapper;
 
     @InjectMocks
     private ExternalParticipantService service;

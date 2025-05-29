@@ -2,7 +2,7 @@ package com.musadzeyt.momentumapi.service;
 
 import com.musadzeyt.momentumapi.domain.AppUser;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IAppUserRepository;
+import com.musadzeyt.momentumapi.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Repository for accessing {@link AppUser} entities by email.
      */
-    private final IAppUserRepository userRepository;
+    private final AppUserRepository userRepository;
 
     /**
      * Loads the user details by email (used as username in authentication).

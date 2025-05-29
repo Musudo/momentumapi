@@ -1,12 +1,13 @@
 package com.musadzeyt.momentumapi.dataFaker.factory;
 
+import com.musadzeyt.momentumapi.dataFaker.generator.ExternalParticipantGenerator;
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Institution;
 import com.musadzeyt.momentumapi.domain.Tag;
-import com.musadzeyt.momentumapi.enums.ActivityTypeEnum;
-import com.musadzeyt.momentumapi.repository.IInstitutionRepository;
-import com.musadzeyt.momentumapi.repository.ITagRepository;
-import com.musadzeyt.momentumapi.repository.IAppUserRepository;
+import com.musadzeyt.momentumapi.enums.ActivityType;
+import com.musadzeyt.momentumapi.repository.InstitutionRepository;
+import com.musadzeyt.momentumapi.repository.TagRepository;
+import com.musadzeyt.momentumapi.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
@@ -20,16 +21,17 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class ActivityFactory {
     private final Faker faker;
-    private final IAppUserRepository userRepository;
-    private final IInstitutionRepository institutionRepository;
-    private final ITagRepository tagRepository;
+    private final AppUserRepository userRepository;
+    private final InstitutionRepository institutionRepository;
+    private final TagRepository tagRepository;
+    private final ExternalParticipantGenerator externalParticipantGenerator;
 
     /**
      * Creates an Activity with fake data.
      *
      * @return a new Activity instance with default values.
      */
-    public Activity create(ActivityTypeEnum activityType, int atMost, int minimum) {
+    public Activity create(ActivityType activityType, int atMost, int minimum) {
         LocalDateTime startTime = LocalDateTime.parse(
                 faker.timeAndDate().future(atMost, minimum, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -47,6 +49,7 @@ public class ActivityFactory {
                 .tags(faker.options().option(tags.subList(0, tags.size() - 1)))
                 .user(userRepository.findByEmail("guest@email.com").orElse(null))
                 .institution(faker.options().option(institutions).getFirst())
+                .externalParticipants(externalParticipantGenerator.createExternalParticipants(2))
                 .createdAt(
                         LocalDateTime.parse(faker.timeAndDate().past(30, 0, TimeUnit.DAYS, "yyyy-MM-dd HH:mm:ss"),
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

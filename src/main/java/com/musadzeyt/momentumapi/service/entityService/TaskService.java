@@ -3,13 +3,13 @@ package com.musadzeyt.momentumapi.service.entityService;
 import com.musadzeyt.momentumapi.domain.Activity;
 import com.musadzeyt.momentumapi.domain.Task;
 import com.musadzeyt.momentumapi.domain.AppUser;
-import com.musadzeyt.momentumapi.dto.SearchCriteria;
-import com.musadzeyt.momentumapi.dto.entityDto.TaskDto;
+import com.musadzeyt.momentumapi.api.v1.dto.SearchCriteria;
+import com.musadzeyt.momentumapi.api.v1.dto.entityDto.TaskDto;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.ITaskRepository;
+import com.musadzeyt.momentumapi.repository.TaskRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
 import com.musadzeyt.momentumapi.specification.TaskSpecification;
-import com.musadzeyt.momentumapi.util.mapper.ITaskMapper;
+import com.musadzeyt.momentumapi.util.mapper.TaskMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class TaskService {
-    private final ITaskRepository taskRepository;
-    private final ITaskMapper taskMapper;
+    private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
     private final ActivityService activityService;
     private final AppUserService userService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -33,7 +33,7 @@ public class TaskService {
     }
 
     private Specification<Task> getUsernameSpec() {
-        SearchCriteria criteria = new SearchCriteria("app_user.email", ":", getUsername());
+        SearchCriteria criteria = new SearchCriteria("user.email", ":", getUsername());
         return new TaskSpecification(criteria);
     }
 

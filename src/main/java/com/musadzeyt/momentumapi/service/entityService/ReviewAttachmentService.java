@@ -2,9 +2,9 @@ package com.musadzeyt.momentumapi.service.entityService;
 
 import com.musadzeyt.momentumapi.domain.ReviewAttachment;
 import com.musadzeyt.momentumapi.exception.EntityNotFoundException;
-import com.musadzeyt.momentumapi.repository.IReviewAttachmentRepository;
+import com.musadzeyt.momentumapi.repository.ReviewAttachmentRepository;
 import com.musadzeyt.momentumapi.service.CustomUserDetailsService;
-import com.musadzeyt.momentumapi.util.mapper.IReviewAttachmentMapper;
+import com.musadzeyt.momentumapi.util.mapper.ReviewAttachmentMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class ReviewAttachmentService {
-    private final IReviewAttachmentRepository attachmentRepository;
-    private final IReviewAttachmentMapper reviewAttachmentMapper;
+    private final ReviewAttachmentRepository attachmentRepository;
+    private final ReviewAttachmentMapper reviewAttachmentMapper;
     private final ReviewService reviewService;
     private final CustomUserDetailsService customUserDetailsService;
 

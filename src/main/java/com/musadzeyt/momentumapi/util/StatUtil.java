@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.util;
 
-import com.musadzeyt.momentumapi.enums.stat.TrendEnum;
+import com.musadzeyt.momentumapi.enums.statEnums.Trend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,25 +18,25 @@ public class StatUtil {
      * Calculates the trend of a given list of integer data points using linear regression.
      * <p>
      * The method computes the slope of the data by treating the indices as x-values and the list values as y-values.
-     * Based on a defined threshold, it returns a {@link TrendEnum} indicating if the trend is upward, downward, or neutral.
+     * Based on a defined threshold, it returns a {@link Trend} indicating if the trend is upward, downward, or neutral.
      * </p>
      *
      * @param data a {@code List<Integer>} representing the data points over time.
      * @return a {@code TrendEnum} indicating the overall trend (UP, DOWN, or NEUTRAL).
      */
-    public static TrendEnum trendCalculator(List<Integer> data) {
+    public static Trend trendCalculator(List<Integer> data) {
         int n = data.size();
         double slope = getSlope(data, n);
 
         // Define a threshold for considering the slope "neutral"
         double threshold = 0.1;
-        TrendEnum trend;
+        Trend trend;
         if (slope > threshold) {
-            trend = TrendEnum.UP;
+            trend = Trend.UP;
         } else if (slope < -threshold) {
-            trend = TrendEnum.DOWN;
+            trend = Trend.DOWN;
         } else {
-            trend = TrendEnum.NEUTRAL;
+            trend = Trend.NEUTRAL;
         }
 
         return trend;

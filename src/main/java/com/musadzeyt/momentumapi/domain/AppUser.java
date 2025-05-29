@@ -1,6 +1,6 @@
 package com.musadzeyt.momentumapi.domain;
 
-import com.musadzeyt.momentumapi.enums.RoleEnum;
+import com.musadzeyt.momentumapi.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -51,7 +51,7 @@ public class AppUser {
             joinColumns = @JoinColumn(name = "user_id")
     )
     @Column(name = "role")
-    private Set<RoleEnum> roles = new HashSet<>(Set.of(RoleEnum.ROLE_USER));
+    private Set<Role> roles = new HashSet<>(Set.of(Role.ROLE_USER));
     private String password;
     private LocalDateTime createdAt;
     @UpdateTimestamp
