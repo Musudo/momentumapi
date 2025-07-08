@@ -20,7 +20,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 * `controller/` – Handles incoming HTTP requests
 * `service/` – Business logic
 * `repository/` – Data access layer (Spring Data JPA)
-* `model/` – Domain entities
+* `domain/` – Domain entities
 * `dto/` – Data Transfer Objects for request/response payloads
 * `config/` – Security and application configuration
 
@@ -79,8 +79,6 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 * Activities: `/activities`, `/activities/{id}`
 * Contacts: `/contacts`, `/contacts/{id}`
 * Swagger docs: `/swagger-ui/index.html`
-
-> Some new stuff planned to for future release.
 
 ---
 

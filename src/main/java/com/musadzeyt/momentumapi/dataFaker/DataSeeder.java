@@ -31,8 +31,7 @@ public class DataSeeder {
     public void seedData() {
         // !!! Order creations correctly to handle potential foreign key constraints
 
-        tagGenerator.createTags();
-        institutionGenerator.createInstitutions(5);
+        institutionGenerator.createInstitutions(3);
         contactGenerator.createContacts(50);
         activityGenerator.createActivitiesToday(3);
         activityGenerator.createActivitiesNextSevenDays(10);
@@ -53,7 +52,6 @@ public class DataSeeder {
         activityRepository.deleteAll();
         contactRepository.deleteAll();
         institutionRepository.deleteAll();
-        tagRepository.deleteAll();
     }
 
     public void seedTestData() {

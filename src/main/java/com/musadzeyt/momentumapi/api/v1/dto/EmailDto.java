@@ -18,4 +18,5 @@ public class EmailDto implements Serializable {
     private String subject;
     private String activityName;
     private String startTime;
+    private String endTime;
 }

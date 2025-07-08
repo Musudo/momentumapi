@@ -1,6 +1,5 @@
 package com.musadzeyt.momentumapi.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musadzeyt.momentumapi.config.CloudAmqpConfig;
 import com.musadzeyt.momentumapi.api.v1.dto.EmailDto;
@@ -11,6 +10,8 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * Service for producing and consuming messages to/from a RabbitMQ email queue.
@@ -66,11 +67,11 @@ public class CloudAmqpService {
      * and invokes the EmailService to send a confirmation email.
      *
      * @param message the raw AMQP message containing the JSON payload
-     * @throws JsonProcessingException if message body cannot be deserialized to EmailDto
+     * @throws IOException if deserialization fails
      * @throws MessagingException if sending the email fails
      */
     @RabbitListener(queues = "${messaging.emailQueue}")
-    public void receiveMessageToEmailQueue(Message message) throws JsonProcessingException, MessagingException {
+    public void receiveMessageToEmailQueue(Message message) throws IOException, MessagingException {
         String messageBody = new String(message.getBody());
         EmailDto emailDto = objectMapper.readValue(messageBody, EmailDto.class);
         log.debug("Received message from queue {}: {}", properties.getEmailQueue(), emailDto);

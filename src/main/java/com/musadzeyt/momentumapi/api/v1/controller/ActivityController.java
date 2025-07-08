@@ -4,11 +4,13 @@ import com.musadzeyt.momentumapi.api.v1.dto.EmailDto;
 import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ActivityDto;
 import com.musadzeyt.momentumapi.api.v1.dto.entityDto.ExternalParticipantDto;
 import com.musadzeyt.momentumapi.service.CloudAmqpService;
+import com.musadzeyt.momentumapi.service.EmailService;
 import com.musadzeyt.momentumapi.service.entityService.ActivityService;
-import com.musadzeyt.momentumapi.util.DateUtil;
+import com.musadzeyt.momentumapi.util.DateAndTimeUtil;
 import com.musadzeyt.momentumapi.util.mapper.ActivityMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,6 +34,8 @@ public class ActivityController {
     private final ActivityService activityService;
     private final ActivityMapper activityMapper;
     private final CloudAmqpService cloudAmqpService;
+
+    private final EmailService emailService;
 
     @Operation(summary = "Get all activities", description = "Returns a list of all activities.")
     @GetMapping("")
@@ -87,7 +93,7 @@ public class ActivityController {
 
     @Operation(summary = "Create a new activity")
     @PostMapping(value = "", produces = "application/json")
-    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto) {
+    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto) throws Exception {
         if (activityDto.getEmailSentAt() != null && !activityDto.getEmailSentAt().isBlank()) {
             if (activityDto.getContacts() != null && !activityDto.getContacts().isEmpty()) {
                 activityDto.getContacts().forEach(dto -> {
@@ -96,7 +102,8 @@ public class ActivityController {
                             dto.getFirstName(),
                             "Activity confirmation",
                             activityDto.getSubject(),
-                            DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                            activityDto.getStartTime(),
+                            activityDto.getEndTime()
                     );
                     cloudAmqpService.sendMessageToEmailQueue(emailDto);
                 });
@@ -109,7 +116,8 @@ public class ActivityController {
                             dto.getName(),
                             "Activity confirmation",
                             activityDto.getSubject(),
-                            DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                            activityDto.getStartTime(),
+                            activityDto.getEndTime()
                     );
                     cloudAmqpService.sendMessageToEmailQueue(emailDto);
                 });
@@ -160,13 +168,19 @@ public class ActivityController {
     public ResponseEntity<String> sendConfirmationEmail(@NotNull @Valid @RequestBody ActivityDto activityDto) {
         if (activityDto.getContacts() != null && !activityDto.getContacts().isEmpty()) {
             activityDto.getContacts().forEach(contactDto -> {
+                String startTimeTrimmed = activityDto.getStartTime().substring(0, activityDto.getStartTime().lastIndexOf(":"));
+                String endTimeTrimmed = activityDto.getEndTime().substring(0, activityDto.getEndTime().lastIndexOf(":"));
+
                 EmailDto emailDto = new EmailDto(
                         contactDto.getEmail1(),
                         contactDto.getFirstName(),
                         "Activity confirmation",
                         activityDto.getSubject(),
-                        DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                        startTimeTrimmed,
+                        endTimeTrimmed
                 );
+
+                // TODO: fix date string parsing error when sending email
                 cloudAmqpService.sendMessageToEmailQueue(emailDto);
 
                 activityService.updateEmailSentAt(activityDto.getId(), LocalDateTime.now());
@@ -180,7 +194,8 @@ public class ActivityController {
                         externalParticipantDto.getName(),
                         "Activity confirmation",
                         activityDto.getSubject(),
-                        DateUtil.formatDateIsoString(activityDto.getStartTime(), "full")
+                        activityDto.getStartTime(),
+                        activityDto.getEndTime()
                 );
                 cloudAmqpService.sendMessageToEmailQueue(emailDto);
 

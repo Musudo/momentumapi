@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Utility class for formatting ISO date-time strings into various predefined human-readable formats.
  */
-public class DateUtil {
+public class DateAndTimeUtil {
     /**
      * Supported formatting keys mapped to their corresponding {@link java.time.format.DateTimeFormatter} patterns.
      * <ul>

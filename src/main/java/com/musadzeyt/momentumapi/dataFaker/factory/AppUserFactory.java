@@ -31,15 +31,15 @@ public class AppUserFactory {
     }
 
     /**
-     * Creates a User with fake data.
+     * Creates a test user.
      *
-     * @return a new User instance with default values.
+     * @return a new User instance with fixed custom values.
      */
     public AppUser createTestUser() {
         return AppUser.builder()
                 .firstName("Test")
                 .lastName("User")
-                .email("test@email.com")
+                .email("testuser@email.com")
                 .roles(Set.of(Role.ROLE_USER))
                 .password(passwordEncoder.encode("1Password"))
                 .build();
