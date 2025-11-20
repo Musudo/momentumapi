@@ -40,7 +40,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
    docker-compose up --build
    ```
 
-> Make sure Docker and Docker Compose are installed.
+> ...
 
 ---
 
