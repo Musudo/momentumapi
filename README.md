@@ -1,10 +1,10 @@
-# 📘 MomentumAPI – README
+# MomentumAPI – README
 
 MomentumAPI is the backend service for the Momentum productivity app. It provides RESTful endpoints for managing tasks, habits, sessions, and other productivity-related resources.
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 * **Java v21**
 * **Spring Boot**
@@ -15,7 +15,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 * `controller/` – Handles incoming HTTP requests
 * `service/` – Business logic
@@ -26,7 +26,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 🐳 Running with Docker
+## Running with Docker
 
 1. Clone this repo.
 2. Build the project:
@@ -44,7 +44,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 🧪 Testing
+## Testing
 
 * Unit tests: JUnit & Mockito
 * Integration tests for key services and REST controllers
@@ -56,7 +56,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 🔐 Security
+## Security
 
 * JWT-based authentication
 * BCrypt password hashing
@@ -64,14 +64,14 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 🔄 CI/CD with CircleCI
+## CI/CD with CircleCI
 
 * Build and test pipeline on each commit
 * Automated Docker image build and push
 
 ---
 
-## 📮 API Overview
+## API Overview
 
 * Base URL: `/api/v1`
 * Auth endpoints: `/auth/register`, `/auth/login`
@@ -82,7 +82,7 @@ MomentumAPI is the backend service for the Momentum productivity app. It provide
 
 ---
 
-## 🛠️ To Do
+## To Do
 
 * [ ] ...
 
